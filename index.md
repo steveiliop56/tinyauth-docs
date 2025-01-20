@@ -21,7 +21,7 @@ features:
   - title: Simple
     details: Tinyauth can be configured directly with environment variables eliminating the need for configuration files or fancy dashboards.
   - title: Fast
-    details: Tinyauth uses the Gin web framework is ensures that you get the maximum performance out of the API.
+    details: Tinyauth uses the Gin web framework which ensures that you get the maximum performance out of the API.
   - title: Lightweight
-    details: Tinyauth bundles the Vite framework for the Web UI making in extremely lightweight, at just 20mb for the docker image.
+    details: Tinyauth bundles the Vite framework for the Web UI making it extremely lightweight at just 20mb for the docker image.
 ---
