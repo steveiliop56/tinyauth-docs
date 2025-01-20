@@ -29,6 +29,7 @@ go mod download
 And now the site ones:
 
 ```sh
+cd site
 bun i
 ```
 
@@ -77,9 +78,5 @@ dev.local -> 127.0.0.1
 Then I can just make sure the domains are correct in the example docker compose file and do:
 
 ```sh
-docker compose -f docker-compose.example.yml up --build
+docker compose -f docker-compose.dev.yml up --build
 ```
-
-::: tip
-If you like you can copy the example docker compose file to `docker-compose.dev.yml` which will be ignored by git.
-:::

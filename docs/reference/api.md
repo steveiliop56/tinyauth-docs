@@ -1,6 +1,6 @@
 # API
 
-Tinyauth has a very simple API used for both traefik and the web UI, all of the available paths are listed below:
+Tinyauth has a very simple API used for both traefik and the web UI, all of the available endpoints are listed below.
 
 ## Healthcheck
 

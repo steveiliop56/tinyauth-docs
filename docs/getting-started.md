@@ -4,7 +4,7 @@ As promised in the readme, tinyauth is extremely easy to get up and running.
 
 ## Installation
 
-To get started simply add the tinyauth service next to your traefik container
+To get started simply add the tinyauth service next to your traefik container:
 
 ```yaml
 tinyauth:
@@ -22,7 +22,7 @@ tinyauth:
 ```
 
 ::: info
-Make sure to set your labels according to your own setup, this guide includes the most basic ones.
+Make sure to set the labels according to your own setup, this guide includes the most basic ones.
 :::
 
 ::: warning
