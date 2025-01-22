@@ -2,7 +2,9 @@
 
 Tinyauth has a very simple API used for both traefik and the web UI, all of the available endpoints are listed below.
 
-## Healthcheck
+## Endpoints
+
+### Healthcheck
 
 Healthcheck for the tinyauth API server.
 
@@ -18,7 +20,7 @@ Example response:
 }
 ```
 
-## Auth
+### Auth
 
 Authentication endpoint used by traefik forward auth.
 
@@ -38,7 +40,7 @@ Example response:
 The API will redirect to the login page if the user is not authenticated.
 :::
 
-## Login
+### Login
 
 Endpoint used for authenticating the users through the login page and setting the session cookie.
 
@@ -67,7 +69,7 @@ Example response:
 Alongside with the JSON response the API will also return the required cookies that need to be set by the browser for the user to be authenticated on the next request.
 :::
 
-## Logout
+### Logout
 
 Endpoint used to delete the session cookie and in turn log out the user.
 
@@ -83,7 +85,7 @@ Example response:
 }
 ```
 
-## Status
+### Status
 
 Endpoint used to retrieve user information based on the session cookie, it is used by the user context provider in the frontend.
 

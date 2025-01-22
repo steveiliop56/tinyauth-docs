@@ -22,6 +22,7 @@ export default defineConfig({
           { text: "Configuration", link: "/docs/reference/configuration" },
           { text: "API", link: "/docs/reference/api" },
           { text: "Flow", link: "/docs/reference/flow" },
+          { text: "CLI", link: "/docs/reference/cli" },
         ],
       },
       {
