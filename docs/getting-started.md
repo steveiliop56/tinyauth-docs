@@ -13,7 +13,7 @@ tinyauth:
   environment:
     - SECRET=some-random-32-chars-string
     - APP_URL=https://tinyauth.example.com
-    - USERS=your-username-password-hash
+    - USERS=your-email-password-hash
   labels:
     traefik.enable: true
     traefik.http.routers.tinyauth.rule: Host(`tinyauth.example.com`)
@@ -26,8 +26,12 @@ Make sure to set the labels according to your own setup, this guide includes the
 :::
 
 ::: warning
-Tinyauth accepts a comma seperated list of `username:password-hash` combinations. To generate your hash go to [IT Tools](https://it-tools.tech/) and use the bcrypt module. Make sure to escape the hash by doubling every dollar sign. Example:
-`user:$$2a$$10$$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u` (username is `user` and password is `password`).
+Tinyauth accepts a comma seperated list of `email:password-hash` combinations. To generate your hash go to [IT Tools](https://it-tools.tech/) and use the bcrypt module. Make sure to escape the hash by doubling every dollar sign. Example:
+`user@example.com:$$2a$$10$$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u` (email is `user@example.com` and password is `password`).
+:::
+
+::: tip
+You can also use the Tinyauth CLI to generate your credentials. For more information check the CLI reference [here](./reference/cli.md).
 :::
 
 Then for every app you want tinyauth to protect just add the following label:
