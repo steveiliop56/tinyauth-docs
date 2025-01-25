@@ -20,8 +20,7 @@ hero:
 features:
   - title: Simple
     details: Tinyauth can be configured directly with environment variables eliminating the need for configuration files or fancy dashboards.
-  - title: Fast
-    details: Tinyauth uses the Gin web framework which ensures that you get the maximum performance out of the API.
-  - title: Lightweight
+  - title: OAuth Support
+    details: Tinyauth supports Google, Github and every Generic OAuth provider for authentication.
     details: Tinyauth bundles the Vite framework for the Web UI making it extremely lightweight at just 20mb for the docker image.
 ---
