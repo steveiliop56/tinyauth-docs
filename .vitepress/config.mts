@@ -26,6 +26,12 @@ export default defineConfig({
         ],
       },
       {
+        text: "Guides",
+        items: [
+          { text: "Setting up Github OAuth", link: "/docs/guides/github-oauth" },
+        ]
+      },
+      {
         text: "Contributing",
         items: [{ text: "Contributing", link: "/docs/contributing" }],
       },

@@ -3,3 +3,6 @@ node_modules
 
 # cache
 .vitepress/cache
+
+# vscode config
+.vscode
