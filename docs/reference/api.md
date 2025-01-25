@@ -8,7 +8,7 @@ Tinyauth has a very simple API used for both traefik and the web UI, all of the 
 
 Healthcheck for the tinyauth API server.
 
-Endpoint: `/api/healthcheck`
+Endpoint: `/api/healthcheck`<br />
 Method: `GET`
 
 Example response:
@@ -24,7 +24,7 @@ Example response:
 
 Authentication endpoint used by traefik forward auth.
 
-Endpoint: `/api/auth`
+Endpoint: `/api/auth`<br />
 Method: `GET`
 
 Example response:
@@ -44,14 +44,14 @@ The API will redirect to the login page if the user is not authenticated.
 
 Endpoint used for authenticating the users through the login page and setting the session cookie.
 
-Endpoint: `/api/login`
+Endpoint: `/api/login`<br />
 Method: `POST`
 
 Example request:
 
 ```json
 {
-  "username": "user",
+  "email": "user@example.com",
   "password": "password"
 }
 ```
@@ -73,7 +73,7 @@ Alongside with the JSON response the API will also return the required cookies t
 
 Endpoint used to delete the session cookie and in turn log out the user.
 
-Endpoint: `/api/logout`
+Endpoint: `/api/logout`<br />
 Method: `POST`
 
 Example response:
@@ -89,7 +89,7 @@ Example response:
 
 Endpoint used to retrieve user information based on the session cookie, it is used by the user context provider in the frontend.
 
-Endpoint: `/api/status`
+Endpoint: `/api/status`<br />
 Method: `GET`
 
 Example response:
@@ -98,7 +98,50 @@ Example response:
 {
   "status": 200,
   "message": "Authenticated",
-  "username": "user",
-  "isLoggedIn": true
+  "email": "user@example.com",
+  "isLoggedIn": true,
+  "oauth": false,
+  "provider": "",
+  "configuredProviders": ["google", "github"],
+  "disableContinue": false
 }
 ```
+
+### OAuth URL
+
+Endpoint that generates an authentication URL for the specified provider.
+
+Endpoint: `/api/oauth/url/:provider` (can be `github`/`google`/`generic`)<br />
+Method: `GET`<br />
+Query Parameters: `redirect_uri`
+
+Example response:
+
+```json
+{
+  "status": 200,
+  "message": "OK",
+  "url": "some-url"
+}
+```
+
+### OAuth Callback
+
+Endpoint used to retrieve, validate and login a user with OAuth.
+
+Endpoint: `/api/oauth/callback/:provider` (can be `github`/`google`/`generic`)<br />
+Method: `GET`<br />
+Query Parameters: `code`
+
+Example response:
+
+```json
+{
+  "status": 200,
+  "message": "Logged in"
+}
+```
+
+::: info
+The callback will redirect to the `redirect_uri` that was set while the frontend redirected you to the provider's login page, if the cookie is not set it will just show the 200 OK message.
+:::
