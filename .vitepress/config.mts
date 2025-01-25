@@ -29,6 +29,7 @@ export default defineConfig({
         text: "Guides",
         items: [
           { text: "Setting up Github OAuth", link: "/docs/guides/github-oauth" },
+          { text: "Setting up Google OAuth", link: "/docs/guides/google-oauth" },
         ]
       },
       {
