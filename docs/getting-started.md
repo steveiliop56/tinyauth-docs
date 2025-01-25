@@ -37,7 +37,7 @@ You can also use the Tinyauth CLI to generate your credentials. For more informa
 Then for every app you want tinyauth to protect just add the following label:
 
 ```yaml
-traefik.http.routers.nginx.middlewares: tinyauth
+traefik.http.routers.[your-router].middlewares: tinyauth
 ```
 
 And that's it! When you try to visit an app you should be redirected to the tinyauth login page.
