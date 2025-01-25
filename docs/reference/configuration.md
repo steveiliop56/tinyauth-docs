@@ -21,4 +21,5 @@ Tinyauth has a very simple configuration and everything is configurable with eit
 | Generic Token URL     | `GENERIC_TOKEN_URL`     | `--generic-token-url`     | The URL to use when requesting the token for Generic OAuth.                                                     | -         | no       |
 | Generic User URL      | `GENERIC_USER_URL`      | `--generic-user-url`      | The URL to use when retrieving user information in Generic OAuth.                                               | -         | no       |
 | Disable Continue      | `DISABLE_CONTINUE`      | `--disable-continue`      | Disables the continue screen and immediately redirects when the user logins.                                    | `false`   | no       |
-| Whitelist             | `WHITELIST`             | `--whitelist`             | Comma separated list of emails to whitelist for OAuth.                                                          |
+| OAuth Whitelist       | `OAUTH_WHITELIST`       | `--oauth-whitelist`       | Comma separated list of emails to whitelist for OAuth.                                                          |
+| Cookie Expiry         | `COOKIE_EXPIRY`         | `--cookie-expiry`         | Set cookie max age in seconds.                                                                                  | 3600      | no       |
