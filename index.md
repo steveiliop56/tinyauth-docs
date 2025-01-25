@@ -21,6 +21,6 @@ features:
   - title: Simple
     details: Tinyauth can be configured directly with environment variables eliminating the need for configuration files or fancy dashboards.
   - title: OAuth Support
-    details: Tinyauth supports Google, Github and every Generic OAuth provider for authentication.
+    details: Tinyauth supports Google, Github and every generic OAuth provider for authentication.
     details: Tinyauth bundles the Vite framework for the Web UI making it extremely lightweight at just 20mb for the docker image.
 ---
