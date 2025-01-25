@@ -18,11 +18,11 @@ docker run -it ghcr.io/steveiliop56/tinyauth:latest [options]
 
 ### Main command
 
-The main command is the one run when you run the app without any flags/arguments. It stars the API and web UI and waits for iconming connections. All the options are configurable with both CLI flags and environment variables. To find a list of available configuration options please go to the [configuration](./configuration.md) section.
+The main command is the one run when you run the app without any flags/arguments. It stars the API and web UI and waits for incoming connections. All the options are configurable with both CLI flags and environment variables. To find a list of available configuration options please go to the [configuration](./configuration.md) section.
 
 ### Create user command
 
-Tinyauth offers simple utlities for creating and verifying users in required format without having to use utilities like `htpasswd`. To use it simple run:
+Tinyauth offers simple utilities for creating and verifying users in required format without having to use utilities like `htpasswd`. To use it simple run:
 
 ```sh
 ./tinyauth user create --interactive

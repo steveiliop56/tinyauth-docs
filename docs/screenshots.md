@@ -1,6 +1,6 @@
 # Screenshots
 
-We all love screenshots so here are some screenshots of all the screens you can encounter while using the app:
+We all love screenshots, so, here are some tinyauth ones:
 
 ![Login](/screenshots/login.png)
 

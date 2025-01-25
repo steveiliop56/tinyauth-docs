@@ -26,7 +26,7 @@ Make sure to set the labels according to your own setup, this guide includes the
 :::
 
 ::: warning
-Tinyauth accepts a comma seperated list of `email:password-hash` combinations. To generate your hash go to [IT Tools](https://it-tools.tech/) and use the bcrypt module. Make sure to escape the hash by doubling every dollar sign. Example:
+Tinyauth accepts a comma separated list of `email:password-hash` combinations. To generate your hash go to [IT Tools](https://it-tools.tech/) and use the bcrypt module. Make sure to escape the hash by doubling every dollar sign. Example:
 `user@example.com:$$2a$$10$$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u` (email is `user@example.com` and password is `password`).
 :::
 
