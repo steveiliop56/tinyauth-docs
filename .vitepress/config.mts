@@ -37,6 +37,10 @@ export default defineConfig({
         items: [{ text: "Contributing", link: "/docs/contributing" }],
       },
       {
+        text: "Community",
+        items: [{ text: "Caddy", link: "/docs/community/caddy" }],
+      },
+      {
         text: "Screenshots",
         items: [{ text: "Screenshots", link: "/docs/screenshots" }],
       },

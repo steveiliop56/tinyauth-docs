@@ -85,6 +85,10 @@ Example response:
 }
 ```
 
+::: warning
+The logout function doesn't invalidate the session it just tells the client to forget the cookie. This means that if somebody gets access to this token he can use it login.
+:::
+
 ### Status
 
 Endpoint used to retrieve user information based on the session cookie, it is used by the user context provider in the frontend.
