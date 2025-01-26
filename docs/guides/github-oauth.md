@@ -63,7 +63,7 @@ Even though we are using OAuth now, a user is required just in case your provide
 :::
 
 ::: warning
-OAuth doesn't mean security, with the current setup everybody with a github account can login to tinyauth as a normal user. If you would like to limit which users can login with OAuth you can add the `OAUTH_WHITELIST` environment variable and allow only your email address to login. For more information check [here](../reference/configuration.md)
+OAuth doesn't mean security, with the current setup everybody with a github account can login to tinyauth as a normal user. If you would like to limit which users can login with OAuth you can add the `WHITELIST` environment variable and allow only your email address to login. For more information check [here](../reference/configuration.md)
 :::
 
 And we are done! After you restart your docker container and go to the tinyauth login screen, you should have an additional option to login with Github.
