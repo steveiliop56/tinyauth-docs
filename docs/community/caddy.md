@@ -1,6 +1,6 @@
 # Caddy
 
-*Contributor: [@erwinkramer](https://github.com/erwinkramer)*.
+_Contributor: [@erwinkramer](https://github.com/erwinkramer)_.
 
 A caddy configuration for docker compose, based on [caddy-docker-proxy](https://github.com/lucaslorentz/caddy-docker-proxy), that works with tinyauth to enable a fully labeled configuration.
 
@@ -30,6 +30,7 @@ Your `caddy-docker-proxy` service might look like this if you add the labels to 
 caddy:
   container_name: caddy
   image: lucaslorentz/caddy-docker-proxy:latest
+  restart: unless-stopped
   ports:
     - 80:80
     - 443:443
@@ -50,10 +51,11 @@ Add tinyauth and place it behind caddy with the `caddy` and `caddy.reverse_proxy
 tinyauth:
   container_name: tinyauth
   image: ghcr.io/steveiliop56/tinyauth:latest
+  restart: unless-stopped
   environment:
     - APP_URL=http://auth.example.com
     - SECRET=secret___has_to_be_32_characters
-    - OAUTH_WHITELIST=me@example.com
+    - USERS=your-user:hash
   labels:
     caddy: http://auth.example.com
     caddy.reverse_proxy: "{{upstreams 3000}}"
@@ -61,27 +63,63 @@ tinyauth:
 
 ## Secure a service
 
-Place any service behind tinyauth, the only addition you need to secure a service is the reusable snippet, called `tinyauth_forwarder`, we created earlier: 
-
+Place any service behind tinyauth, the only addition you need to secure a service is the reusable snippet, called `tinyauth_forwarder`, we created earlier:
 
 ```yaml
 caddy.import: tinyauth_forwarder *
 ```
 
-Using [Dozzle](https://dozzle.dev/) as an example, it might look like this:
+Using Nginx as an example, it might look like this:
 
 ```yaml
-dozzle:
-  container_name: dozzle
-  image: amir20/dozzle:latest
-  volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
+nginx:
+  container_name: nginx
+  image: nginx:latest
   labels:
-    caddy: http://dozzle.example.com
-    caddy.reverse_proxy: "{{upstreams 8080}}"
+    caddy: http://nginx.example.com
+    caddy.reverse_proxy: "{{upstreams 80}}"
     caddy.import: tinyauth_forwarder *
 ```
 
 ## Complete example
 
-For a complete example, please check [erwinkramer/synology-nas-bootstrapper](https://github.com/erwinkramer/synology-nas-bootstrapper).
+Here is a complete example with all the services together:
+
+```yaml
+services:
+  caddy:
+    container_name: caddy
+    image: lucaslorentz/caddy-docker-proxy:latest
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data/caddy:/data
+    labels:
+      caddy: (tinyauth_forwarder)
+      caddy.forward_auth: tinyauth:3000
+      caddy.forward_auth.uri: /api/auth
+
+  tinyauth:
+    container_name: tinyauth
+    image: ghcr.io/steveiliop56/tinyauth:latest
+    restart: unless-stopped
+    environment:
+      - APP_URL=http://auth.example.com
+      - SECRET=secret-has-to-be-32-chars
+      - USERS=your-user:hash
+    labels:
+      caddy: http://auth.example.com
+      caddy.reverse_proxy: "{{upstreams 3000}}"
+
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    restart: unless-stopped
+    labels:
+      caddy: http://nginx.example.com
+      caddy.reverse_proxy: "{{upstreams 80}}"
+      caddy.import: tinyauth_forwarder *
+```
