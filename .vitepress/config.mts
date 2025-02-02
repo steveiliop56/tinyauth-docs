@@ -30,6 +30,7 @@ export default defineConfig({
         items: [
           { text: "Setting up Github OAuth", link: "/docs/guides/github-oauth" },
           { text: "Setting up Google OAuth", link: "/docs/guides/google-oauth" },
+          { text: "Setting up Tailscale OAuth", link: "/docs/guides/tailscale-oauth" },
         ]
       },
       {
