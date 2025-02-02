@@ -31,6 +31,7 @@ export default defineConfig({
           { text: "Setting up Github OAuth", link: "/docs/guides/github-oauth" },
           { text: "Setting up Google OAuth", link: "/docs/guides/google-oauth" },
           { text: "Setting up Tailscale OAuth", link: "/docs/guides/tailscale-oauth" },
+          { text: "Setting up access controls with Tinyauth", link: "/docs/guides/access-controls" },
         ]
       },
       {

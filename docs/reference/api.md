@@ -115,7 +115,7 @@ Example response:
 
 Endpoint that generates an authentication URL for the specified provider.
 
-Endpoint: `/api/oauth/url/:provider` (can be `github`/`google`/`generic`)<br />
+Endpoint: `/api/oauth/url/:provider` (can be `github`/`google`/`tailscale`/`generic`)<br />
 Method: `GET`<br />
 Query Parameters: `redirect_uri`
 
@@ -133,7 +133,7 @@ Example response:
 
 Endpoint used to retrieve, validate and login a user with OAuth.
 
-Endpoint: `/api/oauth/callback/:provider` (can be `github`/`google`/`generic`)<br />
+Endpoint: `/api/oauth/callback/:provider` (can be `github`/`google`/`tailscale`/`generic`)<br />
 Method: `GET`<br />
 Query Parameters: `code`
 
