@@ -47,6 +47,10 @@ export default defineConfig({
         items: [{ text: "Caddy", link: "/docs/community/caddy" }],
       },
       {
+        text: "Changelog",
+        items: [{ text: "Changelog", link: "/docs/changelog" }],
+      },
+      {
         text: "Screenshots",
         items: [{ text: "Screenshots", link: "/docs/screenshots" }],
       },
