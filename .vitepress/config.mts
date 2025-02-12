@@ -39,6 +39,10 @@ export default defineConfig({
         items: [{ text: "Contributing", link: "/docs/contributing" }],
       },
       {
+        text: "Advanced configs - notes",
+        items: [{ text: "Advanced configs - notes", link: "/docs/advanced" }],
+      },
+      {
         text: "Community",
         items: [{ text: "Caddy", link: "/docs/community/caddy" }],
       },
