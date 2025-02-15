@@ -1,4 +1,4 @@
-# Setting up Tinyauth with Google OAuth
+# Setting up tinyauth with Google OAuth
 
 Tinyauth has builtin support for Google OAuth and it is extremely easy to set up. It's a bit harder than Github but with this guide you should be up and running in less than 10 minutes. Let's get started!
 
@@ -73,11 +73,11 @@ tinyauth:
     traefik.enable: true
     traefik.http.routers.tinyauth.rule: Host(`tinyauth.example.com`)
     traefik.http.services.tinyauth.loadbalancer.server.port: 3000
-    traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth
+    traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth/traefik
 ```
 
 ::: warning
-OAuth doesn't mean security, with the current setup everybody with a Tailscale account can login to Google as a normal user. If you would like to limit which users can login with OAuth, you can add the `OAUTH_WHITELIST` environment variable and allow only your email address to login. For more information check [here](../reference/configuration.md)
+OAuth doesn't mean security, with the current setup everybody with a Google account can login to tinyauth as a normal user. If you would like to limit which users can login with OAuth, you can add the `OAUTH_WHITELIST` environment variable and allow only your email address to login. For more information check [here](../reference/configuration.md)
 :::
 
-And we are done! After you restart your docker container and go to the Tinyauth login screen, you should have an additional option to login with Google.
+And we are done! After you restart your docker container and go to the tinyauth login screen, you should have an additional option to login with Google.

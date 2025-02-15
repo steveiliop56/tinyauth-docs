@@ -1,10 +1,10 @@
-# Setting up access controls with Tinyauth
+# Setting up access controls with tinyauth
 
 Tinyauth supports basic access controls with docker labels. You can use them to restrict access to specific applications to only a small amount of users. Let's see how you can set them up.
 
-## Modifying the Tinyauth container
+## Modifying the tinyauth container
 
-We firstly need to make some small changes to the Tinyauth container. We will use the example from the getting started guide and modify it like this:
+We firstly need to make some small changes to the tinyauth container. We will use the example from the getting started guide and modify it like this:
 
 ```yaml
 tinyauth:
@@ -20,14 +20,14 @@ tinyauth:
     traefik.enable: true
     traefik.http.routers.tinyauth.rule: Host(`tinyauth.example.com`)
     traefik.http.services.tinyauth.loadbalancer.server.port: 3000
-    traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth
+    traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth/traefik
 ```
 
 In this example let's assume your users are `user1` and `user2` and your OAuth whitelist includes `user1@example.com` and `user2@example.com`.
 
-## Modifying the App
+## Modifying the app
 
-Now let's take the Nginx example from the getting started guide and add the access controls:
+Now let's take the nginx example from the getting started guide and add the access controls:
 
 ```yaml
 nginx:
@@ -44,4 +44,4 @@ nginx:
 
 In this example, only `user1` will have access with simple username/password authentication and only `user2@example.com` will be able to access the app with OAuth. If either `user2` or `user1@example.com` try to access the app, they will be redirected to an unauthorized screen.
 
-That's it! You just configured access controls in Tinyauth!
+That's it! You just configured access controls in tinyauth!

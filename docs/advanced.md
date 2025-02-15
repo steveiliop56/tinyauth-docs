@@ -1,8 +1,8 @@
 # Advanced configs - Notes
 
-## Host network and Traefik
+## Host network and traefik
 
-When using `network_mode: host` in docker alongside with traefik, the `redirect_uri` in Tinyauth will always be the app URL instead of of the actual redirect URI. This is because traefik does not respect the `X-Forwarded-Host` header from NAT IP addresses such as the docker internal one. This can be easily fixed by either using the following traefik config:
+When using `network_mode: host` in docker alongside with traefik, the `redirect_uri` in tinyauth will always be the app URL instead of of the actual redirect URI. This is because traefik does not respect the `X-Forwarded-Host` header from NAT IP addresses such as the docker internal one. This can be easily fixed by either using the following traefik config:
 
 ```yaml
 entryPoints:

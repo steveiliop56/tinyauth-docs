@@ -1,12 +1,12 @@
-# Setting up Tinyauth with Github OAuth
+# Setting up tinyauth with Github OAuth
 
-Tinyauth has builtin support for Github OAuth with just two environment variables. Most of the hard work happens on the Github side rather than Tinyauth :).
+Tinyauth has builtin support for Github OAuth with just two environment variables. Most of the hard work happens on the Github side rather than tinyauth :).
 
 ## Requirements
 
 Github is relatively simple in it's OAuth requirements so what you need for this guide is just:
 
-- Any domain name (in my testing `.local` works too)
+- Any domain name (`.local` works too)
 - A Github account
 
 ## Create the Github OAuth app
@@ -37,7 +37,7 @@ Here make sure to note down your client ID. Now, let's create our client secret,
 
 Make sure to note this too as we will need it later and that's it, we are done with Github.
 
-## Configure Tinyauth
+## Configure tinyauth
 
 Now that we have our client ID and secret, we can pass it to the tinyauth docker container:
 
@@ -55,11 +55,11 @@ tinyauth:
     traefik.enable: true
     traefik.http.routers.tinyauth.rule: Host(`tinyauth.example.com`)
     traefik.http.services.tinyauth.loadbalancer.server.port: 3000
-    traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth
+    traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth/traefik
 ```
 
 ::: warning
-OAuth doesn't mean security, with the current setup everybody with a Github account can login to Tinyauth as a normal user. If you would like to limit which users can login with OAuth, you can add the `OAUTH_WHITELIST` environment variable and allow only your email address to login. For more information check [here](../reference/configuration.md)
+OAuth doesn't mean security, with the current setup everybody with a Github account can login to tinyauth as a normal user. If you would like to limit which users can login with OAuth, you can add the `OAUTH_WHITELIST` environment variable and allow only your email address to login. For more information check [here](../reference/configuration.md)
 :::
 
 And we are done! After you restart your docker container and go to the Tinyauth login screen, you should have an additional option to login with Github.

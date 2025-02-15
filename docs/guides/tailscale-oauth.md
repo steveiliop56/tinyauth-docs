@@ -1,6 +1,6 @@
-# Setting up Tinyauth with Tailscale OAuth
+# Setting up tinyauth with Tailscale OAuth
 
-Tailscale is widely used in the homelab space so it is a requirement for Tinyauth to support it as an authentication method. The entire thing can be set up in less than 5 minutes and just a few clicks. Let's get started!
+Tailscale is widely used in the homelab space so it is a requirement for tinyauth to support it as an authentication method. The entire thing can be set up in less than 5 minutes and just a few clicks. Let's get started!
 
 ## Requirements
 
@@ -34,11 +34,11 @@ tinyauth:
     traefik.enable: true
     traefik.http.routers.tinyauth.rule: Host(`tinyauth.example.com`)
     traefik.http.services.tinyauth.loadbalancer.server.port: 3000
-    traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth
+    traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth/traefik
 ```
 
 ::: warning
-OAuth doesn't mean security, with the current setup everybody with a Tailscale account can login to Tinyauth as a normal user. If you would like to limit which users can login with OAuth, you can add the `OAUTH_WHITELIST` environment variable and allow only your email address to login. For more information check [here](../reference/configuration.md)
+OAuth doesn't mean security, with the current setup everybody with a Tailscale account can login to tinyauth as a normal user. If you would like to limit which users can login with OAuth, you can add the `OAUTH_WHITELIST` environment variable and allow only your email address to login. For more information check [here](../reference/configuration.md)
 :::
 
 And we are done! After you restart your docker container and go to the tinyauth login screen, you should have an additional option to login with Tailscale.

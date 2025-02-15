@@ -24,7 +24,7 @@ Example response:
 
 Authentication endpoint used by traefik forward auth.
 
-Endpoint: `/api/auth`<br />
+Endpoint: `/api/auth/:proxy` (can be `traefik`/`nginx`/`caddy`)<br />
 Method: `GET`
 
 Example response:

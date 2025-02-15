@@ -11,7 +11,7 @@ Include the following labels anywhere in your compose file under a service, this
 ```yaml
 caddy: (tinyauth_forwarder)
 caddy.forward_auth: tinyauth:3000
-caddy.forward_auth.uri: /api/auth
+caddy.forward_auth.uri: /api/auth/caddy
 ```
 
 This results in the following snippet:
@@ -19,7 +19,7 @@ This results in the following snippet:
 ```typescript
 (tinyauth_forwarder) {
 	forward_auth tinyauth:3000 {
-		uri /api/auth
+		uri /api/auth/caddy
 	}
 }
 ```
@@ -40,7 +40,7 @@ caddy:
   labels:
     caddy: (tinyauth_forwarder)
     caddy.forward_auth: tinyauth:3000
-    caddy.forward_auth.uri: /api/auth
+    caddy.forward_auth.uri: /api/auth/caddy
 ```
 
 ## Tinyauth configuration
@@ -54,8 +54,8 @@ tinyauth:
   restart: unless-stopped
   environment:
     - APP_URL=http://auth.example.com
-    - SECRET=secret___has_to_be_32_characters
-    - USERS=your-user:hash
+    - SECRET=some-random-32-chars-string
+    - USERS=your-username-password-hash
   labels:
     caddy: http://auth.example.com
     caddy.reverse_proxy: "{{upstreams 3000}}"
@@ -100,7 +100,7 @@ services:
     labels:
       caddy: (tinyauth_forwarder)
       caddy.forward_auth: tinyauth:3000
-      caddy.forward_auth.uri: /api/auth
+      caddy.forward_auth.uri: /api/auth/caddy
 
   tinyauth:
     container_name: tinyauth
@@ -109,7 +109,7 @@ services:
     environment:
       - APP_URL=http://auth.example.com
       - SECRET=secret-has-to-be-32-chars
-      - USERS=your-user:hash
+      - USERS=your-username-password-hash
     labels:
       caddy: http://auth.example.com
       caddy.reverse_proxy: "{{upstreams 3000}}"
