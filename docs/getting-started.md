@@ -2,6 +2,10 @@
 
 As promised in the readme, tinyauth is extremely easy to get up and running.
 
+::: info
+Tinyauth by default ships with the traefik proxy, if you are using a different proxy there are available guides for [Nginx Proxy Manager](/docs/guides/nginx-proxy-manager) and [Caddy](/docs/community/caddy).
+:::
+
 ## Installation
 
 To get started simply add the tinyauth service next to your traefik container:

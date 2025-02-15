@@ -1,4 +1,4 @@
-# Advanced configs - Notes
+# Advanced configs
 
 ## Host network and traefik
 
