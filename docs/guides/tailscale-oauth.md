@@ -13,7 +13,7 @@ Tailscale is even simpler in its requirements! You just need the following:
 
 You firstly need to create the Tailscale OAuth application, this can be done by opening the settings [here](https://login.tailscale.com/admin/settings/oauth) and clicking Generate OAuth Client. You should see a screen like this:
 
-![Tailscale Generate OAuth](/screenshots/tailscale-oauth-generate.png)
+<img src="/screenshots/tailscale-oauth-generate.png" alt="Tailscale Generate OAuth" width="512">
 
 There just fill in a description, e.g. "Tinyauth" and make sure you tick the Read checkbox in the Users category, then just click Generate Client. A new pop-up should appear with your Client ID and secret, make sure you note these down as we will need them later. That's it! We are done with Tailscale!
 
