@@ -28,11 +28,12 @@ export default defineConfig({
       {
         text: "Guides",
         items: [
-          { text: "Setting up Github OAuth", link: "/docs/guides/github-oauth" },
-          { text: "Setting up Google OAuth", link: "/docs/guides/google-oauth" },
-          { text: "Setting up Tailscale OAuth", link: "/docs/guides/tailscale-oauth" },
-          { text: "Setting up access controls with Tinyauth", link: "/docs/guides/access-controls" },
-          { text: "Setting up Github App OAuth", link: "/docs/guides/github-app-oauth" },
+          { text: "Github OAuth", link: "/docs/guides/github-oauth" },
+          { text: "Google OAuth", link: "/docs/guides/google-oauth" },
+          { text: "Tailscale OAuth", link: "/docs/guides/tailscale-oauth" },
+          { text: "Github App OAuth", link: "/docs/guides/github-app-oauth" },
+          { text: "Access controls", link: "/docs/guides/access-controls" },
+          { text: "Tinyauth with Nginx Proxy Manager", link: "/docs/guides/nginx-proxy-manager" },
         ]
       },
       {
@@ -40,8 +41,8 @@ export default defineConfig({
         items: [{ text: "Contributing", link: "/docs/contributing" }],
       },
       {
-        text: "Advanced configs - notes",
-        items: [{ text: "Advanced configs - notes", link: "/docs/advanced" }],
+        text: "Advanced configs",
+        items: [{ text: "Advanced configs", link: "/docs/advanced" }],
       },
       {
         text: "Community",

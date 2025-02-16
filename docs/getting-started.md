@@ -1,10 +1,14 @@
 # Getting Started
 
-As promised in the readme, Tinyauth is extremely easy to get up and running.
+As promised in the readme, tinyauth is extremely easy to get up and running.
+
+::: info
+Tinyauth by default ships with the traefik proxy, if you are using a different proxy there are available guides for [Nginx Proxy Manager](/docs/guides/nginx-proxy-manager) and [Caddy](/docs/community/caddy).
+:::
 
 ## Installation
 
-To get started simply add the Tinyauth service next to your Traefik container:
+To get started simply add the tinyauth service next to your traefik container:
 
 ```yaml
 tinyauth:
@@ -18,7 +22,7 @@ tinyauth:
     traefik.enable: true
     traefik.http.routers.tinyauth.rule: Host(`tinyauth.example.com`)
     traefik.http.services.tinyauth.loadbalancer.server.port: 3000
-    traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth
+    traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth/traefik
 ```
 
 ::: info
@@ -31,7 +35,7 @@ Tinyauth accepts a comma separated list of `username:password-hash` combinations
 :::
 
 ::: tip
-You can also use the Tinyauth CLI to generate your credentials. For more information check the CLI reference [here](./reference/cli.md).
+You can also use the tinyauth CLI to generate your credentials. For more information check the CLI reference [here](./reference/cli.md).
 :::
 
 Then for every app you want tinyauth to protect just add the following label:
@@ -44,7 +48,7 @@ And that's it! When you try to visit an app you should be redirected to the tiny
 
 ## Example Docker compose file
 
-Here is a full example with Traefik, Nginx and Tinyauth:
+Here is a full example with traefik, nginx and tinyauth:
 
 ```yaml
 services:
@@ -77,5 +81,5 @@ services:
       traefik.enable: true
       traefik.http.routers.tinyauth.rule: Host(`tinyauth.example.com`)
       traefik.http.services.tinyauth.loadbalancer.server.port: 3000
-      traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth
+      traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth/traefik
 ```

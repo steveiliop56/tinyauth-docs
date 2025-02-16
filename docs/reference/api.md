@@ -2,6 +2,33 @@
 
 Tinyauth has a very simple API used for both traefik and the web UI, all of the available endpoints are listed below.
 
+## Authentication
+
+The tinyauth API supports authentication using the `Authorization` header and basic auth, this can be useful when you want to permanently access a service protected with tinyauth using a headless client like `curl` or a custom script. For example, if you have an app hosted in `http://myapp.example.com` which is protected by tinyauth you can authenticate using curl:
+
+```shell
+curl -u user:password http://myapp.example.com # the user:password is the username and password you use in tinyauth
+```
+
+In order for this to work you need to follow [RFC 7617](https://datatracker.ietf.org/doc/html/rfc7617) which means that your `Authorization` header needs to look like this:
+
+```
+Authorization: Basic base64(username:password)
+```
+
+::: warning
+Basic auth is permanent authorization meaning that if somebody obtains your header he can use it to login everywhere and it **won't** expire like the cookie will.
+:::
+
+When using basic auth, tinyauth assumes you are running in _API_ mode meaning that it will never return a redirect or plain html (e.g. the `/api/auth/traefik` endpoint will return 302 if you are not logged in), instead it will return API compatible responses like:
+
+```json
+{
+  "status": 401,
+  "message": "Unauthorized"
+}
+```
+
 ## Endpoints
 
 ### Healthcheck
@@ -24,7 +51,7 @@ Example response:
 
 Authentication endpoint used by traefik forward auth.
 
-Endpoint: `/api/auth`<br />
+Endpoint: `/api/auth/:proxy` (can be `traefik`/`nginx`/`caddy`)<br />
 Method: `GET`
 
 Example response:
