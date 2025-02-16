@@ -31,6 +31,7 @@ export default defineConfig({
           { text: "Github OAuth", link: "/docs/guides/github-oauth" },
           { text: "Google OAuth", link: "/docs/guides/google-oauth" },
           { text: "Tailscale OAuth", link: "/docs/guides/tailscale-oauth" },
+          { text: "Github App OAuth", link: "/docs/guides/github-app-oauth" },
           { text: "Access controls", link: "/docs/guides/access-controls" },
           { text: "Tinyauth with Nginx Proxy Manager", link: "/docs/guides/nginx-proxy-manager" },
         ]
@@ -59,6 +60,7 @@ export default defineConfig({
 
     socialLinks: [
       { icon: "github", link: "https://github.com/steveiliop56/tinyauth" },
+      { icon: "discord", link: "https://discord.gg/eHzVaCzRRd" },
     ],
   },
   head: [
