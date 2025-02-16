@@ -2,6 +2,37 @@
 
 Below you can find all release notes from all Tinyauth versions:
 
+## v3.0.0
+
+### Migration guide
+
+To migrate to `v3.0.0` you need to change your authentication paths.
+
+If you are using traefik for your reverse proxy, change your forward auth URL to `http://tinyauth:3000/api/auth/traefik`
+
+If you are using caddy for your reverse proxy, change your auth URL to `http://tinyauth:3000/api/auth/caddy`
+
+The `COOKIE_EXPIRY` environment variable has been also renamed to `SESSION_EXPIRY` (`--session-expiry`).
+
+### New features
+
+- Support for Nginx/Nginx Proxy Manager
+- Authentication to apps using HTTP basic auth
+
+### Improvements
+
+- Handle `null` values from query parameters better in the frontend.
+
+### Fixes
+
+- Fix the `OAUTH_WHITELIST` not allowing any users by default.
+- Parse the redirect URI correctly to support older browsers.
+
+### Technical
+
+- Add multiple comments through the codebase to make it more understandable.
+- Add tests for the API and utils.
+
 ## v2.1.1
 
 ### Fixes
