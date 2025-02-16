@@ -22,6 +22,7 @@ The `COOKIE_EXPIRY` environment variable has been also renamed to `SESSION_EXPIR
 ### Improvements
 
 - Handle `null` values from query parameters better in the frontend.
+- The cookie contents also expire based on the `SESSION_EXPIRY` environment variable increasing security.
 
 ### Fixes
 
