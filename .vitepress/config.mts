@@ -66,5 +66,19 @@ export default defineConfig({
   head: [
     ["link", { rel: "icon", href: "/favicon.ico" }],
     ["link", { rel: "manifest", href: "/site.webmanifest" }],
+    ["script", {}, `
+      const plausibleAttributes = {
+            src: "https://analytics.doesmycode.work/js/script.js",
+            "data-domain": "tinyauth.doesmycode.work",
+          };
+
+          const plausibleScript = document.createElement("script");
+
+          Object.entries(plausibleAttributes).forEach(([key, value]) =>
+            plausibleScript.setAttribute(key, value),
+          );
+
+          document.head.appendChild(plausibleScript);
+    `]
   ],
 });
