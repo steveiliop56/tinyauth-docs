@@ -67,18 +67,18 @@ export default defineConfig({
     ["link", { rel: "icon", href: "/favicon.ico" }],
     ["link", { rel: "manifest", href: "/site.webmanifest" }],
     ["script", {}, `
-      const plausibleAttributes = {
-            src: "https://analytics.doesmycode.work/js/script.js",
-            "data-domain": "tinyauth.doesmycode.work",
-          };
+      const umamiAttributes = {
+          src: "https://analytics.doesmycode.work/script.js",
+          "data-website-id": "ed560a2b-b321-4745-b2f8-d7de846aeb7f",
+      };
 
-          const plausibleScript = document.createElement("script");
+      const umamiScript = document.createElement("script");
 
-          Object.entries(plausibleAttributes).forEach(([key, value]) =>
-            plausibleScript.setAttribute(key, value),
-          );
+      Object.entries(umamiAttributes).forEach(([key, value]) =>
+        umamiScript.setAttribute(key, value),
+      );
 
-          document.head.appendChild(plausibleScript);
+      document.head.appendChild(umamiScript);
     `]
   ],
 });
