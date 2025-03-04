@@ -23,6 +23,7 @@ export default defineConfig({
           { text: "API", link: "/docs/reference/api" },
           { text: "Flow", link: "/docs/reference/flow" },
           { text: "CLI", link: "/docs/reference/cli" },
+          { text: "Headers", link: "/docs/reference/headers" },
         ],
       },
       {
@@ -81,4 +82,7 @@ export default defineConfig({
       document.head.appendChild(umamiScript);
     `]
   ],
+  sitemap: {
+    hostname: "https://tinyauth.doesmycode.work",
+  }
 });
