@@ -81,4 +81,7 @@ export default defineConfig({
       document.head.appendChild(umamiScript);
     `]
   ],
+  sitemap: {
+    hostname: "https://tinyauth.doesmycode.work",
+  }
 });
