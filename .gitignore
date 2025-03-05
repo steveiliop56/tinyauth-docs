@@ -6,3 +6,6 @@ node_modules
 
 # vscode config
 .vscode
+
+# build
+.vitepress/dist
