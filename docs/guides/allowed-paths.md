@@ -9,7 +9,7 @@ We firstly need to make some small changes to the tinyauth container. We will us
 ```yaml
 tinyauth:
   container_name: tinyauth
-  image: ghcr.io/steveiliop56/tinyauth:latest
+  image: ghcr.io/steveiliop56/tinyauth:v3
   environment:
     - SECRET=some-random-32-chars-string
     - APP_URL=https://tinyauth.example.com

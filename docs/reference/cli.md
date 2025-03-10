@@ -13,7 +13,7 @@ All commands can be both run when the app is run as an executable:
 As well as when the app is running through docker:
 
 ```sh
-docker run -i -t --rm --name tinyauth ghcr.io/steveiliop56/tinyauth:latest [options]
+docker run -i -t --rm --name tinyauth ghcr.io/steveiliop56/tinyauth:v3 [options]
 ```
 
 ### Main command

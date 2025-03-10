@@ -31,7 +31,7 @@ services:
 
   tinyauth:
     container_name: tinyauth
-    image: ghcr.io/steveiliop56/tinyauth:latest
+    image: ghcr.io/steveiliop56/tinyauth:v3
     environment:
       - SECRET_FILE=/secret.txt
       - APP_URL=http://tinyauth.example.com

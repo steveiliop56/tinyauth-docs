@@ -50,7 +50,7 @@ Add tinyauth and place it behind caddy with the `caddy` and `caddy.reverse_proxy
 ```yaml
 tinyauth:
   container_name: tinyauth
-  image: ghcr.io/steveiliop56/tinyauth:latest
+  image: ghcr.io/steveiliop56/tinyauth:v3
   restart: unless-stopped
   environment:
     - APP_URL=http://auth.example.com
@@ -105,7 +105,7 @@ services:
 
   tinyauth:
     container_name: tinyauth
-    image: ghcr.io/steveiliop56/tinyauth:latest
+    image: ghcr.io/steveiliop56/tinyauth:v3
     restart: unless-stopped
     environment:
       - APP_URL=http://auth.example.com
