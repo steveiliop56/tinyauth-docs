@@ -19,7 +19,7 @@ There we need to fill in the following information:
 
 **Github App Name** -> The name for your app, it can be anything, e.g. `Tinyauth`
 
-**Homepage URL** -> Again can be anything, you can use `https://tinyauth.doesmycode.work`
+**Homepage URL** -> Again can be anything, you can use `https://tinyauth.app`
 
 **Callback URL** -> This is the important part. You need to put the tinyauth app URL followed by `/api/oauth/callback/github`, e.g. `https://tinyauth.example.com/api/oauth/callback/github`
 

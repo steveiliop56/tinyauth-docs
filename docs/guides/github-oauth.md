@@ -15,7 +15,7 @@ The first thing we need to do is create a Github OAuth app, this can be done by 
 
 **Application name** -> Can be anything, e.g. `Tinyauth`
 
-**Homepage URL** -> It is required for some reason, so simply put `https://tinyauth.doesmycode.work`, but it can be anything
+**Homepage URL** -> It is required for some reason, so simply put `https://tinyauth.app`, but it can be anything
 
 **Authorization Callback URL** -> The only thing that is important here, you should fill in your domain and the `/api/oauth/callback/github` suffix, e.g. `https://tinyauth.example.com/api/oauth/callback/github`
 
