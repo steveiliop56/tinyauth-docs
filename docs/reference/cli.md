@@ -13,7 +13,7 @@ All commands can be both run when the app is run as an executable:
 As well as when the app is running through docker:
 
 ```sh
-docker run -it ghcr.io/steveiliop56/tinyauth:latest [options]
+docker run -i -t --rm --name tinyauth ghcr.io/steveiliop56/tinyauth:latest [options]
 ```
 
 ### Main command
@@ -36,12 +36,12 @@ This will launch an interactive TUI where you can provide an username and a pass
 
 The full list of available flags:
 
-| Flag            | Description                                          | Default | Required |
-| --------------- | ---------------------------------------------------- | ------- | -------- |
-| `--username`    | The username to use.                                 | -       | yes      |
-| `--password`    | The password to use.                                 | -       | yes      |
-| `--docker`      | Format the output for use with docker compose files. | false   | no       |
-| `--interactive` | Use an interactive TUI for creating the user.        | false   | no       |
+| Flag            | Description                                          | Default | Required                  |
+| --------------- | ---------------------------------------------------- | ------- | ------------------------- |
+| `--username`    | The username to use.                                 | -       | no (if using interactive) |
+| `--password`    | The password to use.                                 | -       | no (if using interactive) |
+| `--docker`      | Format the output for use with docker compose files. | false   | no                        |
+| `--interactive` | Use an interactive TUI for creating the user.        | false   | no                        |
 
 ### Verify user command
 
@@ -51,10 +51,10 @@ In addition to the create command, tinyauth offers a verify command to make sure
 ./tinyauth user verify --interactive
 ```
 
-Again, tinyauth will launch a TUI that will prompt you for your `username:hash` combination, your username and password and it will also ask if the string is formatted for docker and then it will check if the credentials match. You can also use the non-interactive mode like so:
+Again, tinyauth will launch a TUI that will prompt you for your `username:hash` combination, your username and password and then it will check if the credentials match. You can also use the non-interactive mode like so:
 
 ```sh
-./tinyauth user verify --user 'user@example.com:$2a$10$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u' --username user@example.com --password password
+./tinyauth user verify --user 'user@example.com:$2a$10$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u' --username user@example.com --password password --totp 123456
 ```
 
 ::: note
@@ -63,10 +63,35 @@ Make sure to use quotes (`'`) when typing this in a bash shell, so your hash get
 
 The full list of available options for the verify command are the following:
 
-| Flag            | Description                                                                                                                               | Default | Required |
-| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------- | -------- |
-| `--user`        | The `username:hash` combination to verify.                                                                                                | -       | yes      |
-| `--username`    | The username to use.                                                                                                                      | -       | yes      |
-| `--password`    | The password to use.                                                                                                                      | -       | yes      |
-| `--docker`      | Use this if you escaped the hash or used the `--docker` flag in the create command to make sure the hash gets passed correctly to bcrypt. | false   | no       |
-| `--interactive` | Use an interactive TUI for creating the user.                                                                                             | false   | no       |
+| Flag            | Description                                   | Default | Required                  |
+| --------------- | --------------------------------------------- | ------- | ------------------------- |
+| `--user`        | The `username:hash` combination to verify.    | -       | no (if using interactive) |
+| `--username`    | The username to use.                          | -       | no (if using interactive) |
+| `--password`    | The password to use.                          | -       | no (if using interactive) |
+| `--interactive` | Use an interactive TUI for creating the user. | false   | no                        |
+| `--totp`        | Optional TOTP code if you are using TOTP      | -       | no                        |
+
+### Generate TOTP command
+
+Tinyauth can auto generate TOTP codes for you, the combination is `username:hash:totp-secret`, you can use the interactive mode like so:
+
+```sh
+./tinyauth totp generate -i
+```
+
+It will ask you for your current user (`username:hash`) and then give you your new user (`username:hash:totp-secret`) alongside with a QR code so as you can add it to your authenticator app. You can also use the non-interactive mode like this:
+
+```sh
+./tinyauth totp generate --user 'user@example.com:$2a$10$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u'
+```
+
+::: note
+Make sure to use quotes (`'`) when typing this in a bash shell, so your hash gets passed correctly yo tinyauth.
+:::
+
+The full list of available options for the generate command are the following:
+
+| Flag            | Description                                   | Default | Required                  |
+| --------------- | --------------------------------------------- | ------- | ------------------------- |
+| `--user`        | The `username:hash` combination to verify.    | -       | no (if using interactive) |
+| `--interactive` | Use an interactive TUI for creating the user. | false   | no                        |

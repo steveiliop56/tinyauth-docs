@@ -29,6 +29,8 @@ When using basic auth, tinyauth assumes you are running in _API_ mode meaning th
 }
 ```
 
+Tinyauth will also assume you are running in _API_ mode when your client does not accept `text/html`.
+
 ## Endpoints
 
 ### Healthcheck
@@ -88,13 +90,38 @@ Example response:
 ```json
 {
   "status": 200,
-  "message": "Logged in"
+  "message": "Logged in",
+  "totpPending": "false"
 }
 ```
 
 ::: info
 Alongside with the JSON response the API will also return the required cookies that need to be set by the browser for the user to be authenticated on the next request.
 :::
+
+### TOTP Verify
+
+Endpoint used for verifying TOTP authentication codes and allowing users to login.
+
+Endpoint: `/api/totp`<br />
+Method: `POST`
+
+Example request:
+
+```json
+{
+  "code": "123456"
+}
+```
+
+Example response:
+
+```json
+{
+  "status": 200,
+  "message": "Logged in"
+}
+```
 
 ### Logout
 
@@ -134,7 +161,10 @@ Example response:
   "oauth": false,
   "provider": "",
   "configuredProviders": ["google", "github"],
-  "disableContinue": false
+  "disableContinue": false,
+  "title": "My SSO",
+  "genericName": "My Provider",
+  "totpPending": false
 }
 ```
 
