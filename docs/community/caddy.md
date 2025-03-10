@@ -72,9 +72,10 @@ caddy.import: tinyauth_forwarder *
 Using Nginx as an example, it might look like this:
 
 ```yaml
-nginx:
-  container_name: nginx
-  image: nginx:latest
+whoami:
+  container_name: whoami
+  image: traefik/whoami:latest
+  restart: unless-stopped
   labels:
     caddy: http://nginx.example.com
     caddy.reverse_proxy: "{{upstreams 80}}"
@@ -114,9 +115,9 @@ services:
       caddy: http://auth.example.com
       caddy.reverse_proxy: "{{upstreams 3000}}"
 
-  nginx:
-    container_name: nginx
-    image: nginx:latest
+  whoami:
+    container_name: whoami
+    image: traefik/whoami:latest
     restart: unless-stopped
     labels:
       caddy: http://nginx.example.com

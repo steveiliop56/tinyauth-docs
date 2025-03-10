@@ -1,6 +1,6 @@
-# Setting up access controls with tinyauth
+# Allowed Paths
 
-Tinyauth supports basic access controls with docker labels. You can use them to restrict access to specific applications to only a small amount of users. Let's see how you can set them up.
+Sometimes you may want to allow a specific path of your application (like `/api`) to be available without having the tinyauth login screen since these paths usually have their own authentication. This is why tinyauth supports a regex ignore list for this exact reason.
 
 ## Modifying the tinyauth container
 
@@ -23,8 +23,6 @@ tinyauth:
     traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth/traefik
 ```
 
-In this example let's assume your users are `user1` and `user2` and your OAuth whitelist includes `user1@example.com` and `user2@example.com`.
-
 ## Modifying the app
 
 Now let's take the nginx example from the getting started guide and add the access controls:
@@ -38,10 +36,11 @@ whoami:
     traefik.http.routers.nginx.rule: Host(`whoami.example.com`)
     traefik.http.services.nginx.loadbalancer.server.port: 80
     traefik.http.routers.nginx.middlewares: tinyauth
-    tinyauth.oauth.whitelist: user2@example.com # <- Added line
-    tinyauth.users: user1 # <- Added line
+    tinyauth.allowed: \/api.*
 ```
 
-In this example, only `user1` will have access with simple username/password authentication and only `user2@example.com` will be able to access the app with OAuth. If either `user2` or `user1@example.com` try to access the app, they will be redirected to an unauthorized screen.
+In this example if you visit `http://whoami.example.com` you will be redirected to tinyauth's login screen but if you try to access `http://whoami.example.com/api` you will be allowed to use it.
 
-That's it! You just configured access controls in tinyauth!
+::: info
+If you need help building your regex string, I would recommend <https://regex101.com/>, an entire IDE just for regex.
+:::
