@@ -82,6 +82,6 @@ export default defineConfig({
     `]
   ],
   sitemap: {
-    hostname: "https://tinyauth.doesmycode.work",
+    hostname: "https://tinyauth.app",
   }
 });
