@@ -13,7 +13,7 @@ To get started simply add the tinyauth service next to your traefik container:
 ```yaml
 tinyauth:
   container_name: tinyauth
-  image: ghcr.io/steveiliop56/tinyauth:latest
+  image: ghcr.io/steveiliop56/tinyauth:v3
   environment:
     - SECRET=some-random-32-chars-string
     - APP_URL=https://tinyauth.example.com
@@ -61,18 +61,18 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
-  nginx:
-    container_name: nginx
-    image: nginx:latest
+  whoami:
+    container_name: whoami
+    image: traefik/whoami:latest
     labels:
       traefik.enable: true
-      traefik.http.routers.nginx.rule: Host(`nginx.example.com`)
+      traefik.http.routers.nginx.rule: Host(`whoami.example.com`)
       traefik.http.services.nginx.loadbalancer.server.port: 80
       traefik.http.routers.nginx.middlewares: tinyauth
 
   tinyauth:
     container_name: tinyauth
-    image: ghcr.io/steveiliop56/tinyauth:latest
+    image: ghcr.io/steveiliop56/tinyauth:v3
     environment:
       - SECRET=some-random-32-chars-string
       - APP_URL=https://tinyauth.example.com

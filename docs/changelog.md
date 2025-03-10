@@ -2,6 +2,27 @@
 
 Below you can find all release notes from all Tinyauth versions:
 
+## v3.1.0
+
+### New features
+
+- TOTP support
+- Ability to disable authentication on specific app paths using regex
+- Ability to change the login screen name
+- Ability to change the generic OAuth provider button name
+- Tinyauth now sets the `Remote-User` header so you can use it to sign in to other apps
+
+### Improvements
+
+- Improved docker handler for checking labels
+- Improved release workflows for faster build times
+- Rewritten login page for more modularity
+- Provide JSON responses if they client does not accept HTML
+
+### Fixes
+
+- Fix the oauth whitelist not allowing any users in apps when `null`
+
 ## v3.0.1
 
 ## Fixes

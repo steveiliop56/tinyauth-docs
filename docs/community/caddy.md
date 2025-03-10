@@ -50,7 +50,7 @@ Add tinyauth and place it behind caddy with the `caddy` and `caddy.reverse_proxy
 ```yaml
 tinyauth:
   container_name: tinyauth
-  image: ghcr.io/steveiliop56/tinyauth:latest
+  image: ghcr.io/steveiliop56/tinyauth:v3
   restart: unless-stopped
   environment:
     - APP_URL=http://auth.example.com
@@ -72,9 +72,10 @@ caddy.import: tinyauth_forwarder *
 Using Nginx as an example, it might look like this:
 
 ```yaml
-nginx:
-  container_name: nginx
-  image: nginx:latest
+whoami:
+  container_name: whoami
+  image: traefik/whoami:latest
+  restart: unless-stopped
   labels:
     caddy: http://nginx.example.com
     caddy.reverse_proxy: "{{upstreams 80}}"
@@ -104,7 +105,7 @@ services:
 
   tinyauth:
     container_name: tinyauth
-    image: ghcr.io/steveiliop56/tinyauth:latest
+    image: ghcr.io/steveiliop56/tinyauth:v3
     restart: unless-stopped
     environment:
       - APP_URL=http://auth.example.com
@@ -114,9 +115,9 @@ services:
       caddy: http://auth.example.com
       caddy.reverse_proxy: "{{upstreams 3000}}"
 
-  nginx:
-    container_name: nginx
-    image: nginx:latest
+  whoami:
+    container_name: whoami
+    image: traefik/whoami:latest
     restart: unless-stopped
     labels:
       caddy: http://nginx.example.com
