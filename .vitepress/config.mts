@@ -34,6 +34,7 @@ export default defineConfig({
           { text: "Tailscale OAuth", link: "/docs/guides/tailscale-oauth" },
           { text: "Github App OAuth", link: "/docs/guides/github-app-oauth" },
           { text: "Access controls", link: "/docs/guides/access-controls" },
+          { text: "Tinyauth with Runtipi", link: "/docs/guides/runtipi" },
           { text: "Tinyauth with Nginx Proxy Manager", link: "/docs/guides/nginx-proxy-manager" },
         ]
       },
