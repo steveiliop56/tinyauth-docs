@@ -24,7 +24,7 @@ Finally make sure to save your settings and restart runtipi.
 
 Now we can go to the appstore tab, click the tinyauth app, fill in our users, OAuth credentials and any other information you like. But before we click install we need to either flip the local domain switch or the expose switch to expose tinyauth to a domain, this is required for tinyauth to function as it will not be able to set the cookies correctly through the port. So, depending on your setup either use your local domain as an app URL or the expose domain as app URL (in either case you should use https). Finally click install and everything should be good to go.
 
-::: note
+::: info
 You can customize more aspects of tinyauth, like adding a generic OAuth provider by using runtipi's [user config](https://runtipi.io/docs/guides/customize-app-config).
 :::
 
