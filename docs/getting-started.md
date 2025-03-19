@@ -12,7 +12,6 @@ To get started simply add the tinyauth service next to your traefik container:
 
 ```yaml
 tinyauth:
-  container_name: tinyauth
   image: ghcr.io/steveiliop56/tinyauth:v3
   environment:
     - SECRET=some-random-32-chars-string
@@ -21,7 +20,6 @@ tinyauth:
   labels:
     traefik.enable: true
     traefik.http.routers.tinyauth.rule: Host(`tinyauth.example.com`)
-    traefik.http.services.tinyauth.loadbalancer.server.port: 3000
     traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth/traefik
 ```
 
@@ -30,12 +28,18 @@ Make sure to set the labels according to your own setup, this guide includes the
 :::
 
 ::: warning
-Tinyauth accepts a comma separated list of `username:password-hash` combinations. To generate your hash go to [IT Tools](https://it-tools.tech/) and use the bcrypt module. Make sure to escape the hash by doubling every dollar sign. Example:
+Tinyauth accepts a comma separated list of `username:password-hash` combinations. Make sure escape the dollar signs by doubling them (`$  $$`). Example:
 `user:$$2a$$10$$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u` (username is `user` and password is `password`).
 :::
 
 ::: tip
-You can also use the tinyauth CLI to generate your credentials. For more information check the CLI reference [here](./reference/cli.md).
+There is a CLI command provided by tinyauth to generate your credentials: `docker compose run tinyauth user create --interactive`. For more information check [the CLI reference](./reference/cli.md).
+
+You can also use [the online service "IT Tools" to generate the password hash](https://it-tools.tech/) (specifically the bcrypt module).
+:::
+
+::: tip
+Use this command to generate the `SECRET` value: `tr -dc A-Za-z0-9 </dev/urandom | head -c 32; echo`
 :::
 
 Then for every app you want tinyauth to protect just add the following label:
@@ -53,7 +57,6 @@ Here is a full example with traefik, nginx and tinyauth:
 ```yaml
 services:
   traefik:
-    container_name: traefik
     image: traefik:v3.3
     command: --api.insecure=true --providers.docker
     ports:
@@ -62,16 +65,13 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   whoami:
-    container_name: whoami
     image: traefik/whoami:latest
     labels:
       traefik.enable: true
       traefik.http.routers.nginx.rule: Host(`whoami.example.com`)
-      traefik.http.services.nginx.loadbalancer.server.port: 80
       traefik.http.routers.nginx.middlewares: tinyauth
 
   tinyauth:
-    container_name: tinyauth
     image: ghcr.io/steveiliop56/tinyauth:v3
     environment:
       - SECRET=some-random-32-chars-string
