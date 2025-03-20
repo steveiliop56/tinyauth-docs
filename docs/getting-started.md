@@ -13,6 +13,7 @@ To get started simply add the tinyauth service next to your traefik container:
 ```yaml
 tinyauth:
   image: ghcr.io/steveiliop56/tinyauth:v3
+  container_name: tinyauth
   environment:
     - SECRET=some-random-32-chars-string
     - APP_URL=https://tinyauth.example.com
@@ -39,7 +40,7 @@ You can also use [the online service "IT Tools" to generate the password hash](h
 :::
 
 ::: tip
-Use this command to generate the `SECRET` value: `tr -dc A-Za-z0-9 </dev/urandom | head -c 32; echo`
+Use this command to generate the `SECRET` value: `openssl rand -hex 16`
 :::
 
 Then for every app you want tinyauth to protect just add the following label:
@@ -58,6 +59,7 @@ Here is a full example with traefik, nginx and tinyauth:
 services:
   traefik:
     image: traefik:v3.3
+    container_name: traefik
     command: --api.insecure=true --providers.docker
     ports:
       - 80:80
@@ -66,6 +68,7 @@ services:
 
   whoami:
     image: traefik/whoami:latest
+    container_name: whoami
     labels:
       traefik.enable: true
       traefik.http.routers.nginx.rule: Host(`whoami.example.com`)
@@ -73,6 +76,7 @@ services:
 
   tinyauth:
     image: ghcr.io/steveiliop56/tinyauth:v3
+    container_name: tinyauth
     environment:
       - SECRET=some-random-32-chars-string
       - APP_URL=https://tinyauth.example.com
