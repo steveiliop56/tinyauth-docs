@@ -40,7 +40,7 @@ You can also use [the online service "IT Tools" to generate the password hash](h
 :::
 
 ::: tip
-Use this command to generate the `SECRET` value: `openssl rand -hex 16`
+Use this command to generate the `SECRET` value: `tr -dc A-Za-z0-9 </dev/urandom | head -c 32; echo`
 :::
 
 Then for every app you want tinyauth to protect just add the following label:
