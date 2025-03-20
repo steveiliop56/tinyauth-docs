@@ -19,7 +19,6 @@ tinyauth:
   labels:
     traefik.enable: true
     traefik.http.routers.tinyauth.rule: Host(`tinyauth.example.com`)
-    traefik.http.services.tinyauth.loadbalancer.server.port: 3000
     traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth/traefik
 ```
 
@@ -34,7 +33,6 @@ whoami:
   labels:
     traefik.enable: true
     traefik.http.routers.nginx.rule: Host(`whoami.example.com`)
-    traefik.http.services.nginx.loadbalancer.server.port: 80
     traefik.http.routers.nginx.middlewares: tinyauth
     tinyauth.allowed: \/api.*
 ```
