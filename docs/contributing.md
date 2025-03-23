@@ -1,6 +1,6 @@
 # Contributing
 
-Contributing is relatively easy.
+Contributing is relatively easy, you just need to follow the steps carefully and you will be up and running with a development server in less than 5 minutes.
 
 ## Requirements
 
@@ -20,63 +20,38 @@ cd tinyauth
 
 ## Install requirements
 
-Now it's time to install the requirements, firstly the Go ones:
+Although you will not need the requirements in your machine since the development will happen in docker, I still recommend to install them because this way you will not have import errors, to install the go requirements, run:
 
 ```sh
-go mod download
+go mod tidy
 ```
 
-And now the site ones:
+You also need to download the frontend dependencies, this can be done like so:
 
 ```sh
-cd site
-bun i
+cd site/
+bun install
 ```
 
-## Developing locally
+## Create your `.env` file
 
-In order to develop the app locally you need to build the frontend and copy it to the assets folder in order for Go to embed it and host it. In order to build the frontend run:
+In order to configure the app you need to create an environment file, this can be done by copying the `.env.example` file to `.env` and modifying the environment variables inside to suit your needs.
 
-```sh
-cd site
-bun run build
-cd ..
-```
+## Developing
 
-Copy it to the assets folder:
-
-```sh
-rm -rf internal/assets/dist
-cp -r site/dist internal/assets/dist
-```
-
-Finally either run the app with:
-
-```sh
-go run main.go
-```
-
-Or build it with:
-
-```sh
-go build
-```
-
-::: warning
-Make sure you have set the environment variables when running outside of docker else the app will fail.
-:::
-
-## Developing in docker
-
-My recommended development method is docker so I can test that both my image works and that the app responds correctly to traefik. In my setup I have set these two DNS records in my DNS server:
+I have designed the development workflow to be entirely in docker, this is because it will directly work with traefik and you will not need to do any building in your host machine. The recommended development setup is to have a subdomain pointing to your machine like this:
 
 ```
-*.dev.local -> 127.0.0.1
-dev.local -> 127.0.0.1
+*.dev.example.com -> 127.0.0.1
+dev.example.com -> 127.0.0.1
 ```
 
-Then I can just make sure the domains are correct in the example docker compose file and do:
+Then you can just make sure the domains are correct in the example docker compose file and run:
 
 ```sh
 docker compose -f docker-compose.dev.yml up --build
 ```
+
+::: info
+I would recommend copying the example `docker-compose.dev.yml` into a `docker-compose.test.yml` file, so as you don't accidentally commit any sensitive information.
+:::
