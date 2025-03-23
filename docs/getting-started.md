@@ -28,15 +28,8 @@ tinyauth:
 Make sure to set the labels according to your own setup, this guide includes the most basic ones.
 :::
 
-::: warning
-Tinyauth accepts a comma separated list of `username:password-hash` combinations. Make sure escape the dollar signs by doubling them (`$  $$`). Example:
-`user:$$2a$$10$$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u` (username is `user` and password is `password`).
-:::
-
-::: tip
-There is a CLI command provided by tinyauth to generate your credentials: `docker compose run tinyauth user create --interactive`. For more information check [the CLI reference](./reference/cli.md).
-
-You can also use [the online service "IT Tools" to generate the password hash](https://it-tools.tech/) (specifically the bcrypt module).
+::: info
+Tinyauth accepts a comma separated list of `username:hash` combinations. Make sure escape the dollar signs by doubling them. If you are unsure on how to create your user you can use the tinyauth CLI by running `docker run -i -t --rm --name tinyauth ghcr.io/steveiliop56/tinyauth:v3 user create --interactive` or use [IT Tools](https://it-tools.tech/bcrypt) to generate the password hash.
 :::
 
 ::: tip
@@ -84,6 +77,5 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.tinyauth.rule: Host(`tinyauth.example.com`)
-      traefik.http.services.tinyauth.loadbalancer.server.port: 3000
       traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth/traefik
 ```

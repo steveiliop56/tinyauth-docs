@@ -16,6 +16,10 @@ As well as when the app is running through docker:
 docker run -i -t --rm --name tinyauth ghcr.io/steveiliop56/tinyauth:v3 [options]
 ```
 
+::: info
+If you are using docker compose you can also use `docker compose run tinyauth [options]`.
+:::
+
 ### Main command
 
 The main command is the one run when you run the app without any flags/arguments. It stars the API and web UI and waits for incoming connections. All the options are configurable with both CLI flags and environment variables. To find a list of available configuration options please go to the [configuration](./configuration.md) section.
