@@ -43,6 +43,7 @@ Now that we have our client ID and secret, we can pass it to the tinyauth docker
 tinyauth:
   container_name: tinyauth
   image: ghcr.io/steveiliop56/tinyauth:v3
+  restart: unless-stopped
   environment:
     - SECRET=some-random-32-chars-string
     - APP_URL=https://tinyauth.example.com

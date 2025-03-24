@@ -10,6 +10,7 @@ We firstly need to make some small changes to the tinyauth container. We will us
 tinyauth:
   container_name: tinyauth
   image: ghcr.io/steveiliop56/tinyauth:v3
+  restart: unless-stopped
   environment:
     - SECRET=some-random-32-chars-string
     - APP_URL=https://tinyauth.example.com
@@ -30,6 +31,7 @@ Now let's take the nginx example from the getting started guide and add the acce
 whoami:
   container_name: whoami
   image: traefik/whoami:latest
+  restart: unless-stopped
   labels:
     traefik.enable: true
     traefik.http.routers.nginx.rule: Host(`whoami.example.com`)
