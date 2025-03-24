@@ -14,6 +14,7 @@ To get started simply add the tinyauth service next to your traefik container:
 tinyauth:
   image: ghcr.io/steveiliop56/tinyauth:v3
   container_name: tinyauth
+  restart: unless-stopped
   environment:
     - SECRET=some-random-32-chars-string
     - APP_URL=https://tinyauth.example.com
@@ -54,6 +55,7 @@ services:
     image: traefik:v3.3
     container_name: traefik
     command: --api.insecure=true --providers.docker
+    restart: unless-stopped
     ports:
       - 80:80
     volumes:
@@ -62,6 +64,7 @@ services:
   whoami:
     image: traefik/whoami:latest
     container_name: whoami
+    restart: unless-stopped
     labels:
       traefik.enable: true
       traefik.http.routers.nginx.rule: Host(`whoami.example.com`)
@@ -70,6 +73,7 @@ services:
   tinyauth:
     image: ghcr.io/steveiliop56/tinyauth:v3
     container_name: tinyauth
+    restart: unless-stopped
     environment:
       - SECRET=some-random-32-chars-string
       - APP_URL=https://tinyauth.example.com
