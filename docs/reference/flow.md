@@ -1,7 +1,18 @@
 # Flow
 
-Here is how the app works in detail _it was the best I could do_:
+Tinyauth is a really simple application, the way the authentication process works is the following:
 
-![Flow Dark](/screenshots/flow-dark.png){.dark-only}
-
-![Flow Light](/screenshots/flow-light.png){.light-only}
+```mermaid
+sequenceDiagram
+    User->>Proxy: Request app
+    Proxy->>Tinyauth: Forwardauth request
+    Tinyauth->>User: Login screen
+    User->>Tinyauth: Login
+    Tinyauth->>User: Set cookie
+    Tinyauth->>User: Redirect to app
+    User->>Proxy: Request app
+    Proxy->>Tinyauth: Forwardauth request
+    Tinyauth->>Proxy: Success
+    Proxy->>App: User request
+    App->>User: Response
+```

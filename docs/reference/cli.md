@@ -13,7 +13,7 @@ All commands can be both run when the app is run as an executable:
 As well as when the app is running through docker:
 
 ```sh
-docker run -i -t --rm --name tinyauth ghcr.io/steveiliop56/tinyauth:v3 [options]
+docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v3 [options]
 ```
 
 ::: info
@@ -32,7 +32,7 @@ Tinyauth offers simple utilities for creating and verifying users in required fo
 ./tinyauth user create --interactive
 ```
 
-This will launch an interactive TUI where you can provide an username and a password and it will generate the `email:hash` format required by the app. It can also auto format it for docker, if you would like to use it within a docker compose file. Apart from the interactive mode you can also create a user with flags like so:
+This will launch an interactive TUI where you can provide an username and a password and it will generate the `username:hash` format required by the app. It can also auto format it for docker, if you would like to use it within a docker compose file. Apart from the interactive mode you can also create a user with flags like so:
 
 ```sh
 ./tinyauth user create --username user@example.com --password password

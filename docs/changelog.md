@@ -25,7 +25,7 @@ Below you can find all release notes from all Tinyauth versions:
 
 ## v3.0.1
 
-## Fixes
+### Fixes
 
 - Fix the redirect URI not getting passed correctly to the continue screen
 

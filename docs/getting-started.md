@@ -6,9 +6,50 @@ As promised in the readme, tinyauth is extremely easy to get up and running.
 Tinyauth by default ships with the traefik proxy, if you are using a different proxy there are available guides for [Nginx Proxy Manager](/docs/guides/nginx-proxy-manager) and [Caddy](/docs/community/caddy).
 :::
 
+## Creating a user
+
+A tinyauth user consists of 3 things, a username, a password hash and an optional TOTP secret:
+
+```mermaid
+flowchart BR
+    user["username:hash:totp"]
+    user --> username["Username is your username in plaintext"]
+    user --> hash["Hash is your password hashed in bcrypt"]
+    user --> totp["TOTP is an optional TOTP secret"]
+```
+
+To generate your user you can use the tinyauth CLI like so:
+
+```sh
+docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v3 user create --interactive
+```
+
+It will ask you for your username and password and then give you your new user. For more information about the create command check out the [reference](/docs/reference/cli.md#create-user-command).
+
+::: info
+If you are using docker compose or environment variables make sure to pick yes in the format for docker so as your bcrypt hash is escaped correctly.
+:::
+
+You can repeat this step as many times as you like and create a comma separated list of your users.
+
+## Setting up your domains
+
+The way tinyauth works is by setting a cookie for the parent domain of the app URL, in other words if your app URL is `http://tinyauth.sub.example.com`, tinyauth will set a cookie for `.sub.example.com` in order to be able to authenticate you. This means that all your apps will have to be under this subdomain. Here is an example:
+
+```mermaid
+flowchart BR
+  domain["sub.example.com"]
+  domain --> tinyauth["tinyauth.sub.example.com"]
+  domain --> app["app.sub.example.com"]
+```
+
+::: warning
+You cannot use tinyauth directly in DDNS services (e.g. `tinyauth562.duckdns.org`) it **_has to_** be under a subdomain (e.g. `tinyauth.mylab562.duckdns.org`) as well as all of your apps.
+:::
+
 ## Installation
 
-To get started simply add the tinyauth service next to your traefik container:
+Now it's time to create our docker compose file which can be as simple as this:
 
 ```yaml
 tinyauth:
@@ -25,16 +66,8 @@ tinyauth:
     traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth/traefik
 ```
 
-::: info
-Make sure to set the labels according to your own setup, this guide includes the most basic ones.
-:::
-
-::: info
-Tinyauth accepts a comma separated list of `username:hash` combinations. Make sure escape the dollar signs by doubling them. If you are unsure on how to create your user you can use the tinyauth CLI by running `docker run -i -t --rm --name tinyauth ghcr.io/steveiliop56/tinyauth:v3 user create --interactive` or use [IT Tools](https://it-tools.tech/bcrypt) to generate the password hash.
-:::
-
 ::: tip
-Use this command to generate the `SECRET` value: `tr -dc A-Za-z0-9 </dev/urandom | head -c 32; echo`
+You can generate the `SECRET` environment variable using `openssl rand -base64 32 | tr -dc 'a-zA-Z0-9' | head -c 32`.
 :::
 
 Then for every app you want tinyauth to protect just add the following label:
@@ -45,9 +78,9 @@ traefik.http.routers.[your-router].middlewares: tinyauth
 
 And that's it! When you try to visit an app you should be redirected to the tinyauth login page.
 
-## Example Docker compose file
+## Example docker compose file
 
-Here is a full example with traefik, nginx and tinyauth:
+Here is a full example with traefik, whoami and tinyauth:
 
 ```yaml
 services:

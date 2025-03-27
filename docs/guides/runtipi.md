@@ -12,11 +12,11 @@ The runtipi app also includes inputs for Github, Google and Tailscale so if you 
 
 Runtipi by default uses its own login screen for authentication, we want to replace that with tinyauth. This can be done by enabling advanced settings:
 
-<img src="/screenshots/runtipi_enable_advanced_settings.png" alt="Enable advanced settings" width="256">
+<img src="/screenshots/runtipi-enable-advanced-settings.png" alt="Enable advanced settings" width="256">
 
 And settings the forward auth URL to `http://tinyauth:3000/api/auth/traefik`:
 
-![Set forward auth URL](/screenshots/runtipi_forward_auth_url.png)
+![Set forward auth URL](/screenshots/runtipi-forward-auth-url.png)
 
 Finally make sure to save your settings and restart runtipi.
 
@@ -32,7 +32,7 @@ You can customize more aspects of tinyauth, like adding a generic OAuth provider
 
 From now on, you can enable authentication for every app you like by opening its settings and flipping the enable authentication switch:
 
-<img src="/screenshots/runtipi_install_app_example.png" alt="Install app example" width="512">
+<img src="/screenshots/runtipi-install-app-example.png" alt="Install app example" width="512">
 
 ::: warning
 For authentication to work correctly you either need to use the local domain or make sure that the expose domain is under the same root level domain as tinyauth. For example `tinyauth.example.com` and `nginx.example.com` will work but `tinyauth.domain1.com` and `nginx.domain2.com` will **not** work.

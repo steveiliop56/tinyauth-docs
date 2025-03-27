@@ -1,8 +1,8 @@
 # Configuration
 
-Tinyauth has a very simple configuration and everything is configurable with either CLI arguments or environment variables. The available environment variables/CLI options are:
+Tinyauth can be either configured with environment variables or CLI flags, the full list of configuration options is available below:
 
-| Name                         | Environment Variable           | CLI Argument                     | Description                                                                                                             | Default    | Required                            |
+| Name                         | Environment Variable           | CLI FLag                         | Description                                                                                                             | Default    | Required                            |
 | ---------------------------- | ------------------------------ | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ---------- | ----------------------------------- |
 | Port                         | `PORT`                         | `--port`                         | The port that the API/UI listens on.                                                                                    | `3000`     | no                                  |
 | Address                      | `ADDRESS`                      | `--address`                      | The address the API/UI listens on.                                                                                      | `0.0.0.0`  | no                                  |

@@ -66,7 +66,7 @@ Example response:
 ```
 
 ::: info
-The API will redirect to the login page if the user is not authenticated.
+The API will redirect to the login page if the user is not authenticated (when not running in API mode).
 :::
 
 ### Login
