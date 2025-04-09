@@ -8,21 +8,23 @@ Every configuration option that has a `FILE` equivalent (e.g. `USERS` and `USERS
 
 ## General
 
-| Name                                    | Description                                                    | Default    | Required |
-| --------------------------------------- | -------------------------------------------------------------- | ---------- | -------- |
-| `PORT`/`--port`                         | The port the UI and API listens on.                            | 3000       | no       |
-| `ADDRESS`/`--address`                   | The address the UI and API listens on.                         | `0.0.0.0`  | no       |
-| `APP_URL`/`--app-url`                   | The URL tinyauth uses for the redirects and the cookie domain. | -          | yes      |
-| `SECRET`/`--secret`                     | The secret tinyauth uses to encrypt the cookies.               | -          | yes      |
-| `USERS`/`--users`                       | A comma separated list of tinyauth users.                      | -          | yes      |
-| `USERS_FILE`/`--users-file`             | A file containing a list of tinyauth users.                    | -          | no       |
-| `SECRET_FILE`/`--secret-file`           | A file containing the cookie secret.                           | -          | no       |
-| `COOKIE_SECURE`/`--cookie-secure`       | Send cookie only with HTTPS.                                   | `false`    | no       |
-| `DISABLE_CONTINUE`/`--disable-continue` | Disable the continue screen.                                   | `false`    | no       |
-| `OAUTH_WHITELIST`/`--oauth-whitelist`   | A list of usernames that are allowed to login with OAuth.      | -          | no       |
-| `SESSION_EXPIRY`/`--session-expiry`     | Set cookie and session expiry in seconds.                      | 86400      | no       |
-| `LOG_LEVEL`/`--log-level`               | Set the log level for the app (-1 through 6).                  | 1          | no       |
-| `APP_TITLE`/`--app-title`               | Set the login screen title.                                    | `Tinyauth` | no       |
+| Name                                      | Description                                                    | Default    | Required |
+| ----------------------------------------- | -------------------------------------------------------------- | ---------- | -------- |
+| `PORT`/`--port`                           | The port the UI and API listens on.                            | 3000       | no       |
+| `ADDRESS`/`--address`                     | The address the UI and API listens on.                         | `0.0.0.0`  | no       |
+| `APP_URL`/`--app-url`                     | The URL tinyauth uses for the redirects and the cookie domain. | -          | yes      |
+| `SECRET`/`--secret`                       | The secret tinyauth uses to encrypt the cookies.               | -          | yes      |
+| `USERS`/`--users`                         | A comma separated list of tinyauth users.                      | -          | yes      |
+| `USERS_FILE`/`--users-file`               | A file containing a list of tinyauth users.                    | -          | no       |
+| `SECRET_FILE`/`--secret-file`             | A file containing the cookie secret.                           | -          | no       |
+| `COOKIE_SECURE`/`--cookie-secure`         | Send cookie only with HTTPS.                                   | `false`    | no       |
+| `DISABLE_CONTINUE`/`--disable-continue`   | Disable the continue screen.                                   | `false`    | no       |
+| `OAUTH_WHITELIST`/`--oauth-whitelist`     | A list of usernames that are allowed to login with OAuth.      | -          | no       |
+| `SESSION_EXPIRY`/`--session-expiry`       | Set cookie and session expiry in seconds.                      | 86400      | no       |
+| `LOG_LEVEL`/`--log-level`                 | Set the log level for the app (-1 through 6).                  | 1          | no       |
+| `APP_TITLE`/`--app-title`                 | Set the login screen title.                                    | `Tinyauth` | no       |
+| `LOGIN_MAX_RETRIES`/`--login-max-retries` | The max retries to login after which the account gets locked.  | 5          | no       |
+| `LOGIN_TIMEOUT`/`--login-timeout`         | The timeout in seconds for the locked accounts.                | 300        | no       |
 
 ## Github OAuth
 
