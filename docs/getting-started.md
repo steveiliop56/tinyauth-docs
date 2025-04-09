@@ -13,9 +13,9 @@ A tinyauth user consists of 3 things, a username, a password hash and an optiona
 ```mermaid
 flowchart BR
     user["username:hash:totp"]
-    user --> username["Username is your username in plaintext"]
-    user --> hash["Hash is your password hashed in bcrypt"]
-    user --> totp["TOTP is an optional TOTP secret"]
+    user --> username["Username in plain text"]
+    user --> hash["Password hashed in bcrypt"]
+    user --> totp["Optional TOTP secret"]
 ```
 
 To generate your user you can use the tinyauth CLI like so:
@@ -34,13 +34,13 @@ You can repeat this step as many times as you like and create a comma separated 
 
 ## Setting up your domains
 
-The way tinyauth works is by setting a cookie for the parent domain of the app URL, in other words if your app URL is `http://tinyauth.sub.example.com`, tinyauth will set a cookie for `.sub.example.com` in order to be able to authenticate you. This means that all your apps will have to be under this subdomain. Here is an example:
+The way tinyauth works is by setting a cookie for the parent domain of the app URL, in other words if your app URL is `http://tinyauth.example.com`, tinyauth will set a cookie for `.example.com` in order to be able to authenticate you. This means that all your apps will have to be under this subdomain. Here is an example:
 
 ```mermaid
 flowchart BR
-  domain["sub.example.com"]
-  domain --> tinyauth["tinyauth.sub.example.com"]
-  domain --> app["app.sub.example.com"]
+  domain["example.com"]
+  domain --> tinyauth["tinyauth.example.com"]
+  domain --> app["app.example.com"]
 ```
 
 ::: warning

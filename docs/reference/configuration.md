@@ -1,36 +1,62 @@
 # Configuration
 
-Tinyauth can be either configured with environment variables or CLI flags, the full list of configuration options is available below:
+Tinyauth can be either configured with environment variables or CLI flags, the full list of configuration options is available below.
 
-| Name                         | Environment Variable           | CLI FLag                         | Description                                                                                                             | Default    | Required                            |
-| ---------------------------- | ------------------------------ | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ---------- | ----------------------------------- |
-| Port                         | `PORT`                         | `--port`                         | The port that the API/UI listens on.                                                                                    | `3000`     | no                                  |
-| Address                      | `ADDRESS`                      | `--address`                      | The address the API/UI listens on.                                                                                      | `0.0.0.0`  | no                                  |
-| App URL                      | `APP_URL`                      | `--app-url`                      | The URL that tinyauth uses when redirecting for authentication.                                                         | -          | yes                                 |
-| Secret                       | `SECRET`                       | `--secret`                       | A 32 character long key used to encrypt the cookies.                                                                    | -          | yes (except if secret file is used) |
-| Secret File                  | `SECRET_FILE`                  | `--secret-file`                  | Path to a file containing the secret.                                                                                   | -          | no                                  |
-| Users                        | `USERS`                        | `--users`                        | A comma separated list of `username:hash:totp-secret` combinations used for logging in (needs to be escaped in docker). | -          | yes (except if users file is used)  |
-| Users File                   | `USERS_FILE`                   | `--users-file`                   | A file with a list of of `username:hash:totp-secret` combinations in every line (`.htpasswd` equivalent)                | -          | no                                  |
-| Cookie Secure                | `COOKIE_SECURE`                | `--cookie-secure`                | Send cookie only with a secure connection (https).                                                                      | false      | no                                  |
-| Github Client ID             | `GITHUB_CLIENT_ID`             | `--github-client-id`             | Client ID to use for Github OAuth.                                                                                      | -          | no                                  |
-| Github Client Secret         | `GITHUB_CLIENT_SECRET`         | `--github-client-secret`         | Client secret to use for Github OAuth.                                                                                  | -          | no                                  |
-| Github Client Secret File    | `GITHUB_CLIENT_SECRET_FILE`    | `--github-client-secret-file`    | Path to a file containing the client secret.                                                                            | -          | no                                  |
-| Google Client ID             | `GOOGLE_CLIENT_ID`             | `--google-client-id`             | Client ID to use for Google OAuth.                                                                                      | -          | no                                  |
-| Google Client Secret         | `GOOGLE_CLIENT_SECRET`         | `--google-client-secret`         | Client secret to use for Google OAuth.                                                                                  | -          | no                                  |
-| Google Client Secret File    | `GOOGLE_CLIENT_SECRET_FILE`    | `--google-client-secret-file`    | Path to a file containing the client secret.                                                                            | -          | no                                  |
-| Generic Client ID            | `GENERIC_CLIENT_ID`            | `--generic-client-id`            | Client ID to use for Generic OAuth.                                                                                     | -          | no                                  |
-| Generic Client Secret        | `GENERIC_CLIENT_SECRET`        | `--generic-client-secret`        | Client secret to use for Generic OAuth.                                                                                 | -          | no                                  |
-| Generic Client Secret File   | `GENERIC_CLIENT_SECRET_FILE`   | `--generic-client-secret-file`   | Path to a file containing the client secret.                                                                            | -          | no                                  |
-| Tailscale Client ID          | `TAILSCALE_CLIENT_ID`          | `--tailscale-client-id`          | Client ID to use for Tailscale OAuth.                                                                                   | -          | no                                  |
-| Tailscale Client Secret      | `TAILSCALE_CLIENT_SECRET`      | `--tailscale-client-secret`      | Client secret to use for Tailscale OAuth.                                                                               | -          | no                                  |
-| Tailscale Client Secret File | `TAILSCALE_CLIENT_SECRET_FILE` | `--tailscale-client-secret-file` | Path to a file containing the client secret.                                                                            | -          | no                                  |
-| Generic Scopes               | `GENERIC_SCOPES`               | `--generic-scopes`               | Comma separated list of scopes to use in Generic OAuth.                                                                 | -          | no                                  |
-| Generic Auth URL             | `GENERIC_AUTH_URL`             | `--generic-auth-url`             | Authentication URL to use for Generic OAuth.                                                                            | -          | no                                  |
-| Generic Token URL            | `GENERIC_TOKEN_URL`            | `--generic-token-url`            | The URL to use when requesting the token for Generic OAuth.                                                             | -          | no                                  |
-| Generic User URL             | `GENERIC_USER_URL`             | `--generic-user-url`             | The URL to use when retrieving user information in Generic OAuth.                                                       | -          | no                                  |
-| Generic Provider Name        | `GENERIC_NAME`                 | `--generic-name`                 | Set a custom name for the generic OAuth provider button.                                                                | `Generic`  | no                                  |
-| Disable Continue             | `DISABLE_CONTINUE`             | `--disable-continue`             | Disables the continue screen and immediately redirects when the user logins.                                            | `false`    | no                                  |
-| OAuth Whitelist              | `OAUTH_WHITELIST`              | `--oauth-whitelist`              | Comma separated list of emails to whitelist for OAuth.                                                                  | -          | no                                  |
-| Session Expiry               | `SESSION_EXPIRY`               | `--session-expiry`               | Set cookie max age and session expiry in seconds.                                                                       | 86400      | no                                  |
-| Log Level                    | `LOG_LEVEL`                    | `--log-level`                    | Set the log level for the logger.                                                                                       | 1          | no                                  |
-| Title                        | `APP_TITLE`                    | `--app-title`                    | Set a custom title for the login screen.                                                                                | `Tinyauth` | no                                  |
+::: info
+Every configuration option that has a `FILE` equivalent (e.g. `USERS` and `USERS_FILE`), then the file can be used instead of the environment variable.
+:::
+
+## General
+
+| Name                                    | Description                                                    | Default    | Required |
+| --------------------------------------- | -------------------------------------------------------------- | ---------- | -------- |
+| `PORT`/`--port`                         | The port the UI and API listens on.                            | 3000       | no       |
+| `ADDRESS`/`--address`                   | The address the UI and API listens on.                         | `0.0.0.0`  | no       |
+| `APP_URL`/`--app-url`                   | The URL tinyauth uses for the redirects and the cookie domain. | -          | yes      |
+| `SECRET`/`--secret`                     | The secret tinyauth uses to encrypt the cookies.               | -          | yes      |
+| `USERS`/`--users`                       | A comma separated list of tinyauth users.                      | -          | yes      |
+| `USERS_FILE`/`--users-file`             | A file containing a list of tinyauth users.                    | -          | no       |
+| `SECRET_FILE`/`--secret-file`           | A file containing the cookie secret.                           | -          | no       |
+| `COOKIE_SECURE`/`--cookie-secure`       | Send cookie only with HTTPS.                                   | `false`    | no       |
+| `DISABLE_CONTINUE`/`--disable-continue` | Disable the continue screen.                                   | `false`    | no       |
+| `OAUTH_WHITELIST`/`--oauth-whitelist`   | A list of usernames that are allowed to login with OAuth.      | -          | no       |
+| `SESSION_EXPIRY`/`--session-expiry`     | Set cookie and session expiry in seconds.                      | 86400      | no       |
+| `LOG_LEVEL`/`--log-level`               | Set the log level for the app (-1 through 6).                  | 1          | no       |
+| `APP_TITLE`/`--app-title`               | Set the login screen title.                                    | `Tinyauth` | no       |
+
+## Github OAuth
+
+| Name                                                      | Description                                 | Default | Required |
+| --------------------------------------------------------- | ------------------------------------------- | ------- | -------- |
+| `GITHUB_CLIENT_ID`/`--github-client-id`                   | The Github client ID.                       | -       | no       |
+| `GITHUB_CLIENT_SECRET`/`--github-client-secret`           | The Github client secret.                   | -       | no       |
+| `GITHUB_CLIENT_SECRET_FILE`/`--github-client-secret-file` | A file containing the Github client secret. | -       | no       |
+
+## Google OAuth
+
+| Name                                                      | Description                                 | Default | Required |
+| --------------------------------------------------------- | ------------------------------------------- | ------- | -------- |
+| `GOOGLE_CLIENT_ID`/`--google-client-id`                   | The Google client ID.                       | -       | no       |
+| `GOOGLE_CLIENT_SECRET`/`--google-client-secret`           | The Google client secret.                   | -       | no       |
+| `GOOGLE_CLIENT_SECRET_FILE`/`--google-client-secret-file` | A file containing the Google client secret. | -       | no       |
+
+## Tailscale OAuth
+
+| Name                                                            | Description                                    | Default | Required |
+| --------------------------------------------------------------- | ---------------------------------------------- | ------- | -------- |
+| `TAILSCALE_CLIENT_ID`/`--tailscale-client-id`                   | The Tailscale client ID.                       | -       | no       |
+| `TAILSCALE_CLIENT_SECRET`/`--tailscale-client-secret`           | The Tailscale client secret.                   | -       | no       |
+| `TAILSCALE_CLIENT_SECRET_FILE`/`--tailscale-client-secret-file` | A file containing the Tailscale client secret. | -       | no       |
+
+## Generic OAuth
+
+| Name                                                        | Description                                           | Default   | Required |
+| ----------------------------------------------------------- | ----------------------------------------------------- | --------- | -------- |
+| `GENERIC_CLIENT_ID`/`--generic-client-id`                   | The generic provider client ID.                       | -         | no       |
+| `GENERIC_CLIENT_SECRET`/`--generic-client-secret`           | The generic provider client secret.                   | -         | no       |
+| `GENERIC_CLIENT_SECRET_FILE`/`--generic-client-secret-file` | A file containing the generic provider client secret. | -         | no       |
+| `GENERIC_AUTH_URL`/`--generic-auth-url`                     | The authentication URL for the generic provider.      | -         | no       |
+| `GENERIC_TOKEN_URL`/`--generic-token-url`                   | The token URL for the generic provider.               | -         | no       |
+| `GENERIC_USER_URL`/`--generic-user-url`                     | The user information URL for the generic provider.    | -         | no       |
+| `GENERIC_SCOPES`/`--generic-scopes`                         | The generic provider scopes.                          | -         | no       |
+| `GENERIC_NAME`/`--generic-name`                             | The name for the generic client button on the UI.     | `Generic` | no       |
