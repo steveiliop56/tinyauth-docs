@@ -1,6 +1,25 @@
 # Changelog
 
-Below you can find all release notes from all Tinyauth versions:
+Below you can find all release notes from all Tinyauth versions.
+
+## v3.2.0
+
+### New features
+
+- Internalization through [Crowdin](https://crowdin.com/project/tinyauth) and the tinyauth CDN
+- Healthcheck in Dockerfile to ensure the app runs smoothly
+- Ability to tell tinyauth to add additional headers to the authentication response (needed for future OIDC provider support)
+- Brute force protection/Rate limiting by @DragonStuff
+- Light mode
+- Amd64 and arm64 binaries are now available for download if you prefer bare metal over docker
+
+### Improvements
+
+- Split API to server and handles for better code readability
+- Refactor error handling to not initialize new variables for every error
+- All services now use a single config struct for all of the configuration options for better code readability and extensibility
+- Removed dependency on GIN sessions as the app now uses gorilla sessions directly
+- The redirect URI is now stored inside the `tinyauth` session cookie
 
 ## v3.1.0
 
