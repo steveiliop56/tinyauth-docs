@@ -36,7 +36,6 @@ export default withMermaid(
           items: [
             { text: "Github OAuth", link: "/docs/guides/github-oauth" },
             { text: "Google OAuth", link: "/docs/guides/google-oauth" },
-            { text: "Tailscale OAuth", link: "/docs/guides/tailscale-oauth" },
             { text: "Github App OAuth", link: "/docs/guides/github-app-oauth" },
             { text: "Access controls", link: "/docs/guides/access-controls" },
             {

@@ -42,14 +42,6 @@ Every configuration option that has a `FILE` equivalent (e.g. `USERS` and `USERS
 | `GOOGLE_CLIENT_SECRET`/`--google-client-secret`           | The Google client secret.                   | -       | no       |
 | `GOOGLE_CLIENT_SECRET_FILE`/`--google-client-secret-file` | A file containing the Google client secret. | -       | no       |
 
-## Tailscale OAuth
-
-| Name                                                            | Description                                    | Default | Required |
-| --------------------------------------------------------------- | ---------------------------------------------- | ------- | -------- |
-| `TAILSCALE_CLIENT_ID`/`--tailscale-client-id`                   | The Tailscale client ID.                       | -       | no       |
-| `TAILSCALE_CLIENT_SECRET`/`--tailscale-client-secret`           | The Tailscale client secret.                   | -       | no       |
-| `TAILSCALE_CLIENT_SECRET_FILE`/`--tailscale-client-secret-file` | A file containing the Tailscale client secret. | -       | no       |
-
 ## Generic OAuth
 
 | Name                                                        | Description                                           | Default   | Required |

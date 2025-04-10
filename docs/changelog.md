@@ -2,6 +2,13 @@
 
 Below you can find all release notes from all Tinyauth versions.
 
+## v3.2.1
+
+### Fixes
+
+- Ignore whitespaces and new lines in the secret files
+- Remove Tailscale OAuth provider for security reasons
+
 ## v3.2.0
 
 ### New features

@@ -6,7 +6,7 @@ Runtipi is a very popular open source personal homeserver helper that enables yo
 
 You firstly need to create your users, this can be done with either [IT-Tools](https://it-tools.tech/bcrypt) or the tinyauth [CLI](https://tinyauth.app/docs/reference/cli). Make sure to escape the password hashes by doubling the dollar signs ($$) else tinyauth will fail to parse the users.
 
-The runtipi app also includes inputs for Github, Google and Tailscale so if you would like to use OAuth you can follow the OAuth guides and note down your client IDs and secrets.
+The runtipi app also includes inputs for Github and Google so if you would like to use OAuth you can follow the OAuth guides and note down your client IDs and secrets.
 
 ## Change the forward auth middleware
 
