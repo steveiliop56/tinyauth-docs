@@ -3,7 +3,8 @@
 _Contributor: [@kdwils](https://github.com/kdwils)_.
 
 ## Use Case
-Simple Authentication for Kubernetes ingress controllers for securing both internal and externally exposed self-hosted apps.
+A simple authentication setup for Kubernetes ingress controllers for securing both internal and externally exposed self-hosted apps.
+
 Ingress controllers like `ingress-nginx` or `traefik` can act as a gateway to enforce authentication and authorization policies before traffic reaches your self-hosted applications. 
 
 This is useful for protecting internal tools, admin interfaces, or services exposed to the internet, without needing to modify the applications themselves.
