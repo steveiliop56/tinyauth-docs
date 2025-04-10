@@ -47,6 +47,7 @@ flowchart BR
 You cannot use tinyauth directly in DDNS services (e.g. `tinyauth562.duckdns.org`) it **_has to_** be under a subdomain (e.g. `tinyauth.mylab562.duckdns.org`) as well as all of your apps.
 :::
 
+<a name="installation"></a>
 ## Installation
 
 Now it's time to create our docker compose file which can be as simple as this:
