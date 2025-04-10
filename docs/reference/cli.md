@@ -61,9 +61,8 @@ Again, tinyauth will launch a TUI that will prompt you for your `username:hash` 
 ./tinyauth user verify --user 'user@example.com:$2a$10$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u' --username user@example.com --password password --totp 123456
 ```
 
-::: note
-Make sure to use quotes (`'`) when typing this in a bash shell, so your hash gets passed correctly to tinyauth.
-:::
+> [!NOTE]
+> Make sure to use quotes (`'`) when typing this in a bash shell, so your hash gets passed correctly to tinyauth.
 
 The full list of available options for the verify command are the following:
 
@@ -89,9 +88,8 @@ It will ask you for your current user (`username:hash`) and then give you your n
 ./tinyauth totp generate --user 'user@example.com:$2a$10$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u'
 ```
 
-::: note
-Make sure to use quotes (`'`) when typing this in a bash shell, so your hash gets passed correctly to tinyauth.
-:::
+> [!NOTE]
+> Make sure to use quotes (`'`) when typing this in a bash shell, so your hash gets passed correctly to tinyauth.
 
 The full list of available options for the generate command are the following:
 

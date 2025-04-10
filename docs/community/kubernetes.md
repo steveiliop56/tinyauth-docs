@@ -106,9 +106,8 @@ The annotation `nginx.ingress.kubernetes.io/auth-url` specifies the URL where `i
 
 The annotation `nginx.ingress.kubernetes.io/auth-signin` defines the URL where `ingress-nginx` should send unauthenticated users to sign in.
 
-::: note
-This example uses in-cluster hostnames for tinyauth based on the above example.
-:::
+> [!NOTE]
+> This example uses the in-cluster `<my-service>.<my-namespace>.svc.cluster.local` hostname for the tinauth deployment based on the above example. 
 
 ```yaml
 apiVersion: networking.k8s.io/v1
