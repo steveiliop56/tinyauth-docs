@@ -81,7 +81,7 @@ spec:
                   name: tinyauth # Reference the secret created earlier
                   key: secretKey
             - name: USERS
-              value: user:$$2a$$10$$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u
+              value: user:$$2a$$10$$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u # Username is user and password is password
           livenessProbe:
             httpGet:
               path: /api/healthcheck
