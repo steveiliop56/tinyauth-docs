@@ -60,7 +60,10 @@ export default withMermaid(
         },
         {
           text: "Community",
-          items: [{ text: "Caddy", link: "/docs/community/caddy" }],
+          items: [
+            { text: "Caddy", link: "/docs/community/caddy" },
+            { text: "Kubernetes", link: "/docs/community/kubernetes" }
+          ],
         },
         {
           text: "Changelog",
