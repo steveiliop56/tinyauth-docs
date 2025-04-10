@@ -111,7 +111,7 @@ spec:
   type: ClusterIP
 ```
 
-## Ingress Example with ingres-nginx controller
+## Ingress Example with ingress-nginx controller
 
 This ingress resource configures `ingress-nginx` to forward authentication checks for the host `my-host.domain.com` to a specific URL (`auth-url`). If the user is not authenticated, they will be redirected to a login page (`auth-signin`).
 
