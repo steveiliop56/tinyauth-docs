@@ -2,6 +2,11 @@
 
 _Contributor: [@kdwils](https://github.com/kdwils)_.
 
+## Example use cases
+- Simple Authentication for... 
+    1. Intranet Applications such as dashboards, management applications, etc.
+    2. Kubernetes ingress controllers for securing services exposed outside the cluster
+
 ## Prerequisites
 
 This documentation assumes the following prerequisites:
@@ -98,16 +103,22 @@ spec:
   type: ClusterIP
 ```
 
-# Ingress-nginx Controller Example
+## Ingress-nginx Controller Example
 
 This ingress resource configures `ingress-nginx` to forward authentication checks for the host `my-host.domain.com` to a specific URL (`auth-url`). If the user is not authenticated, they will be redirected to a login page (`auth-signin`).
 
-The annotation `nginx.ingress.kubernetes.io/auth-url` specifies the URL where `ingress-nginx` should send requests to verify if the user is authenticated.
+Documentation for these annotations can be found in the ingress-nginx repository [annotations.md](https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/nginx-configuration/annotations.md#annotations).
 
-The annotation `nginx.ingress.kubernetes.io/auth-signin` defines the URL where `ingress-nginx` should send unauthenticated users to sign in.
+- `nginx.ingress.kubernetes.io/auth-url` specifies the URL where `ingress-nginx` should send requests to verify if the user is authenticated.
+
+- `nginx.ingress.kubernetes.io/auth-signin` defines the URL where `ingress-nginx` should send unauthenticated users to sign in.
+
+- `nginx.ingress.kubernetes.io/auth-signin-redirect-param` specifies key of the query param to set the redirect uri to. The below example would generate a request to `http://auth.example.com/login?redirect_uri=http://my-host.example.com`
 
 > [!NOTE]
-> This example uses the in-cluster `<my-service>.<my-namespace>.svc.cluster.local` hostname for the tinauth deployment based on the above example. 
+> This example uses the `<my-service>.<my-namespace>.svc.cluster.local` in-cluster uri based on the above example for the `auth-url`.
+>
+> The `auth-signin` annotation should be a reference to a uri that is accessible to the user making the auth request
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -117,11 +128,12 @@ metadata:
   namespace: my-namespace
   annotations:
     nginx.ingress.kubernetes.io/auth-url: "http://tinyauth.tinyauth.svc.cluster.local:3000/api/auth/nginx"
-    nginx.ingress.kubernetes.io/auth-signin: "http://tinyauth.tinyauth.svc.cluster.local:3000/login?redirect_uri=<my-redirect-uri>"
+    nginx.ingress.kubernetes.io/auth-signin: "http://auth.example.com/login"
+    nginx.ingress.kubernetes.io/auth-signin-redirect-param: redirect_uri
 spec:
   ingressClassName: nginx
   rules:
-    - host: my-host.domain.com
+    - host: my-host.example.com
       http:
         paths:
           - path: /
