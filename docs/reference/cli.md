@@ -62,7 +62,7 @@ Again, tinyauth will launch a TUI that will prompt you for your `username:hash` 
 ```
 
 ::: note
-Make sure to use quotes (`'`) when typing this in a bash shell, so your hash gets passed correctly yo tinyauth.
+Make sure to use quotes (`'`) when typing this in a bash shell, so your hash gets passed correctly to tinyauth.
 :::
 
 The full list of available options for the verify command are the following:
@@ -90,7 +90,7 @@ It will ask you for your current user (`username:hash`) and then give you your n
 ```
 
 ::: note
-Make sure to use quotes (`'`) when typing this in a bash shell, so your hash gets passed correctly yo tinyauth.
+Make sure to use quotes (`'`) when typing this in a bash shell, so your hash gets passed correctly to tinyauth.
 :::
 
 The full list of available options for the generate command are the following:
