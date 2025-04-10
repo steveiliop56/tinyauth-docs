@@ -3,9 +3,10 @@
 _Contributor: [@kdwils](https://github.com/kdwils)_.
 
 ## Use Case
+
 A simple authentication setup for Kubernetes ingress controllers for securing both internal and externally exposed self-hosted apps.
 
-Ingress controllers like `ingress-nginx` or `traefik` can act as a gateway to enforce authentication and authorization policies before traffic reaches your self-hosted applications. 
+Ingress controllers like `ingress-nginx` or `traefik` can act as a gateway to enforce authentication and authorization policies before traffic reaches your self-hosted applications.
 
 This is useful for protecting internal tools, admin interfaces, or services exposed to the internet, without needing to modify the applications themselves.
 
@@ -13,12 +14,13 @@ This is useful for protecting internal tools, admin interfaces, or services expo
 
 This documentation assumes the following prerequisites:
 
-* An operational Kubernetes cluster
-* An Ingress controller installed for the Ingress section. This documentation demonstrates using `ingress-nginx`, but `traefik` could be used as well.
+- An operational Kubernetes cluster
+- An Ingress controller installed for the Ingress section. This documentation demonstrates using `ingress-nginx`, but `traefik` could be used as well.
 
 ## Deploying Tinyauth to a Kubernetes Environment
 
 ### 1. Create a Namespace
+
 ```yaml
 apiVersion: v1
 kind: Namespace
@@ -31,6 +33,7 @@ metadata:
 First, [generate a secret key](../getting-started.md#installation) based on the installation instructions.
 
 Next, base64 encode the generated secret key, replacing `'your-generated-secret'` with the actual generated secret, using the following command:
+
 ```sh
 echo -n 'your-generated-secret' | base64
 ```
@@ -93,6 +96,7 @@ spec:
 ```
 
 ### 4. Create a Service
+
 ```yaml
 apiVersion: v1
 kind: Service
@@ -118,7 +122,6 @@ Documentation for these annotations can be found in the ingress-nginx repository
 - `nginx.ingress.kubernetes.io/auth-signin` specifies the URL where `ingress-nginx` should send unauthenticated users to sign in.
 
 - `nginx.ingress.kubernetes.io/auth-signin-redirect-param` specifies the key of the query parameter used to set the redirect URI.
-
 
 > [!NOTE]
 > This example uses the `<my-service>.<my-namespace>.svc.cluster.local` in-cluster uri based on the above example for the `auth-url`.
