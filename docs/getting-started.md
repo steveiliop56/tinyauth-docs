@@ -6,6 +6,16 @@ As promised in the readme, tinyauth is extremely easy to get up and running.
 Tinyauth by default ships with the traefik proxy, if you are using a different proxy there are available guides for [Nginx Proxy Manager](/docs/guides/nginx-proxy-manager) and [Caddy](/docs/community/caddy).
 :::
 
+## Community guides
+
+If you prefer a guide over documentation on how to get started, there is some amazing content by the community:
+
+- Tinyauth tutorial/showcase by [Jim's Garage](https://youtube.com/watch?v=qmlHirOpzpc).
+
+::: warning
+As with all guides and videos, make sure to always check the documentation for updated deployment instructions/configuration changes.
+:::
+
 ## Creating a user
 
 A tinyauth user consists of 3 things, a username, a password hash and an optional TOTP secret:
