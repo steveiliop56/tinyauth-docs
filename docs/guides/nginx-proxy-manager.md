@@ -14,7 +14,7 @@ Throughout this tutorial we will use the following docker compose file:
 services:
   npm:
     container_name: npm
-    image: jc21/nginx-proxy-manager:latest
+    image: jc21/nginx-proxy-manager:2
     restart: unless-stopped
     ports:
       - 80:80
@@ -22,7 +22,7 @@ services:
       - 81:81
     volumes:
       - npm-data:/data
-      - letsencrypt:/etc/letsencrypt
+      - npm-letsencrypt:/etc/letsencrypt
 
   nginx:
     container_name: nginx
@@ -40,7 +40,7 @@ services:
 
 volumes:
   npm-data:
-  letsencrypt:
+  npm-letsencrypt:
 ```
 
 You can configure OAuth and access controls as you normally would with docker labels and environment variables, all the configuration will happen through the UI.
@@ -70,18 +70,32 @@ Here you can keep the block common exploits enabled.
 Now for the important part. You need the following config in the Advanced tab in order for nginx to use tinyauth to authenticate:
 
 ```shell
-auth_request /tinyauth;
-error_page 401 = @tinyauth_login;
+# Root location
+location / {
+  # Pass the request to the app
+  proxy_pass          $forward_scheme://$server:$port;
 
+  # Add other app specific config here
+
+  # Tinyauth auth request
+  auth_request /tinyauth;
+  error_page 401 = @tinyauth_login;
+}
+
+# Tinyauth auth request
 location /tinyauth {
+  # Pass request to tinyauth
   proxy_pass http://tinyauth:3000/api/auth/nginx;
+
+  # Pass the request headers
   proxy_set_header x-forwarded-proto $scheme;
   proxy_set_header x-forwarded-host $http_host;
   proxy_set_header x-forwarded-uri $request_uri;
 }
 
+# Tinyauth login redirect
 location @tinyauth_login {
-  return 302 http://tinyauth.example.com/login?redirect_uri=$scheme://$http_host$request_uri; # make sure to replace the http://tinyauth.example.com with your own app URL
+  return 302 http://tinyauth.example.com/login?redirect_uri=$scheme://$http_host$request_uri; # Make sure to replace the http://tinyauth.example.com with your own app URL
 }
 ```
 
