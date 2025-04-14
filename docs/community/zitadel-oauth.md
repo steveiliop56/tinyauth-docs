@@ -1,6 +1,8 @@
 
 # Setting up tinyauth with Zitadel
 
+_Contributor: [@WilliamB78](https://github.com/WilliamB78)_.
+
 Tinyauth has built-in support for any generic OAuth provider, and in this guide we will use Zitadel to authenticate our users. Let's get started!
 
 ## Requirements
@@ -39,25 +41,25 @@ After your application gets created, you should have a screen like this:
 Now that we have our Client ID and Secret, we can pass it to the tinyauth Docker container:
 
 ```yaml
-	tinyauth:
-	  container_name: tinyauth
-	  image: ghcr.io/steveiliop56/tinyauth:v3
-	  restart: unless-stopped
-	  environment:
-	    - SECRET=some-random-32-chars-string
-	    - APP_URL=https://tinyauth.example.com
-	    - GENERIC_SCOPES=email
-	    - GENERIC_AUTH_URL=https://zitadel.example.com/oauth/v2/authorize
-	    - GENERIC_TOKEN_URL=https://zitadel.example.com/oauth/v2/token
-	    - GENERIC_USER_URL=https://zitadel.example.com/oidc/v1/userinfo
-	    - GENERIC_CLIENT_ID= # Paste from previous step
-	    - GENERIC_CLIENT_SECRET= # Paste from previous step
-	    - GENERIC_NAME=Zitadel
-	    - DISABLE_CONTINUE=true
-	  labels:
-	    traefik.enable: true
-	    traefik.http.routers.tinyauth.rule: Host(`tinyauth.example.com`)
-	    traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth/traefik
+  tinyauth:
+    container_name: tinyauth
+    image: ghcr.io/steveiliop56/tinyauth:v3
+    restart: unless-stopped
+    environment:
+      - SECRET=some-random-32-chars-string
+      - APP_URL=https://tinyauth.example.com
+      - GENERIC_SCOPES=email
+      - GENERIC_AUTH_URL=https://zitadel.example.com/oauth/v2/authorize
+      - GENERIC_TOKEN_URL=https://zitadel.example.com/oauth/v2/token
+      - GENERIC_USER_URL=https://zitadel.example.com/oidc/v1/userinfo
+      - GENERIC_CLIENT_ID= # Paste from previous step
+      - GENERIC_CLIENT_SECRET= # Paste from previous step
+      - GENERIC_NAME=Zitadel
+      - DISABLE_CONTINUE=true
+    labels:
+      traefik.enable: true
+      traefik.http.routers.tinyauth.rule: Host(`tinyauth.example.com`)
+      traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth/traefik
 ```
 
 ::: warning OAuth doesn't mean security. With the current setup, any user within your Zitadel organization can log in to tinyauth as a normal user. If you would like to limit which users can log in with OAuth, you can add the `OAUTH_WHITELIST` environment variable and allow only your email address to log in. For more information, check [here](https://chat.mistral.ai/reference/configuration.md). :::
