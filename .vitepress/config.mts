@@ -62,6 +62,7 @@ export default withMermaid(
           items: [
             { text: "Caddy", link: "/docs/community/caddy" },
             { text: "Kubernetes", link: "/docs/community/kubernetes" },
+            { text: "Zitadel OAuth", link: "/docs/community/zitadel-oauth" },
           ],
         },
         {
