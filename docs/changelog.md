@@ -2,6 +2,32 @@
 
 Below you can find all release notes from all Tinyauth versions.
 
+## v3.3.0
+
+### New features
+
+- Added warning login screen when the redirect URI does not match the configured domain
+- Regex support for both OAuth and user whitelist
+- New forgot password screen with the ability to change the text using markdown
+- Map information from OIDC claims to headers
+- Support for auto redirecting to your favorite OAuth provider
+
+### Improvements
+
+- Add dependabot for dependency updates @gurukulkarni
+- Add CSRF cookie for protection against cross-site request forgery
+- Log actual errors alongside the information message
+
+### Fixes
+
+- Disable basic authentication for TOTP users
+- Move the redirect URI back to a separate cookie
+
+### Technical
+
+- Ensure the dist directory exists during development
+- Bump dependencies
+
 ## v3.2.1
 
 ### Fixes
