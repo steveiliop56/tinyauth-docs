@@ -44,4 +44,8 @@ whoami:
 
 In this example, only `user1` will have access with simple username/password authentication and only `user2@example.com` will be able to access the app with OAuth. If either `user2` or `user1@example.com` try to access the app, they will be redirected to an unauthorized screen.
 
+::: warning
+In order for the access controls to work the app must have the same container name as the subdomain it is exposed at e.g. container name should be `hello` and app should be exposed at `hello.example.com`. Using a different subdomain will **_not_** work.
+:::
+
 That's it! You just configured access controls in tinyauth!
