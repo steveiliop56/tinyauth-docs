@@ -47,17 +47,20 @@ tinyauth:
   environment:
     - SECRET=some-random-32-chars-string
     - APP_URL=https://tinyauth.example.com
-    - GENERIC_SCOPES=email
+    - GENERIC_SCOPES="openid profile email prefered_username groups"
     - GENERIC_AUTH_URL=https://zitadel.example.com/oauth/v2/authorize
     - GENERIC_TOKEN_URL=https://zitadel.example.com/oauth/v2/token
     - GENERIC_USER_URL=https://zitadel.example.com/oidc/v1/userinfo
     - GENERIC_CLIENT_ID= # Paste from previous step
     - GENERIC_CLIENT_SECRET= # Paste from previous step
     - GENERIC_NAME=Zitadel
+    - OAUTH_AUTO_REDIRECT=generic
+    - DISABLE_CONTINUE=true
   labels:
     traefik.enable: true
     traefik.http.routers.tinyauth.rule: Host(`tinyauth.example.com`)
     traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth/traefik
+    traefik.http.middlewares.test-auth.forwardauth.authResponseHeaders: Remote-User, Remote-Email, Remote-Name, Remote-Groups
 ```
 
 ::: warning
