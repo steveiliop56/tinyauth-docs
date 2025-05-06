@@ -37,6 +37,10 @@ export default withMermaid(
             { text: "Github OAuth", link: "/docs/guides/github-oauth" },
             { text: "Google OAuth", link: "/docs/guides/google-oauth" },
             { text: "Github App OAuth", link: "/docs/guides/github-app-oauth" },
+            {
+              text: "Using the binary",
+              link: "/docs/guides/using-the-binary",
+            },
             { text: "Access controls", link: "/docs/guides/access-controls" },
             {
               text: "Two factor authentication",
