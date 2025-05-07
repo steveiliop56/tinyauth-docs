@@ -7,7 +7,7 @@ Every configuration option that has a `FILE_` equivalent (e.g. `USERS` and `USER
 :::
 
 ::: info
-In some configuration options like the `GENERIC_SCOPES` environment variable, you may need to use spaces (e.g. `GENERIC_SCOPES=openid profile email`). In this case you **_shouldn't_** use quotes as docker can handle them.
+In some configuration options like the `GENERIC_SCOPES` environment variable, you may need to use spaces (e.g. `GENERIC_SCOPES=openid profile email`). In this case you **_shouldn't_** use quotes as docker can handle the spaces.
 :::
 
 ## General
