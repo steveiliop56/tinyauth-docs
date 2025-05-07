@@ -2,6 +2,16 @@
 
 Below you can find all release notes from all Tinyauth versions.
 
+## v3.3.1
+
+### Improvements
+
+- Log when using Github primary email or the first available one
+
+### Fixes
+
+- Use the email instead of the username in the OAuth whitelist
+
 ## v3.3.0
 
 ### New features
