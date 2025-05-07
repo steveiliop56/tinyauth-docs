@@ -2,6 +2,7 @@
   "dependencies": {},
   "devDependencies": {
     "mermaid": "^11.6.0",
+    "prettier": "3.5.3",
     "vitepress": "1.5.0",
     "vitepress-plugin-mermaid": "^2.0.17"
   },
