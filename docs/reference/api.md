@@ -161,7 +161,7 @@ Example response:
   "message": "OK",
   "status": 200,
   "disableContinue": false,
-  "title": "Tinayuth",
+  "title": "Tinyauth",
   "genericName": "Generic",
   "domain": "example.com",
   "forgotPasswordMessage": "You can reset your password by changing the `USERS` environment variable.",
@@ -169,7 +169,7 @@ Example response:
 }
 ```
 
-### User cont
+### User context
 
 Endpoint used to retrieve user information. It is used by the user context provider in the frontend.
 

@@ -22,7 +22,7 @@ If you are using docker compose you can also use `docker compose run tinyauth [o
 
 ### Main command
 
-The main command is the one run when you run the app without any flags/arguments. It stars the API and web UI and waits for incoming connections. All the options are configurable with both CLI flags and environment variables. A list of available configuration options is located in the [configuration](./configuration.md) page.
+The main command is the one run when you run the app without any flags/arguments. It starts the API and web UI and waits for incoming connections. All the options are configurable with both CLI flags and environment variables. A list of available configuration options is located in the [configuration](./configuration.md) page.
 
 ### Create user command
 
