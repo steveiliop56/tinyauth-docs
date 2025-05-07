@@ -1,10 +1,10 @@
 # API
 
-Tinyauth has a very simple API used for both traefik and the web UI, all of the available endpoints are listed below.
+Tinyauth has a very simple API used for both the reverse proxies and the web UI. All of the available endpoints are listed below.
 
 ## Authentication
 
-The tinyauth API supports authentication using the `Authorization` header and basic auth, this can be useful when you want to permanently access a service protected with tinyauth using a headless client like `curl` or a custom script. For example, if you have an app hosted in `http://myapp.example.com` which is protected by tinyauth you can authenticate using curl:
+The tinyauth API supports authentication using the `Authorization` header and basic auth. This can be useful when you want to permanently access a service protected with tinyauth using a headless client like `curl` or a custom script. For example, if you have an app hosted in `http://myapp.example.com` which is protected by tinyauth you can authenticate using curl:
 
 ```shell
 curl -u user:password http://myapp.example.com # the user:password is the username and password you use in tinyauth
@@ -18,6 +18,10 @@ Authorization: Basic base64(username:password)
 
 ::: warning
 Basic auth is permanent authorization meaning that if somebody obtains your header he can use it to login everywhere and it **won't** expire like the cookie will.
+:::
+
+::: warning
+Basic auth is disabled for accounts with TOTP configured for security reasons.
 :::
 
 When using basic auth, tinyauth assumes you are running in _API_ mode meaning that it will never return a redirect or plain html (e.g. the `/api/auth/traefik` endpoint will return 302 if you are not logged in), instead it will return API compatible responses like:
@@ -51,7 +55,7 @@ Example response:
 
 ### Auth
 
-Authentication endpoint used by traefik forward auth.
+Authentication endpoint used by proxies.
 
 Endpoint: `/api/auth/:proxy` (can be `traefik`/`nginx`/`caddy`)<br />
 Method: `GET`
@@ -143,28 +147,48 @@ Example response:
 The logout function doesn't invalidate the session it just tells the client to forget the cookie. This means that if somebody gets access to this token he can use it login.
 :::
 
-### Status
+### App context
 
-Endpoint used to retrieve user information based on the session cookie, it is used by the user context provider in the frontend.
+Endpoint used to retrieve app information that are global for all users. It is used by the app context provider in the frontend.
 
-Endpoint: `/api/status`<br />
+Endpoint: `/api/app`<br />
 Method: `GET`
 
 Example response:
 
 ```json
 {
+  "message": "OK",
   "status": 200,
-  "message": "Authenticated",
-  "email": "user@example.com",
-  "isLoggedIn": true,
-  "oauth": false,
-  "provider": "",
-  "configuredProviders": ["google", "github"],
   "disableContinue": false,
-  "title": "My SSO",
-  "genericName": "My Provider",
-  "totpPending": false
+  "title": "Tinayuth",
+  "genericName": "Generic",
+  "domain": "example.com",
+  "forgotPasswordMessage": "You can reset your password by changing the `USERS` environment variable.",
+  "oauthAutoRedirect": "none"
+}
+```
+
+### User cont
+
+Endpoint used to retrieve user information. It is used by the user context provider in the frontend.
+
+Endpoint: `/api/user`<br />
+Method: `GET`
+
+Example response:
+
+```json
+{
+  "message": "OK",
+  "status": 200,
+  "isLoggedIn": true,
+  "username": "user",
+  "name": "User",
+  "email": "user@example.com",
+  "provider": "username",
+  "oauth": false,
+  "totpPending": "false"
 }
 ```
 

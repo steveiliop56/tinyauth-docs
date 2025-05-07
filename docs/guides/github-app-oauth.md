@@ -11,11 +11,11 @@ Github requires the following to setup an app:
 
 ## Create the Github App
 
-Firstly, open the [Github apps](https://github.com/settings/apps) section and click _New Github App_. You should see the following screen:
+Firstly, go to the [Github apps](https://github.com/settings/apps) section and click _New Github App_. You should see the following screen:
 
 ![Github New App Screen](/screenshots/github-app-new.png)
 
-There we need to fill in the following information:
+There you need to fill in the following information:
 
 **Github App Name** -> The name for your app, it can be anything, e.g. `Tinyauth`
 
@@ -33,15 +33,15 @@ Then you can create your app and you should be greeted by this screen:
 
 ![Github App Home](/screenshots/github-app-home.png)
 
-Here, make sure to note down your client ID as we will need it later. We also need a client secret which we can obtain by clicking the _Generate new client secret_ button, you may need to authenticate again but once you do it will appear like this:
+Here, make sure to note down your client ID as you will need it later. You also need a client secret which you can obtain by clicking the _Generate new client secret_ button. You may need to authenticate again but once you do, it will appear like this:
 
 ![Github Client Secret](/screenshots/github-app-client-secret.png)
 
-Make sure to also note this down as it will not be available again and we will need it for tinyauth.
+Make sure to also note this down as it will not be available again and you will need it for tinyauth.
 
 ## Configure Tinyauth
 
-Now that we have our client ID and secret, we can pass it to the tinyauth docker container:
+Now that you have your client ID and secret, you can pass it to the tinyauth docker container:
 
 ```yaml
 tinyauth:
@@ -61,11 +61,11 @@ tinyauth:
 ```
 
 ::: warning
-OAuth doesn't mean security, with the current setup everybody with a Github account can login to Tinyauth as a normal user. If you would like to limit which users can login with OAuth, you can add the `OAUTH_WHITELIST` environment variable and allow only your email address to login. For more information check [here](../reference/configuration.md)
+OAuth doesn't mean security, with the current setup everybody with a Github account can login to Tinyauth as a normal user. If you would like to limit which users can login with OAuth, you can add the `OAUTH_WHITELIST` environment variable and only allow your email address to login. For more information check the [configuration](/docs/reference/configuration.md) page.
 :::
 
 ::: tip
-Since you have OAuth enabled, you can now remove the `USERS` or `USERS_FILE` environment variables so as you can login only with your OAuth provider.
+Since you have OAuth enabled, you can now remove the `USERS` or `USERS_FILE` environment variables so as you can ony login with your OAuth provider.
 :::
 
-And we are done! After you restart your docker container and go to the tinyauth login screen, you should have an additional option to login with Github.
+And you are done! After you restart tinyauth and try to login to an app, you should have an additional option to login with Github.

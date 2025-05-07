@@ -1,6 +1,6 @@
 # Flow
 
-Tinyauth is a really simple application, the way the authentication process works is the following:
+Tinyauth is a really simple application. The way the authentication process works is the following:
 
 ```mermaid
 sequenceDiagram

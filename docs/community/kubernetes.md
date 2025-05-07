@@ -19,7 +19,9 @@ This documentation assumes the following prerequisites:
 
 ## Deploying Tinyauth to a Kubernetes Environment
 
-### 1. Create a Namespace
+### Create a Namespace
+
+Firstly, you will need to create a namespace for tinyauth:
 
 ```yaml
 apiVersion: v1
@@ -28,11 +30,11 @@ metadata:
   name: tinyauth
 ```
 
-### 2. Create a secret
+### Create a secret
 
 First, [generate a secret key](../getting-started.md#installation) based on the installation instructions.
 
-Next, base64 encode the generated secret key, replacing `'your-generated-secret'` with the actual generated secret, using the following command:
+Next, base64 encode the generated secret key, replacing `your-generated-secret` with the actual generated secret, using the following command:
 
 ```sh
 echo -n 'your-generated-secret' | base64
@@ -51,7 +53,9 @@ metadata:
 type: Opaque
 ```
 
-### 3. Create a Deployment
+### Create a Deployment
+
+Now it's time to create the tinyauth deployment:
 
 ```yaml
 apiVersion: apps/v1
@@ -95,7 +99,9 @@ spec:
               port: 3000
 ```
 
-### 4. Create a Service
+### Create a Service
+
+Finally create the service:
 
 ```yaml
 apiVersion: v1

@@ -23,5 +23,5 @@ features:
   - title: OAuth Support
     details: Tinyauth supports Google, Github and every generic OAuth provider for authentication.
   - title: Lightweight
-    details: Tinyauth bundles the Vite framework for the Web UI making it extremely lightweight at just 20mb for the docker image.
+    details: Tinyauth is built with Go and Vite making it extremely lightweight at just 20mb.
 ---

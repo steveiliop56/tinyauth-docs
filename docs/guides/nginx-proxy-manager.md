@@ -1,6 +1,6 @@
 # Setting up tinyauth with Nginx Proxy Manager
 
-Nginx Proxy Manager is definitely a piece of software that everybody loves in the homelab community, this is why it is mandatory that tinyauth supports it. It's a bit different compared to traefik/caddy due to nginx itself not supporting 302 redirects for the `auth_request` module but tinyauth accounts for it and has API paths made just for it!
+Nginx Proxy Manager is definitely a piece of software that everybody loves in the homelab community. This is why it is mandatory that tinyauth supports it. It's a bit different compared to traefik/caddy due to nginx itself not supporting 302 redirects for the `auth_request` module but tinyauth accounts for it and has API paths made just for it!
 
 ::: info
 This tutorial assumes you have some experience with Nginx Proxy Manager.
@@ -101,6 +101,10 @@ location @tinyauth_login {
 
 ::: info
 The `/tinyauth` path can be anything, the guide uses this name for convenience.
+:::
+
+::: info
+You may need to add additional configuration under the `/` location for technologies like websockets to work.
 :::
 
 Now we can save the host and when you try to access it you should be redirected to the tinyauth login page if you are not already logged in. Keep in mind you will need to do this for every host you want tinyauth to protect.
