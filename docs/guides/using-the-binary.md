@@ -12,15 +12,15 @@ chmod +x tinyauth
 
 ## Configuring
 
-To configure tinyauth we can either configure it through environment variables or through CLI flags. The recommended setup is to use environment variables. To configure tinyauth using environment variables you will need to download the example environment file from Github:
+To configure tinyauth you can either use CLI flags or environment variables (recommended). To use environment variables you will need to download the example environment file from Github:
 
 ```shellscript
 curl -o tinyauth.env https://raw.githubusercontent.com/steveiliop56/tinyauth/refs/heads/main/.env.example
 ```
 
-Then you can simply edit the `tinyauth.env` file and either replacing the template values with actual values or simply remove the environment variables you do not need.
+Then you can simply edit the `tinyauth.env` file and either replace the template values with actual values or simply remove the environment variables you do not need.
 
-Alternatively, you can use CLI flags to configure tinyauth. This is not recommended as it can get quite complex and your shell may parse the values incorrectly. That's why you should always use quotes (`'`) to ensure that the values are given to tinyauth correctly.
+Alternatively you can use CLI flags to configure tinyauth. This is not recommended as it can get quite complex and your shell may parse the values incorrectly. Make sure to always use quotes (`'`) to ensure that the values are given to tinyauth correctly.
 
 A full list of environment variables and CLI flags is available in the [Configuration](/docs/reference/configuration.md) page.
 
