@@ -44,7 +44,7 @@ If you chose to use CLI flags you need to pass them to tinyauth with:
 ./tinyauth --secret=example --app-url=https://tinyauth.example.com
 ```
 
-## Running as a service
+## Running as a systemd service
 
 if you need tinyauth to autostart on boot you can do so by creating a systemd service (assuming you are using systemd as your init system). Firstly you will need to create the `/etc/systemd/system/tinyauth.service` file with the following content:
 

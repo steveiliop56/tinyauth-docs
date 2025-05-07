@@ -1,6 +1,6 @@
 # Setting up tinyauth with Google OAuth
 
-Tinyauth has builtin support for Google OAuth and it is extremely easy to set up. It's a bit harder than Github but with this guide you should be up and running in less than 10 minutes. Let's get started!
+Tinyauth has builtin support for Google OAuth and it is extremely easy to set up. It's a bit harder than Github but with this guide you should be up and running in less than ten minutes. Let's get started!
 
 ## Requirements
 
@@ -11,7 +11,7 @@ For this guide you will need the following:
 
 ## Create the Google OAuth app
 
-To begin with, we need to create an app in Google. This can be done by visiting the Google Cloud Console [here](https://console.cloud.google.com/). There you need to create a new project (you should already have one by default). You should see a screen like this:
+To begin with, you need to create an app in Google. This can be done by visiting the [Google Cloud Console](https://console.cloud.google.com/). There you need to create a new project (you should already have one by default). You should see a screen like this:
 
 ![Google Cloud Console Home](/screenshots/google-cloud-home.png)
 
@@ -57,7 +57,7 @@ Click your client, e.g. `Web Client 1` and copy your Client ID and Client secret
 
 ## Configure Tinyauth
 
-Now that we have our client ID and secret, we can pass it to the tinyauth docker container:
+Now that you have your client ID and secret, you can pass it to the tinyauth docker container:
 
 ```yaml
 tinyauth:
@@ -77,11 +77,11 @@ tinyauth:
 ```
 
 ::: warning
-OAuth doesn't mean security, with the current setup everybody with a Google account can login to tinyauth as a normal user. If you would like to limit which users can login with OAuth, you can add the `OAUTH_WHITELIST` environment variable and allow only your email address to login. For more information check [here](../reference/configuration.md)
+OAuth doesn't mean security, with the current setup everybody with a Github account can login to Tinyauth as a normal user. If you would like to limit which users can login with OAuth, you can add the `OAUTH_WHITELIST` environment variable and only allow your email address to login. For more information check the [configuration](/docs/reference/configuration.md) page.
 :::
 
 ::: tip
-Since you have OAuth enabled, you can now remove the `USERS` or `USERS_FILE` environment variables so as you can login only with your OAuth provider.
+Since you have OAuth enabled, you can now remove the `USERS` or `USERS_FILE` environment variables so as you can ony login with your OAuth provider.
 :::
 
-And we are done! After you restart your docker container and go to the tinyauth login screen, you should have an additional option to login with Google.
+And you are done! After you restart tinyauth and try to login to an app, you should have an additional option to login with Google.

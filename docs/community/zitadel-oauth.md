@@ -13,7 +13,7 @@ For this guide, you will need the following:
 
 ## Create the Zitadel OAuth app
 
-To begin with, we need to create an app in Zitadel. This can be done by visiting the Zitadel Console. You need to create a new project, for the app just use Tinyauth.
+To begin with, you need to create an app in Zitadel. This can be done by visiting the Zitadel Console. You need to create a new project, for the app just use Tinyauth.
 
 Then create a new application by clicking on the "+" blue button.
 
@@ -27,7 +27,7 @@ Follow the wizard and configure the app like this :
 
 **Redirect URI** -> `https://tinyauth.example.com/api/oauth/callback/generic`
 
-Finalize by clicking on the "Create" button, and copy the client ID and the client secret.
+Finalize by clicking on the _Create_ button, and copy the client ID and the client secret.
 
 After your application gets created, you should have a screen like this:
 
@@ -37,7 +37,7 @@ After your application gets created, you should have a screen like this:
 
 ## Configure Tinyauth
 
-Now that we have our Client ID and Secret, we can pass it to the tinyauth Docker container:
+Now that you have your Client ID and Secret, you can pass it to the tinyauth docker container:
 
 ```yaml
 tinyauth:
@@ -47,7 +47,7 @@ tinyauth:
   environment:
     - SECRET=some-random-32-chars-string
     - APP_URL=https://tinyauth.example.com
-    - GENERIC_SCOPES="openid profile email preferred_username groups"
+    - GENERIC_SCOPES=openid profile email preferred_username groups
     - GENERIC_AUTH_URL=https://zitadel.example.com/oauth/v2/authorize
     - GENERIC_TOKEN_URL=https://zitadel.example.com/oauth/v2/token
     - GENERIC_USER_URL=https://zitadel.example.com/oidc/v1/userinfo
@@ -64,7 +64,11 @@ tinyauth:
 ```
 
 ::: warning
-OAuth doesn't mean security, with the current setup everybody with a Zitadel account can login to tinyauth as a normal user. If you would like to limit which users can login with OAuth, you can add the `OAUTH_WHITELIST` environment variable and allow only your email address to login. For more information check [here](../reference/configuration.md)
+OAuth doesn't mean security, with the current setup everybody with a Github account can login to Tinyauth as a normal user. If you would like to limit which users can login with OAuth, you can add the `OAUTH_WHITELIST` environment variable and only allow your email address to login. For more information check the [configuration](/docs/reference/configuration.md) page.
 :::
 
-And we are done! After you restart your Docker container and go to the tinyauth login screen, you should have an additional option to log in with Zitadel.
+::: tip
+Since you have OAuth enabled, you can now remove the `USERS` or `USERS_FILE` environment variables so as you can ony login with your OAuth provider.
+:::
+
+And you are done! After you restart tinyauth and try to login to an app, you should have an additional option to login with Zitadel.

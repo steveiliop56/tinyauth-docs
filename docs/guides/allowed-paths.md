@@ -42,5 +42,5 @@ whoami:
 In this example if you visit `http://whoami.example.com` you will be redirected to tinyauth's login screen but if you try to access `http://whoami.example.com/api` you will be allowed to use it.
 
 ::: info
-If you need help building your regex string, I would recommend <https://regex101.com/>, an entire IDE just for regex.
+If you need help building your regex string, I recommend <https://regex101.com/>, an entire IDE just for regex.
 :::

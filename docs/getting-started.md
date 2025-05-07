@@ -1,6 +1,6 @@
 # Getting Started
 
-As promised in the readme, tinyauth is extremely easy to get up and running.
+As promised, tinyauth is extremely easy to get up and running.
 
 ::: info
 Tinyauth by default ships with the traefik proxy, if you are using a different proxy there are available guides for [Nginx Proxy Manager](/docs/guides/nginx-proxy-manager) and [Caddy](/docs/community/caddy).
@@ -45,7 +45,7 @@ You can repeat this step as many times as you like and create a comma separated 
 
 ## Setting up your domains
 
-The way tinyauth works is by setting a cookie for the parent domain of the app URL, in other words if your app URL is `http://tinyauth.example.com`, tinyauth will set a cookie for `.example.com` in order to be able to authenticate you. This means that all your apps will have to be under this subdomain. Here is an example:
+The way tinyauth works is by setting a cookie for the parent domain of the app URL. In other words if your app URL is `http://tinyauth.example.com`, tinyauth will set a cookie for `.example.com` in order to be able to authenticate you. This means that all your apps will have to be under this subdomain. Here is an example:
 
 ```mermaid
 flowchart BR

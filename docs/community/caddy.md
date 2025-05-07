@@ -69,7 +69,7 @@ Place any service behind tinyauth, the only addition you need to secure a servic
 caddy.import: tinyauth_forwarder *
 ```
 
-Using Nginx as an example, it might look like this:
+Using whoami as an example, it might look like this:
 
 ```yaml
 whoami:
