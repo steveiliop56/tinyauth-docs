@@ -11,6 +11,7 @@ Tinyauth by default ships with the traefik proxy, if you are using a different p
 If you prefer a guide over documentation on how to get started, there is some amazing content by the community:
 
 - Tinyauth tutorial/showcase by [Jim's Garage](https://youtube.com/watch?v=qmlHirOpzpc).
+- Tinyauth with Pangolin guide by [ivobrett](https://forum.hhf.technology/t/implementing-external-authentication-in-pangolin-using-tinyauth-and-the-middleware-manager/1417) (requires account)
 
 ::: warning
 As with all guides and videos, make sure to always check the documentation for updated deployment instructions/configuration changes.
