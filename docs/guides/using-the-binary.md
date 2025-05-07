@@ -46,13 +46,7 @@ If you chose to use CLI flags you need to pass them to tinyauth with:
 
 ## Running as a service
 
-if you need tinyauth to autostart on boot you can do so by creating a systemd service (this of course requires having systemd installed). Firstly you will need to create the service file:
-
-```shellscript
-sudo nano /etc/systemd/system/tinyauth.service
-```
-
-And fill it with the following content:
+if you need tinyauth to autostart on boot you can do so by creating a systemd service (assuming you are using systemd as your init system). Firstly you will need to create the `/etc/systemd/system/tinyauth.service` file with the following content:
 
 ```
 [Unit]
