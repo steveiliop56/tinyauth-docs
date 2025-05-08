@@ -34,23 +34,27 @@ export default withMermaid(
         {
           text: "Guides",
           items: [
-            { text: "Github OAuth", link: "/docs/guides/github-oauth" },
-            { text: "Google OAuth", link: "/docs/guides/google-oauth" },
-            { text: "Github App OAuth", link: "/docs/guides/github-app-oauth" },
             {
               text: "Using the binary",
               link: "/docs/guides/using-the-binary",
             },
-            { text: "Access controls", link: "/docs/guides/access-controls" },
             {
               text: "Two factor authentication",
               link: "/docs/guides/totp",
             },
+            { text: "Access controls", link: "/docs/guides/access-controls" },
+            { text: "Google OAuth", link: "/docs/guides/google-oauth" },
+            { text: "Github OAuth", link: "/docs/guides/github-oauth" },
+            { text: "Github App OAuth", link: "/docs/guides/github-app-oauth" },
             { text: "Tinyauth with Runtipi", link: "/docs/guides/runtipi" },
+            {
+              text: "Tinyauth with Pocket ID",
+              link: "/docs/guides/pocket-id",
+            },
             {
               text: "Tinyauth with Nginx Proxy Manager",
               link: "/docs/guides/nginx-proxy-manager",
-            },
+            }
           ],
         },
         {
