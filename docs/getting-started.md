@@ -6,6 +6,10 @@ As promised, tinyauth is extremely easy to get up and running.
 Tinyauth by default ships with the traefik proxy, if you are using a different proxy there are available guides for [Nginx Proxy Manager](/docs/guides/nginx-proxy-manager) and [Caddy](/docs/community/caddy).
 :::
 
+## Demo
+
+If you are still not sure if tinyauth suits your needs you can try out the [demo](https://demo.tinyauth.app). The default username is `user` and the default password is `password`.
+
 ## Community guides
 
 If you prefer a guide over documentation on how to get started, there is some amazing content by the community:
