@@ -29,8 +29,12 @@ A full list of environment variables and CLI flags is available in the [Configur
 After you are done with configuration you can start tinyauth. If you are using an environment variables you need to set them in your shell, this can be done by running:
 
 ```shellscript
-source tinyauth.env
+export $(grep -v '^#' .env | xargs -d '\n')
 ```
+
+::: tip
+If you like, you can unset the environment variables (perhaps for security reasons) with `unset $(grep -v '^#' .env | sed -E 's/(.*)=.*/\1/' | xargs)`.
+:::
 
 Finally you can start up the tinyauth server with:
 
