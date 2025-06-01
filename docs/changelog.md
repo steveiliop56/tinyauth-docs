@@ -1,6 +1,30 @@
 # Changelog
 
-Below you can find all release notes from all Tinyauth versions.
+Below you can find all release notes from all tinyauth versions.
+
+## v3.4.0
+
+### New features
+
+- Show the commit hash and build date alongside the version in the version command
+- Option to disable SSL certificate check in generic provider
+
+### Improvements
+
+- Rebuilt UI from the ground up using Shadcn, Tailwind, React Query and React Hook Form
+- Negotiate the API version with the docker host instead of failing
+- Remove the `WWW-Authenticate` header to prevent basic auth browser pop-ups
+- Store version, build date and commit hash in constants instead of files
+- Generate unique cookie names based on the app URL to avoid conflicts with other instances
+- Only use 302 redirects to avoid browser caching
+
+### Technical
+
+- Update dependencies
+- Deprecate translations CDN
+- Update translations
+- Create nightly release workflow
+- Remove healthcheck from dockerfile as it was causing errors with a custom port
 
 ## v3.3.1
 

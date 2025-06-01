@@ -60,3 +60,4 @@ In some configuration options like the `GENERIC_SCOPES` environment variable, yo
 | `GENERIC_USER_URL`/`--generic-user-url`                     | The user information URL for the generic provider.    | -         | no       |
 | `GENERIC_SCOPES`/`--generic-scopes`                         | The generic provider scopes.                          | -         | no       |
 | `GENERIC_NAME`/`--generic-name`                             | The name for the generic client button on the UI.     | `Generic` | no       |
+| `GENEIRC_SKIP_SSL`/`--generic-skip-ssl`                     | Ignore self-signed certificates.                      | `false`   | no       |

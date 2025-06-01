@@ -56,6 +56,6 @@ Then you can just make sure the domains are correct in the development docker co
 docker compose -f docker-compose.dev.yml up --build
 ```
 
-::: info
+::: tip
 I recommend copying the example `docker-compose.dev.yml` into a `docker-compose.test.yml` file, so as you don't accidentally commit any sensitive information.
 :::

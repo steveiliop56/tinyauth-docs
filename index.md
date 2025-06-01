@@ -19,9 +19,9 @@ hero:
 
 features:
   - title: Simple
-    details: Tinyauth can be configured directly with environment variables eliminating the need for configuration files or fancy dashboards.
+    details: Tinyauth is configured with environment variables eliminating the need for configuration file or fancy dashboards.
   - title: OAuth Support
     details: Tinyauth supports Google, Github and every generic OAuth provider for authentication.
-  - title: Lightweight
-    details: Tinyauth is built with Go and Vite making it extremely lightweight at just 20mb.
+  - title: All popular proxies supported
+    details: Tinyauth supports all of the popular proxies like Traefik, Nginx and Caddy.
 ---
