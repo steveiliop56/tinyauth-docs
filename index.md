@@ -16,6 +16,9 @@ hero:
     - theme: alt
       text: Configuration
       link: /docs/reference/configuration
+    - theme: alt
+      text: Demo
+      link: https://demo.tinyauth.app
 
 features:
   - title: Simple
