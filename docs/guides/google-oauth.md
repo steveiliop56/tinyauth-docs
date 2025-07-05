@@ -1,4 +1,4 @@
-# Setting up tinyauth with Google OAuth
+# Setting up Tinyauth with Google OAuth
 
 Tinyauth has builtin support for Google OAuth and it is extremely easy to set up. It's a bit harder than Github but with this guide you should be up and running in less than ten minutes. Let's get started!
 
@@ -6,18 +6,18 @@ Tinyauth has builtin support for Google OAuth and it is extremely easy to set up
 
 For this guide you will need the following:
 
-- A valid domain (e.g. `.com`,`org`,`.work`), `.local` will **not** work.
+- A domain name (gTLDs required)
 - A Google account.
 
 ## Create the Google OAuth app
 
-To begin with, you need to create an app in Google. This can be done by visiting the [Google Cloud Console](https://console.cloud.google.com/). There you need to create a new project (you should already have one by default). You should see a screen like this:
+To begin with, you need to create an app in Google. This can be done by visiting the [Google Cloud Console](https://console.cloud.google.com/). There you need to create a new project (you should already have one by default) and after creating it, you should see a screen like this:
 
 ![Google Cloud Console Home](/screenshots/google-cloud-home.png)
 
 From the quick access menu click _APIs & Services_ and then from the sidebar click _OAuth consent screen_. There it should just have a button in the middle saying _Get Started_, let's click that.
 
-::: info
+:::info
 Google has changed the OAuth section and this guide uses the new OAuth experience. If you see a button saying try the new OAuth experience, please click it so that the guide looks the same as the Google Cloud Console.
 :::
 
@@ -25,7 +25,7 @@ After clicking the button you should see this screen:
 
 ![Configure OAuth Consent Screen](/screenshots/google-cloud-oauth-configure.png)
 
-There for app name just use Tinyauth and for support email the only option should be your email address.
+There for app name just use `Tinyauth` and for support email the only option should be your email address.
 
 For audience use the only available type which is _External_.
 
@@ -37,7 +37,7 @@ Finally agree to the use data policy and click _Create_. After some time you sho
 
 In this screen click _Create OAuth Client_.
 
-::: info
+:::info
 You may see a warning saying that you haven't configured your OAuth Consent Screen, if you see this warning just refresh the page a couple of times and it should let you create your client.
 :::
 
@@ -57,7 +57,7 @@ Click your client, e.g. `Web Client 1` and copy your Client ID and Client secret
 
 ## Configure Tinyauth
 
-Now that you have your client ID and secret, you can pass it to the tinyauth docker container:
+Now that you have your client ID and secret, you can pass it to the Tinyauth docker container:
 
 ```yaml
 tinyauth:
@@ -76,12 +76,12 @@ tinyauth:
     traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth/traefik
 ```
 
-::: warning
-OAuth doesn't mean security, with the current setup everybody with a Github account can login to tinyauth as a normal user. If you would like to limit which users can login with OAuth, you can add the `OAUTH_WHITELIST` environment variable and only allow your email address to login. For more information check the [configuration](/docs/reference/configuration.md) page.
+:::warning
+OAuth doesn't mean security, with the current setup everybody with a Github account can login to Tinyauth as a normal user. If you would like to limit which users can login with OAuth, you can add the `OAUTH_WHITELIST` environment variable and only allow your email address to login. For more information check the [configuration](/docs/reference/configuration.md) page.
 :::
 
-::: tip
+:::tip
 Since you have OAuth enabled, you can now remove the `USERS` or `USERS_FILE` environment variables so as you can ony login with your OAuth provider.
 :::
 
-And you are done! After you restart tinyauth and try to login to an app, you should have an additional option to login with Google.
+And you are done! After you restart Tinyauth and try to login to an app, you should have an additional option to login with Google.

@@ -2,6 +2,14 @@
 
 Below you can find all release notes from all tinyauth versions.
 
+## v3.4.1
+
+### Technical
+
+- Ensure CGO is disabled when building tinyauth binaries
+- Bump dependencies
+- Update translations
+
 ## v3.4.0
 
 ### New features

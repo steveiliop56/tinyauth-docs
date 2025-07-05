@@ -1,10 +1,10 @@
-# Setting up access controls with tinyauth
+# Access controls
 
 Tinyauth supports basic access controls with docker labels. You can use them to restrict access to specific applications to only a small amount of users. Let's see how you can set them up.
 
-## Modifying the tinyauth container
+## Modifying the Tinyauth container
 
-We firstly need to make some small changes to the tinyauth container. We will use the example from the getting started guide and modify it like this:
+We firstly need to make some small changes to the Tinyauth container. We will use the example from the getting started guide and modify it like this:
 
 ```yaml
 tinyauth:
@@ -27,7 +27,7 @@ In this example let's assume your users are `user1` and `user2` and your OAuth w
 
 ## Modifying the app
 
-Now let's take the nginx example from the getting started guide and add the access controls:
+Now let's use the Nginx example from the getting started guide and add the access controls:
 
 ```yaml
 whoami:
@@ -42,19 +42,19 @@ whoami:
     tinyauth.users: user1 # <- Added line
 ```
 
-In this example, only `user1` will have access with simple username/password authentication and only `user2@example.com` will be able to access the app with OAuth. If either `user2` or `user1@example.com` try to access the app, they will be redirected to an unauthorized screen.
+In this example, only `user1` will have access to the app and only `user2@example.com` will be able to access the app with OAuth. If either `user2` or `user1@example.com` try to access the app, they will be redirected to an unauthorized screen.
 
-::: warning
+:::warning
 In order for the access controls to work the app must have the same container name as the subdomain it is exposed at, e.g. container name should be `hello` and the app should be exposed at `hello.example.com`. Using a different subdomain will **_not_** work.
 :::
 
-::: info
-The OAuth and user whitelist can be a regular regex expression if it has the slash (`/`) prefix and suffix.
+:::info
+The OAuth and user whitelist can be a regular expression if it has the slash (`/`) prefix and suffix.
 :::
 
 ## Access controls using OIDC groups
 
-Some proxies like pocket ID support user groups in the OIDC response. If your OIDC server supports this you can use groups to do access controls. To begin with you will need to make sure that the `GENERIC_SCOPES`/`--generic-scopes` config option includes the `groups` scope. After you ensure it does you can modify your app like this:
+Some proxies like Pocket ID support user groups in the OIDC response. If your OIDC server supports this, you can use groups to do access controls. To begin with you will need to make sure that the `GENERIC_SCOPES`/`--generic-scopes` config option includes the `groups` scope. Then you just need to modify the app you want to use the OIDC groups with:
 
 ```yaml
 whoami:
@@ -70,7 +70,7 @@ whoami:
 
 Now when you use the generic OAuth provider, only users that are in the `admin` group will be allowed to access the resource.
 
-::: info
+:::info
 The OAuth groups label is only supported for the generic OAuth provider **_not_** for Google or Github.
 :::
 

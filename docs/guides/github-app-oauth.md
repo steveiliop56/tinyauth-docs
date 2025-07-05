@@ -1,4 +1,4 @@
-# Setting up tinyauth with Github Apps
+# Setting up Tinyauth with Github Apps
 
 Tinyauth also supports Github Apps for authentication instead of OAuth Apps. Github Apps allow more control over permissions and are a bit more complex to setup. For the time being it is recommended you use the simple [OAuth Apps](/docs/guides/github-oauth.md), but in the future Github may deprecate this method of authentication.
 
@@ -6,22 +6,22 @@ Tinyauth also supports Github Apps for authentication instead of OAuth Apps. Git
 
 Github requires the following to setup an app:
 
-- Any domain name (even `.local`/`.localhost`)
+- A domain name (non gTLDs are supported)
 - A Github account
 
 ## Create the Github App
 
-Firstly, go to the [Github apps](https://github.com/settings/apps) section and click _New Github App_. You should see the following screen:
+Firstly open the [Github apps](https://github.com/settings/apps) section and click _New Github App_. You should see the following screen:
 
 ![Github New App Screen](/screenshots/github-app-new.png)
 
 There you need to fill in the following information:
 
-**Github App Name** -> The name for your app, it can be anything, e.g. `Tinyauth`
-
-**Homepage URL** -> Again can be anything, you can use `https://tinyauth.app`
-
-**Callback URL** -> This is the important part. You need to put the tinyauth app URL followed by `/api/oauth/callback/github`, e.g. `https://tinyauth.example.com/api/oauth/callback/github`
+| Name            | Value                                                                                                                                                                     |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Github App Name | The name for your app, it can be anything, e.g. `Tinyauth`.                                                                                                               |
+| Homepage URL    | Again can be anything, you can use `https://tinyauth.app`.                                                                                                                |
+| Callback URL    | This is the important part. You need to put the Tinyauth app URL followed by `/api/oauth/callback/github`, e.g. `https://tinyauth.example.com/api/oauth/callback/github`. |
 
 Under webhook make sure to uncheck the active checkbox as we will not need any webhooks.
 
@@ -37,11 +37,11 @@ Here, make sure to note down your client ID as you will need it later. You also 
 
 ![Github Client Secret](/screenshots/github-app-client-secret.png)
 
-Make sure to also note this down as it will not be available again and you will need it for tinyauth.
+Make sure to also note this down as it will not be available again and you will need it for Tinyauth.
 
 ## Configure Tinyauth
 
-Now that you have your client ID and secret, you can pass it to the tinyauth docker container:
+Now that you have your client ID and secret, you can pass it to the Tinyauth docker container:
 
 ```yaml
 tinyauth:
@@ -60,12 +60,12 @@ tinyauth:
     traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth/traefik
 ```
 
-::: warning
-OAuth doesn't mean security, with the current setup everybody with a Github account can login to tinyauth as a normal user. If you would like to limit which users can login with OAuth, you can add the `OAUTH_WHITELIST` environment variable and only allow your email address to login. For more information check the [configuration](/docs/reference/configuration.md) page.
+:::warning
+OAuth doesn't mean security, with the current setup everybody with a Github account can login to Tinyauth as a normal user. If you would like to limit which users can login with OAuth, you can add the `OAUTH_WHITELIST` environment variable and only allow your email address to login. For more information check the [configuration](/docs/reference/configuration.md) page.
 :::
 
-::: tip
+:::tip
 Since you have OAuth enabled, you can now remove the `USERS` or `USERS_FILE` environment variables so as you can ony login with your OAuth provider.
 :::
 
-And you are done! After you restart tinyauth and try to login to an app, you should have an additional option to login with Github.
+And you are done! After you restart Tinyauth and try to login to an app, you should have an additional option to login with Github.

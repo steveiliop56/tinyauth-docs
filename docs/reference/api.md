@@ -1,13 +1,17 @@
+---
+sidebar_position: 4
+---
+
 # API
 
 Tinyauth has a very simple API used for both the reverse proxies and the web UI. All of the available endpoints are listed below.
 
 ## Authentication
 
-The tinyauth API supports authentication using the `Authorization` header and basic auth. This can be useful when you want to permanently access a service protected with tinyauth using a headless client like `curl` or a custom script. For example, if you have an app hosted in `http://myapp.example.com` which is protected by tinyauth you can authenticate using curl:
+The Tinyauth API supports authentication using the `Authorization` header and basic auth. This can be useful when you want to permanently access a service protected with Tinyauth using a headless client like `curl` or a custom script. For example, if you have an app hosted in `http://myapp.example.com` which is protected by Tinyauth you can authenticate using curl:
 
 ```shell
-curl -u user:password http://myapp.example.com # the user:password is the username and password you use in tinyauth
+curl -u user:password http://myapp.example.com # the user:password is the username and password you use in Tinyauth
 ```
 
 In order for this to work you need to follow [RFC 7617](https://datatracker.ietf.org/doc/html/rfc7617) which means that your `Authorization` header needs to look like this:
@@ -16,15 +20,15 @@ In order for this to work you need to follow [RFC 7617](https://datatracker.ietf
 Authorization: Basic base64(username:password)
 ```
 
-::: warning
+:::warning
 Basic auth is permanent authorization meaning that if somebody obtains your header he can use it to login everywhere and it **won't** expire like the cookie will.
 :::
 
-::: warning
+:::note
 Basic auth is disabled for accounts with TOTP configured for security reasons.
 :::
 
-When using basic auth, tinyauth assumes you are running in _API_ mode meaning that it will never return a redirect or plain html (e.g. the `/api/auth/traefik` endpoint will return 302 if you are not logged in), instead it will return API compatible responses like:
+When using basic auth or a client that does not include `text/html` in the `Accept` header, Tinyauth assumes you are running in _API_ mode meaning that it will never return a redirect or plain html (e.g. the `/api/auth/traefik` endpoint will return 302 if you are not logged in), instead it will return API compatible responses like:
 
 ```json
 {
@@ -33,13 +37,11 @@ When using basic auth, tinyauth assumes you are running in _API_ mode meaning th
 }
 ```
 
-Tinyauth will also assume you are running in _API_ mode when your client does not accept `text/html`.
-
 ## Endpoints
 
 ### Healthcheck
 
-Healthcheck for the tinyauth API server.
+Healthcheck for the Tinyauth API server.
 
 Endpoint: `/api/healthcheck`<br />
 Method: `GET`
@@ -69,7 +71,7 @@ Example response:
 }
 ```
 
-::: info
+:::info
 The API will redirect to the login page if the user is not authenticated (when not running in API mode).
 :::
 
@@ -99,7 +101,7 @@ Example response:
 }
 ```
 
-::: info
+:::info
 Alongside with the JSON response the API will also return the required cookies that need to be set by the browser for the user to be authenticated on the next request.
 :::
 
@@ -127,6 +129,10 @@ Example response:
 }
 ```
 
+:::info
+Alongside with the JSON response the API will also return the required cookies that need to be set by the browser for the user to be authenticated on the next request.
+:::
+
 ### Logout
 
 Endpoint used to delete the session cookie and in turn log out the user.
@@ -143,8 +149,8 @@ Example response:
 }
 ```
 
-::: warning
-The logout function doesn't invalidate the session it just tells the client to forget the cookie. This means that if somebody gets access to this token he can use it login.
+:::warning
+The logout function doesn't invalidate the session, it just tells the client to "forget" the cookie. This means that if somebody gets access to this token he can use it login. Nevertheless the cookie still includes a built-in expiration to increase security.
 :::
 
 ### App context
@@ -227,6 +233,6 @@ Example response:
 }
 ```
 
-::: info
-The callback will redirect to the `redirect_uri` that was set while the frontend redirected you to the provider's login page, if the cookie is not set it will just show the 200 OK message.
+:::info
+The callback will try to get a redirect URI from the `tinyauth-redirect-xxxxxx` cookie. If the cookie does not exist the API will redirect to the login screen (when not running in API mode).
 :::
