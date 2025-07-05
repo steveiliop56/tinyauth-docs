@@ -92,7 +92,7 @@
 }
 
 .quickLink {
-  border-radius: calc(infinity * 1px);
+  border-radius: 9999px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -238,6 +238,12 @@
   transition-property: transform, background-color;
   transition-duration: 150ms;
   transition-timing-function: ease-in-out;
+}
+
+.featuresTitle {
+  color: var(--ifm-color-primary-dark);
+  font-size: 2rem;
+  font-weight: 600;
 }
 
 [data-theme="dark"] .featureCard {

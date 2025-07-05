@@ -55,7 +55,7 @@ tinyauth:
 ```
 
 :::tip
-You can set the `OAUTH_AUTO_REDIRECT` environment variable to `generic` so every time you try to access a Rinyauth app you will be automatically redirected to Pocket ID.
+You can set the `OAUTH_AUTO_REDIRECT` environment variable to `generic` so every time you access a Tinyauth protected app, you will be automatically redirected to Pocket ID.
 :::
 
 :::warning

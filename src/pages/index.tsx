@@ -5,7 +5,6 @@ import Layout from "@theme/Layout";
 import Heading from "@theme/Heading";
 import styles from "./index.module.css";
 import clsx from "clsx";
-import { useColorMode } from "@docusaurus/theme-common";
 
 function Header() {
   const { siteConfig } = useDocusaurusContext();
@@ -76,10 +75,10 @@ function Header() {
         </div>
       </div>
       <div className={styles.featuresContainer}>
-        <Heading as="h1">Features</Heading>
+        <Heading as="h2" className={styles.featuresTitle}>Features</Heading>
         <div className={styles.featureCards}>
           <div className={styles.featureCard}>
-            <Heading as="h2" className={styles.featureCardTitle}>
+            <Heading as="h3" className={styles.featureCardTitle}>
               Simple
             </Heading>
             <p className={styles.featureCardDescription}>
@@ -89,7 +88,7 @@ function Header() {
             </p>
           </div>
           <div className={styles.featureCard}>
-            <Heading as="h2" className={styles.featureCardTitle}>
+            <Heading as="h3" className={styles.featureCardTitle}>
               Lightweight
             </Heading>
             <p className={styles.featureCardDescription}>
@@ -98,7 +97,7 @@ function Header() {
             </p>
           </div>
           <div className={styles.featureCard}>
-            <Heading as="h2" className={styles.featureCardTitle}>
+            <Heading as="h3" className={styles.featureCardTitle}>
               OAuth Support
             </Heading>
             <p className={styles.featureCardDescription}>
