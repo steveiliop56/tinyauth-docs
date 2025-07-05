@@ -1,10 +1,10 @@
 # Allowed Paths
 
-Sometimes you may want to allow a specific path of your application (like `/api`) to be available without having the tinyauth login screen since these paths usually have their own authentication. This is why tinyauth supports a regex ignore list for this exact reason.
+Sometimes you may want to allow a specific path of your application (like `/api`) to be available without having the Tinyauth login screen since these paths usually have their own authentication. This is why Tinyauth supports a regex ignore list for this exact reason.
 
 ## Modifying the tinyauth container
 
-We firstly need to make some small changes to the tinyauth container. We will use the example from the getting started guide and modify it like this:
+We firstly need to make some small changes to the Tinyauth container. We will use the example from the getting started guide and modify it like this:
 
 ```yaml
 tinyauth:
@@ -25,7 +25,7 @@ tinyauth:
 
 ## Modifying the app
 
-Now let's take the nginx example from the getting started guide and add the access controls:
+Now let's use the Nginx example from the getting started guide and add the access controls:
 
 ```yaml
 whoami:
@@ -39,8 +39,8 @@ whoami:
     tinyauth.allowed: \/api.*
 ```
 
-In this example if you visit `http://whoami.example.com` you will be redirected to tinyauth's login screen but if you try to access `http://whoami.example.com/api` you will be allowed to use it.
+In this example if you visit `http://whoami.example.com` you will be redirected to Tinyauth's login screen but if you try to access `http://whoami.example.com/api` you will be allowed to use it.
 
-::: info
-If you need help building your regex string, I recommend <https://regex101.com/>, an entire IDE just for regex.
+:::info
+If you need help building your regex string, I recommend [https://regex101.com](https://regex101.com), an entire IDE just for regex.
 :::

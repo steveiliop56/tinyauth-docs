@@ -39,14 +39,14 @@ In order to configure the app you need to create an environment file, this can b
 
 ## Developing
 
-I have designed the development workflow to be entirely in docker, this is because it will directly work with traefik and you will not need to do any building in your host machine. The recommended development setup is to have a subdomain pointing to your machine like this:
+I have designed the development workflow to be entirely in docker, this is because it will directly work with Traefik and you will not need to do any building in your host machine. The recommended development setup is to have a subdomain pointing to your machine like this:
 
 ```
 *.dev.example.com -> 127.0.0.1
 dev.example.com -> 127.0.0.1
 ```
 
-::: tip
+:::tip
 You can use [sslip.io](https://sslip.io) as a domain if you don't have one to develop with.
 :::
 
@@ -56,6 +56,6 @@ Then you can just make sure the domains are correct in the development docker co
 docker compose -f docker-compose.dev.yml up --build
 ```
 
-::: tip
+:::tip
 I recommend copying the example `docker-compose.dev.yml` into a `docker-compose.test.yml` file, so as you don't accidentally commit any sensitive information.
 :::

@@ -2,7 +2,7 @@
 
 _Contributor: [@erwinkramer](https://github.com/erwinkramer)_.
 
-A caddy configuration for docker compose, based on [caddy-docker-proxy](https://github.com/lucaslorentz/caddy-docker-proxy), that works with tinyauth to enable a fully labeled configuration.
+A Caddy configuration for docker compose, based on [caddy-docker-proxy](https://github.com/lucaslorentz/caddy-docker-proxy), that works with Tinyauth to enable a fully labeled configuration.
 
 ## Authentication snippet
 
@@ -45,7 +45,7 @@ caddy:
 
 ## Tinyauth configuration
 
-Add tinyauth and place it behind caddy with the `caddy` and `caddy.reverse_proxy` labels:
+Add Tinyauth and place it behind caddy with the `caddy` and `caddy.reverse_proxy` labels:
 
 ```yaml
 tinyauth:
@@ -63,13 +63,13 @@ tinyauth:
 
 ## Secure a service
 
-Place any service behind tinyauth, the only addition you need to secure a service is the reusable snippet, called `tinyauth_forwarder`, we created earlier:
+Place any service behind Tinyauth, the only addition you need to secure a service is the reusable snippet, called `tinyauth_forwarder`, we created earlier:
 
 ```yaml
 caddy.import: tinyauth_forwarder *
 ```
 
-Using whoami as an example, it might look like this:
+Using Whoami as an example, it might look like this:
 
 ```yaml
 whoami:

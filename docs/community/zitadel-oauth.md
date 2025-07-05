@@ -1,4 +1,4 @@
-# Setting up tinyauth with Zitadel
+# Setting up Tinyauth with Zitadel
 
 _Contributor: [@WilliamB78](https://github.com/WilliamB78)._
 
@@ -8,7 +8,7 @@ Tinyauth has built-in support for any generic OAuth provider, and in this guide 
 
 For this guide, you will need the following:
 
-- A valid domain (e.g., `.com`, `.org`, `.work`). `.local` will **not** work.
+- A domain name (gTLD required)
 - A Zitadel instance (cloud or self-hosted).
 
 ## Create the Zitadel OAuth app
@@ -17,15 +17,14 @@ To begin with, you need to create an app in Zitadel. This can be done by visitin
 
 Then create a new application by clicking on the "+" blue button.
 
-Follow the wizard and configure the app like this :
+Follow the wizard and configure the app like this:
 
-**Name** -> Tinyauth
-
-**Type** -> Web
-
-**Authentication Method** -> Code
-
-**Redirect URI** -> `https://tinyauth.example.com/api/oauth/callback/generic`
+| Name                  | Value                                                     |
+| --------------------- | --------------------------------------------------------- |
+| Name                  | Tinyauth                                                  |
+| Type                  | Web                                                       |
+| Authentication Method | Code                                                      |
+| Redirect URI          | `https://tinyauth.example.com/api/oauth/callback/generic` |
 
 Finalize by clicking on the _Create_ button, and copy the client ID and the client secret.
 
@@ -37,7 +36,7 @@ After your application gets created, you should have a screen like this:
 
 ## Configure Tinyauth
 
-Now that you have your Client ID and Secret, you can pass it to the tinyauth docker container:
+Now that you have your Client ID and Secret, you can pass it to the Tinyauth docker container:
 
 ```yaml
 tinyauth:
@@ -63,12 +62,12 @@ tinyauth:
     traefik.http.middlewares.tinyauth.forwardauth.authResponseHeaders: Remote-User, Remote-Email, Remote-Name, Remote-Groups
 ```
 
-::: warning
-OAuth doesn't mean security, with the current setup everybody with a Github account can login to Tinyauth as a normal user. If you would like to limit which users can login with OAuth, you can add the `OAUTH_WHITELIST` environment variable and only allow your email address to login. For more information check the [configuration](/docs/reference/configuration.md) page.
+:::warning
+OAuth doesn't mean security, with the current setup everybody with a Zitadel account can login to Tinyauth as a normal user. If you would like to limit which users can login with OAuth, you can add the `OAUTH_WHITELIST` environment variable and only allow your email address to login. For more information check the [configuration](/docs/reference/configuration.md) page.
 :::
 
-::: tip
+:::tip
 Since you have OAuth enabled, you can now remove the `USERS` or `USERS_FILE` environment variables so as you can ony login with your OAuth provider.
 :::
 
-And you are done! After you restart tinyauth and try to login to an app, you should have an additional option to login with Zitadel.
+And you are done! After you restart Tinyauth and try to login to an app, you should have an additional option to login with Zitadel.

@@ -1,12 +1,16 @@
+---
+sidebar_position: 1
+---
+
 # Configuration
 
 Tinyauth can be either configured with environment variables or CLI flags. The full list of configuration options is available below.
 
-::: info
+:::info
 Every configuration option that has a `FILE_` equivalent (e.g. `USERS` and `USERS_FILE`), allows for the `FILE_` environment variable/CLI flag to be used instead of the original one.
 :::
 
-::: info
+:::info
 In some configuration options like the `GENERIC_SCOPES` environment variable, you may need to use spaces (e.g. `GENERIC_SCOPES=openid profile email`). In this case you **_shouldn't_** use quotes as docker can handle the spaces.
 :::
 
@@ -16,10 +20,10 @@ In some configuration options like the `GENERIC_SCOPES` environment variable, yo
 | ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | -------- |
 | `PORT`/`--port`                                       | The port the UI and API listens on.                                                                                    | 3000                                                                           | no       |
 | `ADDRESS`/`--address`                                 | The address the UI and API listens on.                                                                                 | `0.0.0.0`                                                                      | no       |
-| `APP_URL`/`--app-url`                                 | The URL tinyauth uses for the redirects and the cookie domain.                                                         | -                                                                              | yes      |
-| `SECRET`/`--secret`                                   | The secret tinyauth uses to encrypt the cookies.                                                                       | -                                                                              | yes      |
-| `USERS`/`--users`                                     | A comma separated list of tinyauth users.                                                                              | -                                                                              | yes      |
-| `USERS_FILE`/`--users-file`                           | A file containing a list of tinyauth users.                                                                            | -                                                                              | no       |
+| `APP_URL`/`--app-url`                                 | The URL Tinyauth uses for the redirects and the cookie domain.                                                         | -                                                                              | yes      |
+| `SECRET`/`--secret`                                   | The secret Tinyauth uses to encrypt the cookies.                                                                       | -                                                                              | yes      |
+| `USERS`/`--users`                                     | A comma separated list of Tinyauth users.                                                                              | -                                                                              | yes      |
+| `USERS_FILE`/`--users-file`                           | A file containing a list of Tinyauth users.                                                                            | -                                                                              | no       |
 | `SECRET_FILE`/`--secret-file`                         | A file containing the cookie secret.                                                                                   | -                                                                              | no       |
 | `COOKIE_SECURE`/`--cookie-secure`                     | Send cookie only with HTTPS.                                                                                           | `false`                                                                        | no       |
 | `DISABLE_CONTINUE`/`--disable-continue`               | Disable the continue screen.                                                                                           | `false`                                                                        | no       |

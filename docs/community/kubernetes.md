@@ -17,11 +17,9 @@ This documentation assumes the following prerequisites:
 - An operational Kubernetes cluster
 - An Ingress controller installed for the Ingress section. This documentation demonstrates using `ingress-nginx`, but `traefik` could be used as well.
 
-## Deploying Tinyauth to a Kubernetes Environment
+## Create a namespace
 
-### Create a Namespace
-
-Firstly, you will need to create a namespace for tinyauth:
+Firstly, you will need to create a namespace for Tinyauth:
 
 ```yaml
 apiVersion: v1
@@ -30,7 +28,7 @@ metadata:
   name: tinyauth
 ```
 
-### Create a secret
+## Create a secret
 
 First, [generate a secret key](../getting-started.md#installation) based on the installation instructions.
 
@@ -53,9 +51,9 @@ metadata:
 type: Opaque
 ```
 
-### Create a Deployment
+## Create a deployment
 
-Now it's time to create the tinyauth deployment:
+Now it's time to create the Tinyauth deployment:
 
 ```yaml
 apiVersion: apps/v1
@@ -99,7 +97,7 @@ spec:
               port: 3000
 ```
 
-### Create a Service
+## Create a Service
 
 Finally create the service:
 
@@ -130,9 +128,9 @@ Documentation for these annotations can be found in the ingress-nginx repository
 - `nginx.ingress.kubernetes.io/auth-signin-redirect-param` specifies the key of the query parameter used to set the redirect URI.
 
 > [!NOTE]
-> This example uses the `<my-service>.<my-namespace>.svc.cluster.local` in-cluster uri based on the above example for the `auth-url`.
+> This example uses the `<my-service>.<my-namespace>.svc.cluster.local` in-cluster URI based on the above example for the `auth-url`.
 >
-> The `auth-signin` annotation should be a reference to a uri that is accessible to the user.
+> The `auth-signin` annotation should be a reference to a URI that is accessible to the user.
 
 ```yaml
 apiVersion: networking.k8s.io/v1
