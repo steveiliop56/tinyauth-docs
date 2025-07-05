@@ -36,7 +36,7 @@ const config: Config = {
       {
         docs: {
           sidebarPath: "./sidebars.ts",
-          editUrl: "https://github.com/steveiliop56/tinyauth-docs",
+          editUrl: "https://github.com/steveiliop56/tinyauth-docs/edit/main/",
         },
         theme: {
           customCss: "./src/css/custom.css",
