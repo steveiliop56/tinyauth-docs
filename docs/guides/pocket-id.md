@@ -4,7 +4,7 @@
 
 ## Requirements
 
-This guide assumes you have a working Pocket ID installation. If you don't already have one you can checkout [Pocket ID's documentation](https://pocket-id.org/docs/setup/installation) on how to install it.
+This guide assumes you have a working Pocket ID installation. If you don't already have one you can check out [Pocket ID's documentation](https://pocket-id.org/docs/setup/installation) on how to install it.
 
 ## Configuring Pocket ID
 
