@@ -1,4 +1,4 @@
-# Setting up tinyauth with Nginx Proxy Manager
+# Setting up Tinyauth with Nginx Proxy Manager
 
 Nginx Proxy Manager is definitely a piece of software that everybody loves in the homelab community. This is why it is mandatory that Tinyauth supports it. It's a bit different compared to traefik/caddy due to nginx itself not supporting 302 redirects for the `auth_request` module but Tinyauth accounts for it and has API paths made just for it!
 
