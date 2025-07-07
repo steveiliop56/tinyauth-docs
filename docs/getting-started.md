@@ -82,7 +82,7 @@ tinyauth:
 ```
 
 :::tip
-You can generate the `SECRET` environment variable using `openssl rand -base64 32 | tr -dc 'a-zA-Z0-9' | head -c 32`.
+You can generate the `SECRET` environment variable using `openssl rand -base64 32 | tr -dc 'a-zA-Z0-9' | head -c 32 && echo`
 :::
 
 Then for every app you want tinyauth to protect, just add the following label:
