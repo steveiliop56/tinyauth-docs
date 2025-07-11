@@ -37,7 +37,7 @@ tinyauth:
     - LDAP_ADDRESS=ldap://my-ldap-server:389
     - LDAP_BIND_DN=uid=your-observer-user,ou=people,dc=example,dc=com
     - LDAP_BIND_PASSWORD=your-observer-user-password
-    - LDAP_BASE_DN=dc=example,cd=com
+    - LDAP_BASE_DN=dc=example,dc=com
     - LDAP_SEARCH_FILTER=(uid=%s)
     - LDAP_INSECURE=true
 ```
