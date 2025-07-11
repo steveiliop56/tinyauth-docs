@@ -7,12 +7,12 @@ sidebar_position: 2
 As promised, Tinyauth is extremely easy to get up and running.
 
 :::info
-Tinyauth by default ships with the Traefik proxy. If you are using a different proxy, there are available guides for [Nginx Proxy Manager](/docs/guides/nginx-proxy-manager) and [Caddy](/docs/community/caddy).
+Tinyauth by default ships with the Traefik reverse proxy. If you are using a different proxy, there are available guides for [Nginx Proxy Manager](/docs/guides/nginx-proxy-manager) and [Caddy](/docs/community/caddy).
 :::
 
 ## Community guides
 
-If you prefer a guide over documentation on how to get started, there is some amazing content by the community:
+If you prefer a guide over documentation on how to get started, there is some amazing content by the community.
 
 - Tinyauth tutorial by [Jim's Garage](https://youtube.com/watch?v=qmlHirOpzpc).
 - Tinyauth with Pangolin guide by [ivobrett](https://forum.hhf.technology/t/implementing-external-authentication-in-pangolin-using-tinyauth-and-the-middleware-manager/1417) (requires account)
@@ -23,7 +23,7 @@ As with all guides and videos, make sure to always check the documentation for u
 
 ## Create a user
 
-A Tinyauth user consists of 3 things, a username, a password hash and an optional TOTP secret:
+A Tinyauth user consists of three things, a username, a password hash and an optional TOTP secret.
 
 ```mermaid
 flowchart BR

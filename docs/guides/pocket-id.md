@@ -1,4 +1,4 @@
-# Setting up Tinyauth with Pocket ID
+# Tinyauth with Pocket ID
 
 [Pocket ID](https://pocket-id.org) is a really popular OIDC server that allows you to login to your apps with passkeys. Most proxies do not support OIDC/OAuth servers for authentication meaning that Pocket ID cannot be connected with them. With Tinyauth you can connect Pocket ID to your favorite proxy and use it to secure your apps.
 
@@ -12,7 +12,7 @@ To begin with you should visit Pocket ID's admin dashboard which should look lik
 
 ![Pocket ID Admin Page](/screenshots/pocket-id-home.png)
 
-There you should go to the _OIDC Clients_ tab and click _Add OIDC Client_. A new menu will appear prompting you to provide some information. We only need to set two of these fields.
+There you should go to the **OIDC Clients** tab and click **Add OIDC Client**. A new menu will appear prompting you to provide some information. We only need to set two of these fields.
 
 | Name          | Value                                                                                                                                                                  |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -23,7 +23,7 @@ There you should go to the _OIDC Clients_ tab and click _Add OIDC Client_. A new
 
 You can also upload a logo for your OIDC client. You can download the Tinyauth logo from [Github](https://github.com/steveiliop56/tinyauth/blob/main/frontend/public/logo.png).
 
-Finally click _Save_. A new page should be appear containing your OIDC credentials:
+Finally click **Save**. A new page should be appear containing your OIDC credentials:
 
 ![Pocket ID Client Page](/screenshots/pocket-id-client-page.png)
 
@@ -66,7 +66,7 @@ And you are done! After you restart Tinyauth and try to login to an app, you sho
 
 ## Access controls with Pocket ID groups
 
-Pocket ID has support for user groups, this can be useful for managing your access controls entirely through Pocket ID and not through whitelists on Tinyauth. To use groups you will firstly need to create one. To do so firstly go to the _User Groups_ tab and click _Add Group_. There you should give it a name and click _Save_.
+Pocket ID has support for user groups, this can be useful for managing your access controls entirely through Pocket ID and not through whitelists on Tinyauth. To use groups you will firstly need to create one. To do so firstly go to the **User Groups** tab and click **Add Group**. There you should give it a name and click **Save**.
 
 ![Pocket ID New Group](/screenshots/pocket-id-new-group.png)
 

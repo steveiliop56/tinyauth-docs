@@ -1,6 +1,44 @@
 # Changelog
 
-Below you can find all release notes from all tinyauth versions.
+Below you can find all release notes from all Tinyauth versions.
+
+## v3.6.0
+
+### New features
+
+- Support for completely disabling Tinyauth authentication for specific IPs or CIDRs using the `tinyauth.ip.bypass` label
+
+### Fixes
+
+- Fix the label discovery
+
+### Technical
+
+- Update translations
+
+## v3.5.0
+
+### New features
+
+- Add label to select app based on the its domain eliminating the need for keeping the container name the same as the app domain
+- Support for logging in to a protected app using basic auth
+- Support for allowing/blocking IP addresses and/or CIDRs
+- Support for using an LDAP server as the user source
+
+### Improvements
+
+- Move to Traefik paerser _(not a typo)_ for label parsing instead of custom solution
+- Encrypt the session cookie
+
+### Fixes
+
+- Fix error state spacing in login form
+
+### Technical
+
+- Update dependencies
+- Update translations
+- Run nightly workflow every day
 
 ## v3.4.1
 

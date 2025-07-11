@@ -26,7 +26,7 @@ Follow the wizard and configure the app like this:
 | Authentication Method | Code                                                      |
 | Redirect URI          | `https://tinyauth.example.com/api/oauth/callback/generic` |
 
-Finalize by clicking on the _Create_ button, and copy the client ID and the client secret.
+Finalize by clicking on the **Create** button, and copy the client ID and the client secret.
 
 After your application gets created, you should have a screen like this:
 

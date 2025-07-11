@@ -1,4 +1,4 @@
-# Setting up Tinyauth with Nginx Proxy Manager
+# Tinyauth with Nginx Proxy Manager
 
 Nginx Proxy Manager is definitely a piece of software that everybody loves in the homelab community. This is why it is mandatory that Tinyauth supports it. It's a bit different compared to traefik/caddy due to nginx itself not supporting 302 redirects for the `auth_request` module but Tinyauth accounts for it and has API paths made just for it!
 
@@ -57,7 +57,7 @@ You can also setup your SSL if you are using certificates.
 Make sure that block common exploits is disabled. If it is enabled nginx will not allow URLs in the query parameters which is required for Tinyauth to function.
 :::
 
-Now we need to configure our protected hosts, in this case it is Mginx. For the Details tab we will fill it as we did with Tinyauth which looks like this:
+Now we need to configure our protected hosts, in this case it is Nginx. For the Details tab we will fill it as we did with Tinyauth which looks like this:
 
 <img src="/screenshots/npm-nginx.png" alt="Nginx Proxy Manager Nginx host" width="512" />
 
@@ -67,7 +67,7 @@ Again, you can configure your SSL as you like.
 Here you can keep the block common exploits enabled.
 :::
 
-Now for the important part. You need the following config in the Advanced tab in order for nginx to use tinyauth to authenticate:
+Now for the important part. You need the following config in the Advanced tab in order for Nginx to use Tinyauth to authenticate:
 
 ```shell
 # Root location

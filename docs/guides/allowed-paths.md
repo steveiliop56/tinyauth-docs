@@ -2,7 +2,7 @@
 
 Sometimes you may want to allow a specific path of your application (like `/api`) to be available without having the Tinyauth login screen since these paths usually have their own authentication. This is why Tinyauth supports a regex ignore list for this exact reason.
 
-## Modifying the tinyauth container
+## Modifying the Tinyauth container
 
 We firstly need to make some small changes to the Tinyauth container. We will use the example from the getting started guide and modify it like this:
 

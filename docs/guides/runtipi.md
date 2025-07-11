@@ -1,4 +1,4 @@
-# Setting up Tinyauth with Runtipi
+# Tinyauth with Runtipi
 
 Runtipi is a very popular open source personal homeserver helper that enables you to manage and run multiple services on a single server. For more information check its [website](https://runtipi.io). Due to the very powerful proxy features it offers, it can be easily integrated with Tinyauth to offer a seamless authentication experience. Let's see how you can set it up in under five minutes.
 

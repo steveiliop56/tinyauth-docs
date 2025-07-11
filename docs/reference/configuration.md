@@ -65,3 +65,14 @@ In some configuration options like the `GENERIC_SCOPES` environment variable, yo
 | `GENERIC_SCOPES`/`--generic-scopes`                         | The generic provider scopes.                          | -         | no       |
 | `GENERIC_NAME`/`--generic-name`                             | The name for the generic client button on the UI.     | `Generic` | no       |
 | `GENEIRC_SKIP_SSL`/`--generic-skip-ssl`                     | Ignore self-signed certificates.                      | `false`   | no       |
+
+## LDAP Config
+
+| Name                                        | Description                                        | Default    | Required |
+| ------------------------------------------- | -------------------------------------------------- | ---------- | -------- |
+| `LDAP_ADDRESS`/`--ldap-address`             | LDAP server address (e.g. ldap://localhost:389).   | -          | no       |
+| `LDAP_BIND_DN`/`--ldap-bind-dn`             | LDAP bind DN (e.g. uid=user,dc=example,dc=com).    | -          | no       |
+| `LDAP_BIND_PASSWORD`/`--ldap-bind-password` | LDAP bind password.                                | -          | no       |
+| `LDAP_BASE_DN`/`--ldap-base-dn`             | LDAP base DN (e.g. dc=example,dc=com).             | -          | no       |
+| `LDAP_INSECURE`/`--ldap-insecure`           | Skip certificate verification for the LDAP server. | `false`    | no       |
+| `LDAP_SEARCH_FILTER`/`--ldap-search-filter` | LDAP search filter for user lookup.                | `(uid=%s)` | no       |

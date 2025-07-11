@@ -1,4 +1,4 @@
-# Setting up Tinyauth with Github OAuth
+# OAuth with Github OAuth
 
 Tinyauth has builtin support for Github OAuth with just two environment variables. Most of the hard work happens on the Github side rather than Tinyauth.
 
@@ -11,7 +11,7 @@ For this guide you will need the following:
 
 ## Create the Github OAuth app
 
-The first thing you need to do is create a Github OAuth app, this can be done by going to the [Github developer settings](https://github.com/settings/developers) and clicking _New OAuth App_. There you need to fill in the following information:
+The first thing you need to do is create a Github OAuth app, this can be done by going to the [Github developer settings](https://github.com/settings/developers) and clicking **New OAuth App**. There you need to fill in the following information:
 
 | Name                       | Value                                                                                                                                                                            |
 | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -21,7 +21,7 @@ The first thing you need to do is create a Github OAuth app, this can be done by
 
 ![Github new OAuth app](/screenshots/github-new-oauth-app.png)
 
-After you fill in your information, click Register Application.
+After you fill in your information, click **Register Application**.
 
 ## Get your credentials
 
@@ -29,7 +29,7 @@ After you create your application, you should see a screen like this:
 
 ![Github OAuth app homepage](/screenshots/github-oauth-app-homepage.png)
 
-Here make sure to note down your client ID. Now, let's create the client secret, this can be done by clicking the _Generate a new client secret_ button. When you click it, Github will prompt you to login again and then it will create your secret which it will present like this:
+Here make sure to note down your client ID. Now, let's create the client secret, this can be done by clicking the **Generate a new client secret** button. When you click it, Github will prompt you to login again and then it will create your secret which it will present like this:
 
 ![Github OAuth Client Secret](/screenshots/github-oauth-client-secret.png)
 

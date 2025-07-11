@@ -74,4 +74,4 @@ Now when you use the generic OAuth provider, only users that are in the `admin` 
 The OAuth groups label is only supported for the generic OAuth provider **_not_** for Google or Github.
 :::
 
-That's it! You just configured access controls in tinyauth!
+That's it! You just configured access controls in Tinyauth!
