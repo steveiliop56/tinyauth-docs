@@ -22,24 +22,16 @@ Now that we have the observer user we can repeat this process to create another 
 
 ## Configuring Tinyauth
 
-Now it's time to configure Tinyauth to connect to the LLDAP server. Let's modify the example docker compose file from the getting started guide.
+Now it's time to configure Tinyauth to connect to the LDAP server, this can be done by adding the following environment variables to the Tinyauth docker container:
 
 ```yaml
-tinyauth:
-  image: ghcr.io/steveiliop56/tinyauth:v3
-  container_name: tinyauth
-  restart: unless-stopped
-  environment:
-    - SECRET=some-random-32-chars-string
-    - APP_URL=https://tinyauth.example.com
-    - USERS=your-username-password-hash
-    # Add the following environment variables
-    - LDAP_ADDRESS=ldap://my-ldap-server:389
-    - LDAP_BIND_DN=uid=your-observer-user,ou=people,dc=example,dc=com
-    - LDAP_BIND_PASSWORD=your-observer-user-password
-    - LDAP_BASE_DN=dc=example,dc=com
-    - LDAP_SEARCH_FILTER=(uid=%s)
-    - LDAP_INSECURE=true
+environment:
+  - LDAP_ADDRESS=ldap://my-ldap-server:389
+  - LDAP_BIND_DN=uid=your-observer-user,ou=people,dc=example,dc=com
+  - LDAP_BIND_PASSWORD=your-observer-user-password
+  - LDAP_BASE_DN=dc=example,dc=com
+  - LDAP_SEARCH_FILTER=(uid=%s)
+  - LDAP_INSECURE=true
 ```
 
 :::info

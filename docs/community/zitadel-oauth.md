@@ -1,4 +1,4 @@
-# Setting up Tinyauth with Zitadel
+# Tinyauth with Zitadel
 
 _Contributor: [@WilliamB78](https://github.com/WilliamB78)._
 
@@ -36,30 +36,17 @@ After your application gets created, you should have a screen like this:
 
 ## Configure Tinyauth
 
-Now that you have your Client ID and Secret, you can pass it to the Tinyauth docker container:
+In order for Tinyauth to work with Zitadel we will need to use the generic OAuth provider, to do so, we will need to add the following environment variables to the Tinyauth docker container:
 
 ```yaml
-tinyauth:
-  container_name: tinyauth
-  image: ghcr.io/steveiliop56/tinyauth:v3
-  restart: unless-stopped
-  environment:
-    - SECRET=some-random-32-chars-string
-    - APP_URL=https://tinyauth.example.com
-    - GENERIC_SCOPES=openid profile email preferred_username groups
-    - GENERIC_AUTH_URL=https://zitadel.example.com/oauth/v2/authorize
-    - GENERIC_TOKEN_URL=https://zitadel.example.com/oauth/v2/token
-    - GENERIC_USER_URL=https://zitadel.example.com/oidc/v1/userinfo
-    - GENERIC_CLIENT_ID= # Paste from previous step
-    - GENERIC_CLIENT_SECRET= # Paste from previous step
-    - GENERIC_NAME=Zitadel
-    - OAUTH_AUTO_REDIRECT=generic
-    - DISABLE_CONTINUE=true
-  labels:
-    traefik.enable: true
-    traefik.http.routers.tinyauth.rule: Host(`tinyauth.example.com`)
-    traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth/traefik
-    traefik.http.middlewares.tinyauth.forwardauth.authResponseHeaders: Remote-User, Remote-Email, Remote-Name, Remote-Groups
+environment:
+  - GENERIC_SCOPES=openid profile email preferred_username groups
+  - GENERIC_AUTH_URL=https://zitadel.example.com/oauth/v2/authorize
+  - GENERIC_TOKEN_URL=https://zitadel.example.com/oauth/v2/token
+  - GENERIC_USER_URL=https://zitadel.example.com/oidc/v1/userinfo
+  - GENERIC_CLIENT_ID=your-zitadel-client-id
+  - GENERIC_CLIENT_SECRET=your-zitadel-client-secret
+  - GENERIC_NAME=Zitadel
 ```
 
 :::warning

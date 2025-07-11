@@ -57,23 +57,12 @@ Click your client, e.g. `Web Client 1` and copy your Client ID and Client secret
 
 ## Configure Tinyauth
 
-Now that you have your client ID and secret, you can pass it to the Tinyauth docker container:
+Now that you have your client ID and secret, you can add the following environment variables to the Tinyauth docker container:
 
 ```yaml
-tinyauth:
-  container_name: tinyauth
-  image: ghcr.io/steveiliop56/tinyauth:v3
-  restart: unless-stopped
-  environment:
-    - SECRET=some-random-32-chars-string
-    - APP_URL=https://tinyauth.example.com
-    - USERS=your-email-password-hash
-    - GOOGLE_CLIENT_ID=your-google-client-id
-    - GOOGLE_CLIENT_SECRET=your-google-secret
-  labels:
-    traefik.enable: true
-    traefik.http.routers.tinyauth.rule: Host(`tinyauth.example.com`)
-    traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth/traefik
+environment:
+  - GOOGLE_CLIENT_ID=your-google-client-id
+  - GOOGLE_CLIENT_SECRET=your-google-secret
 ```
 
 :::warning

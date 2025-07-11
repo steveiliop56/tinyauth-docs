@@ -37,23 +37,12 @@ Make sure to note this down as well since we will need it later and that's it, w
 
 ## Configure Tinyauth
 
-Now that you have your client ID and secret, you can pass it to the Tinyauth docker container:
+Now that you have your client ID and secret, you can add the following environment variables to the Tinyauth docker container:
 
 ```yaml
-tinyauth:
-  container_name: tinyauth
-  image: ghcr.io/steveiliop56/tinyauth:v3
-  restart: unless-stopped
-  environment:
-    - SECRET=some-random-32-chars-string
-    - APP_URL=https://tinyauth.example.com
-    - USERS=your-email-password-hash
-    - GITHUB_CLIENT_ID=your-github-client-id
-    - GITHUB_CLIENT_SECRET=your-github-secret
-  labels:
-    traefik.enable: true
-    traefik.http.routers.tinyauth.rule: Host(`tinyauth.example.com`)
-    traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth/traefik
+environment:
+  - GITHUB_CLIENT_ID=your-github-client-id
+  - GITHUB_CLIENT_SECRET=your-github-secret
 ```
 
 :::warning

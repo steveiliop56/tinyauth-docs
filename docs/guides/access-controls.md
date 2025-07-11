@@ -15,7 +15,7 @@ Make sure to restart Tinyauth after setting the volume.
 
 ## Label discovery
 
-Tinyauth by default retrieves all the container names from docker and searches for a container name that matches the one of the subdomain in the request. For example, if you request `myapp.example.com`, Tinyauth will check for labels in the container named `myapp`. This can sometimes be inconvenient, that's why the `domain` label exists. You can use it in your protected app like this:
+Tinyauth by default retrieves all the container names from docker and searches for a container name that matches the one of the subdomain in the request. For example, if the request host is `myapp.example.com`, Tinyauth will check for labels in the container named `myapp`. This can sometimes be inconvenient, that's why the `domain` label exists. You can use it in your protected app like this:
 
 ```yaml
 tinyauth.domain: myapp.example.com

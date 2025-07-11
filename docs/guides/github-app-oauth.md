@@ -1,6 +1,6 @@
 # OAuth with Github Apps
 
-Tinyauth also supports Github Apps for authentication instead of OAuth Apps. Github Apps allow more control over permissions and are a bit more complex to setup. For the time being it is recommended you use the simple [OAuth Apps](/docs/guides/github-oauth.md), but in the future Github may deprecate this method of authentication.
+Tinyauth also supports Github Apps for authentication instead of OAuth Apps. Github Apps allow more control over permissions and are a bit more complex to setup. For the time being it is recommended you use the simple [OAuth Apps](/docs/guides/github-oauth.md).
 
 ## Requirements
 
@@ -41,23 +41,12 @@ Make sure to also note this down as it will not be available again and you will 
 
 ## Configure Tinyauth
 
-Now that you have your client ID and secret, you can pass it to the Tinyauth docker container:
+Now that you have your client ID and secret, you can add the following environment variables to the Tinyauth docker container:
 
 ```yaml
-tinyauth:
-  container_name: tinyauth
-  image: ghcr.io/steveiliop56/tinyauth:v3
-  restart: unless-stopped
-  environment:
-    - SECRET=some-random-32-chars-string
-    - APP_URL=https://tinyauth.example.com
-    - USERS=your-email-password-hash
-    - GITHUB_CLIENT_ID=your-github-client-id
-    - GITHUB_CLIENT_SECRET=your-github-secret
-  labels:
-    traefik.enable: true
-    traefik.http.routers.tinyauth.rule: Host(`tinyauth.example.com`)
-    traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth/traefik
+environment:
+  - GITHUB_CLIENT_ID=your-github-client-id
+  - GITHUB_CLIENT_SECRET=your-github-secret
 ```
 
 :::warning
