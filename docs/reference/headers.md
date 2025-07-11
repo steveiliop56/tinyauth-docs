@@ -45,7 +45,7 @@ Make sure to create a list of trusted proxy URLs that your app accepts headers f
 :::
 
 :::info
-In order for the labels to work the container name needs to be the same as the exposed domain. For example, if your app is exposed at `app.example.com`, then the container name has to be `app` else Tinyauth won't be able to pick up the labels. This is a temporary issue and it will be fixed in a future update.
+By default Tinyauth will use the subdomain name of the request and it will try to find a container with a matching name in order to search for the labels. For example, if the request host is `myapp.example.com`, Tinyauth will check for labels in the container named `myapp`. You can change this behavior using the `tinyauth.domain` label. For more information check the [access controls](../guides/access-controls.md#label-discovery) guide.
 :::
 
 ## Adding headers to proxy

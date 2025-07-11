@@ -1,4 +1,19 @@
-# Advanced configs
+# Advanced Guides
+
+## Authenticating to apps with basic auth
+
+Some apps already offer some sort of authentication method like basic auth (the browser pop-up). This can be inconvenient because you may need to login both in Tinyauth and in the protected app. Tinyauth supports authenticating to apps for you. This can be done by adding the basic auth labels to your protected app:
+
+```yaml
+tinyauth.basic.username: username
+tinyauth.basic.password.plain: password
+```
+
+After you restart your app and login to Tinyauth you should be automatically logged in to the protected app using basic auth.
+
+:::tip
+You can use the `tinyauth.basic.password.file` label instead of the plain one so as your password can remain safe in a secret file. Make sure to add the secret file as a volume to Tinyauth.
+:::
 
 ## Host network and Traefik
 
