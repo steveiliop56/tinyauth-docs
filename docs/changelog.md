@@ -2,6 +2,22 @@
 
 Below you can find all release notes from all Tinyauth versions.
 
+## v3.6.1
+
+### Improvements
+
+- Use heartbeat to prevent LDAP server from timing out
+
+### Fixes
+
+- Fix the password message not being translated
+
+### Technical
+
+- Update translations
+- Update dependencies
+- Clean up comments in codebase
+
 ## v3.6.0
 
 ### New features
