@@ -26,7 +26,7 @@ Now it's time to configure Tinyauth to connect to the LDAP server, this can be d
 
 ```yaml
 environment:
-  - LDAP_ADDRESS=ldap://my-ldap-server:389
+  - LDAP_ADDRESS=ldap://my-lldap-server:3890
   - LDAP_BIND_DN=uid=your-observer-user,ou=people,dc=example,dc=com
   - LDAP_BIND_PASSWORD=your-observer-user-password
   - LDAP_BASE_DN=dc=example,dc=com
