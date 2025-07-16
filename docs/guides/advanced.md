@@ -15,6 +15,17 @@ After you restart your app and login to Tinyauth you should be automatically log
 You can use the `tinyauth.basic.password.file` label instead of the plain one so as your password can remain safe in a secret file. Make sure to add the secret file as a volume to Tinyauth.
 :::
 
+## Socket Proxy
+
+For increased security you may be using a docker socket proxy like [Tecnativa's](https://github.com/Tecnativa/docker-socket-proxy), in this case you can configure Tinyauth to use the proxy instead of binding to the socket. This can be done by adding the following environment variable to the Tinyauth container:
+
+```sh
+DOCKER_HOST=tcp://docker-socket-proxy:2375
+```
+
+> [!WARNING]
+> Make sure that Tinyauth can reach the docker socket proxy container.
+
 ## Host network and Traefik
 
 When using `network_mode: host` in docker alongside with Traefik, the `redirect_uri` in Tinyauth will always be the app URL instead of of the actual redirect URI. This is because Traefik does not respect the `X-Forwarded-Host` header from NAT IP addresses such as the docker internal one. This can be easily fixed by either using the following Traefik config:
