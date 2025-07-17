@@ -2,6 +2,28 @@
 
 Below you can find all release notes from all Tinyauth versions.
 
+This patch includes fixes for #272, #268, #263 and #261. Basically small improvements in the frontend, proxy handler and LDAP.
+
+## v3.6.2
+
+### Improvements
+
+- Try to reconnect to LDAP server if heartbeat fails
+- Handle string type for the `groups` claim in the generic OAuth provider
+- Forward basic auth header to protected apps
+- Internationalize the required and invalid input errors
+- Add auto complete information to auth forms
+- Move healthcheck and favicon requests to debug logs
+
+### Fixes
+
+- Don't fail app if LDAP fails to start but other user sources are configured
+
+### Technical
+
+- Update dependencies
+- Update translations
+
 ## v3.6.1
 
 ### Improvements
