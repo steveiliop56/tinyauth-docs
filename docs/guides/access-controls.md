@@ -79,13 +79,17 @@ The `tinyauth.users` label can be either a comma separated list of users or a re
 Tinyauth also supports skipping authentication for specific paths. This can be useful if you need an API path to be accessed without needing to login to Tinyauth. You can allow a path using the `allowed` label:
 
 ```yaml
-tinyauth.allowed: \/api
+tinyauth.allowed: ^\/api
 ```
 
 After you restart the app, Tinyauth will allow access to the `/api` endpoint regardless if the user is logged in or not.
 
 :::info
 The `tinyauth.allowed` label uses a regex string to match the URL path.
+
+For example, `^\/api` matches any path starting with `/api`, and `^\/ping$` matches the exact path `/ping`.
+
+Be careful with regexes such as `\/api`, because that matches any path with `/api` anywhere in the path, including `/example/api/abc`
 :::
 
 ## Allowing and restricting access based on IP address or CIDRs
