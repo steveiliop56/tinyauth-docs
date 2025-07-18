@@ -9,6 +9,12 @@ tinyauth.basic.username: username
 tinyauth.basic.password.plain: password
 ```
 
+You will also need to add the following label to your Tinyauth container (assuming you are using Traefik for the reverse proxy and the middleware is called `tinyauth`):
+
+```yaml
+traefik.http.middlewares.tinyauth.forwardauth.authResponseHeaders: authorization
+```
+
 After you restart your app and login to Tinyauth you should be automatically logged in to the protected app using basic auth.
 
 :::tip
