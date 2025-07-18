@@ -4,33 +4,36 @@
 
 Some apps already offer some sort of authentication method like basic auth (the browser pop-up). This can be inconvenient because you may need to login both in Tinyauth and in the protected app. Tinyauth supports authenticating to apps for you. This can be done by adding the basic auth labels to your protected app:
 
-```yaml
-tinyauth.basic.username: username
-tinyauth.basic.password.plain: password
-```
+### Setup
 
-You will also need to add the following label to your Tinyauth container (assuming you are using Traefik for the reverse proxy and the middleware is called `tinyauth`):
+1. If you're using Traefik, add the following label to your Tinyauth container
 
-```yaml
-traefik.http.middlewares.tinyauth.forwardauth.authResponseHeaders: authorization
-```
+    ```yaml
+    # if you changed it, replace `tinyauth` with your own middleware name
+    traefik.http.middlewares.tinyauth.forwardauth.authResponseHeaders: authorization
+    ```
 
-After you restart your app and login to Tinyauth you should be automatically logged in to the protected app using basic auth.
+2. Make sure that Tinyauth can read the Docker labels by [connecting the Docker socket to the container](/docs/guides/access-controls.md#modifying-the-tinyauth-container)
+3. Add the Tinyauth labels to your service:
 
-:::tip
-You can use the `tinyauth.basic.password.file` label instead of the plain one so as your password can remain safe in a secret file. Make sure to add the secret file as a volume to Tinyauth.
-:::
+    ```yaml
+    services:
+      # ...
+      whoami:
+        # ...
+        labels:
+          # ...
+          tinyauth.basic.username: username
+          tinyauth.basic.password.plain: password
+          # if this doesn't work, try explicitly setting a domain
+          tinyauth.domain: whoami.example.com
+    ```
 
-## Socket Proxy
+    :::tip
+    You can use the `tinyauth.basic.password.file` label instead of the plain one so as your password can remain safe in a secret file. Make sure to add the secret file as a volume to Tinyauth.
+    :::
 
-For increased security you may be using a docker socket proxy like [Tecnativa's](https://github.com/Tecnativa/docker-socket-proxy), in this case you can configure Tinyauth to use the proxy instead of binding to the socket. This can be done by adding the following environment variable to the Tinyauth container:
-
-```sh
-DOCKER_HOST=tcp://docker-socket-proxy:2375
-```
-
-> [!WARNING]
-> Make sure that Tinyauth can reach the docker socket proxy container.
+4. After you restart your app and login to Tinyauth you should be automatically logged in to the protected app using basic auth.
 
 ## Host network and Traefik
 
