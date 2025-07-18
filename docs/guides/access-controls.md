@@ -7,11 +7,30 @@ Tinyauth supports basic access controls with docker labels. You can use them to 
 We firstly need to make one small change to the Tinyauth container. You will need to add the following volume:
 
 ```yaml
-volumes:
-  - /var/run/docker.sock:/var/run/docker.sock
+services:
+  # ...
+  tinyauth:
+    # ...
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 ```
 
 Make sure to restart Tinyauth after setting the volume.
+
+:::tip
+For increased security, use a Docker socket proxy like [Tecnativa's](https://github.com/Tecnativa/docker-socket-proxy). You can then configure Tinyauth to use the proxy instead of binding to the socket. This can be done by adding the following environment variable to the Tinyauth container:
+
+```yaml
+services:
+  # ...
+  tinyauth:
+    # ...
+    environment:
+      DOCKER_HOST: tcp://docker-socket-proxy:2375
+```
+
+Make sure that Tinyauth can reach the docker socket proxy container.
+:::
 
 ## Label discovery
 
