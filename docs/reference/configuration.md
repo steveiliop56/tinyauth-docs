@@ -35,6 +35,7 @@ In some configuration options like the `GENERIC_SCOPES` environment variable, yo
 | `LOGIN_TIMEOUT`/`--login-timeout`                     | The timeout in seconds for the locked accounts.                                                                        | 300                                                                            | no       |
 | `FORGOT_PASSWORD_MESSAGE`/`--forgot-password-message` | Set a custom message for the forgot password screen.                                                                   | ``You can reset your password by changing the `USERS` environment variable."`` | no       |
 | `OAUTH_AUTO_REDIRECT`/`--oauth-auto-redirect`         | Automatically redirect to your OAuth provider on login (available options are `none`,`github`,`google` and `generic`). | `none`                                                                         | no       |
+| `BACKGROUND_IMAGE`/`--background-image`               | Use a custom URL for a background image.                                                                               | - _(internal value)_                                                           | no       |
 
 ## Github OAuth
 
@@ -64,7 +65,7 @@ In some configuration options like the `GENERIC_SCOPES` environment variable, yo
 | `GENERIC_USER_URL`/`--generic-user-url`                     | The user information URL for the generic provider.    | -         | no       |
 | `GENERIC_SCOPES`/`--generic-scopes`                         | The generic provider scopes.                          | -         | no       |
 | `GENERIC_NAME`/`--generic-name`                             | The name for the generic client button on the UI.     | `Generic` | no       |
-| `GENEIRC_SKIP_SSL`/`--generic-skip-ssl`                     | Ignore self-signed certificates.                      | `false`   | no       |
+| `GENERIC_SKIP_SSL`/`--generic-skip-ssl`                     | Ignore self-signed certificates.                      | `false`   | no       |
 
 ## LDAP Config
 
