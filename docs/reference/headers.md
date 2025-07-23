@@ -4,7 +4,9 @@ sidebar_position: 3
 
 # Headers
 
-Setting headers can be useful for authenticating to apps with the credentials from Tinyauth. While Tinyauth offers some defaults, it also allows you to set any headers you like that will be automatically returned in the authentication server response.
+Setting headers can be useful for authenticating to apps with the credentials from Tinyauth. While Tinyauth offers some defaults, it also allows you to set any headers you like that will be automatically returned in the authentication server response. This could be useful when your application supports header based authentication, where the app trusts the reverse proxy to provide the authentication and use the user information passed from the header.
+
+Note that the headers mentioned here is not automatically sent to the apps unless you specify it on the reverse proxy middleware you are using. See the section below for how to specify passing header in your reverse proxy.
 
 ## Supported headers
 
@@ -13,6 +15,10 @@ Setting headers can be useful for authenticating to apps with the credentials fr
 The `Remote-User` header contains the username of the currently logged in user.
 
 If you are using an OAuth provider, Tinyauth will try to retrieve the `preferred_username` claim from the OIDC response. If it isn't included in the response, Tinyauth will make a pseudo one using your email address in the format of `username_domain.com`.
+
+:::info
+Headers are case-insensitive. Therefore you can use either `Remote-User` or `remote-user` for specifying the header.
+:::
 
 ### Remote email
 
@@ -65,8 +71,10 @@ traefik.http.middlewares.tinyauth.forwardauth.authResponseHeaders: remote-user #
 Just add the following label in the Caddy labels:
 
 ```yaml
-caddy.forward_auth.copy_headers: remote-user # This can be a comma separated list of more headers you will like to copy like the custom ones you set
+caddy.forward_auth.copy_headers: remote-user
 ```
+
+Multiple headers here are separated by space. Therefore multiple headers are passed like `remote-user remote-name remote-email remote-groups`
 
 ### Nginx/Nginx Proxy Manager
 

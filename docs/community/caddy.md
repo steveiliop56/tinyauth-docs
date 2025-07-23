@@ -102,6 +102,7 @@ services:
       caddy: (tinyauth_forwarder)
       caddy.forward_auth: tinyauth:3000
       caddy.forward_auth.uri: /api/auth/caddy
+      caddy.forward_auth.copy_headers: Remote-User Remote-Name Remote-Email Remote-Groups # optional when you want to make headers available to your service
 
   tinyauth:
     container_name: tinyauth
