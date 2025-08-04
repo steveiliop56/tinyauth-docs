@@ -41,7 +41,7 @@ docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v3 user create --interactive
 
 It will ask you for your username and password and then create the user for you. For more information for the create user command check out the [reference](/docs/reference/cli.md#create-user-command).
 
-::: info
+:::info
 If you are using docker compose or environment variables make sure to pick yes in the format for docker, so as your bcrypt hash is escaped correctly.
 :::
 
