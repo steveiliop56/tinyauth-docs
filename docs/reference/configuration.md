@@ -77,3 +77,7 @@ In some configuration options like the `GENERIC_SCOPES` environment variable, yo
 | `LDAP_BASE_DN`/`--ldap-base-dn`             | LDAP base DN (e.g. dc=example,dc=com).             | -          | no       |
 | `LDAP_INSECURE`/`--ldap-insecure`           | Skip certificate verification for the LDAP server. | `false`    | no       |
 | `LDAP_SEARCH_FILTER`/`--ldap-search-filter` | LDAP search filter for user lookup.                | `(uid=%s)` | no       |
+
+:::tip
+For Windows LDAP you will have to use the following search filter: `(&(sAMAccountName=%s))`.
+:::
