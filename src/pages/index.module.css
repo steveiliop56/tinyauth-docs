@@ -64,13 +64,13 @@
 
 .headerTitle {
   color: #3e63dd;
-  font-size: 4.5rem;
+  font-size: 4.25rem;
   font-weight: bold;
 }
 
 .headerSubtitle {
   color: var(--ifm-color-primary-darkest);
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 400;
   max-width: 36rem;
 }
