@@ -72,7 +72,9 @@
   display: inline-block;
   color: #3e63dd;
   font-size: 4.25rem;
+  line-height: 1.2em;
   font-weight: bold;
+  margin-bottom: 0px;
 }
 
 .headerSubtitle {
