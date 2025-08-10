@@ -14,8 +14,8 @@ function Header() {
       <div className={styles.gridContainer}>
         <div className={styles.gridLines} />
         <div className={styles.radialFade} />
-        <div className={styles.headerContainer}>
-          <div>
+        <div className={styles.headerWrapper}>
+          <div className={styles.headerContainer}>
             <Heading as="h1" className={styles.headerTitle}>
               {siteConfig.title}
             </Heading>

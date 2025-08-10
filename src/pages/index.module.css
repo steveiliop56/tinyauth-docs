@@ -41,7 +41,7 @@
   mask-image: radial-gradient(ellipse at center, transparent 20%, black);
 }
 
-.headerContainer {
+.headerWrapper {
   position: relative;
   z-index: 10;
   display: flex;
@@ -54,7 +54,7 @@
 }
 
 @media (width < 48rem) {
-  .headerContainer {
+  .headerWrapper {
     padding-top: 1rem;
     flex-direction: column;
     justify-content: space-between;
@@ -62,11 +62,16 @@
   }
 }
 
+.headerContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 .headerTitle {
   color: #3e63dd;
   font-size: 4.25rem;
   font-weight: bold;
-  margin-bottom: 0.5rem;
 }
 
 .headerSubtitle {
@@ -74,7 +79,6 @@
   font-size: 1rem;
   font-weight: 400;
   max-width: 36rem;
-  margin-bottom: 0.5rem;
 }
 
 .quickLinks {
@@ -86,10 +90,6 @@
 @media (width < 80rem) {
   .quickLinks {
     grid-template-columns: 1fr 1fr;
-  }
-
-  .headerSubtitle {
-    margin-bottom: 2rem;
   }
 }
 
