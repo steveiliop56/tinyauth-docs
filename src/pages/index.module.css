@@ -69,12 +69,14 @@
 }
 
 .headerTitle {
+  display: inline-block;
   color: #3e63dd;
   font-size: 4.25rem;
   font-weight: bold;
 }
 
 .headerSubtitle {
+  display: inline-block;
   color: var(--ifm-color-primary-darkest);
   font-size: 1rem;
   font-weight: 400;
