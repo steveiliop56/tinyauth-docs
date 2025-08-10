@@ -235,7 +235,7 @@
   flex-direction: column;
   gap: 0.5rem;
   align-items: start;
-  padding: 1rem 2rem 1rem;
+  padding: 1.5rem 2rem;
   border-radius: 0.6rem;
   background-color: var(--ifm-color-gray-200);
   max-width: 24rem;
