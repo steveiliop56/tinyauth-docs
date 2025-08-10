@@ -21,7 +21,7 @@ function Header() {
             </Heading>
             <p className={styles.headerSubtitle}>
               Tinyauth is the easiest way to secure your apps with a login
-              screen. Forget endless configurations and complex dashboards and
+              screen. Forget endless configuration and complex dashboards and
               say hello to a five minute installation.
             </p>
             <div className={styles.quickLinks}>
@@ -83,8 +83,7 @@ function Header() {
             </Heading>
             <p className={styles.featureCardDescription}>
               Tinyauth focuses on simplicity. It is designed to only require
-              environment variables for configuration and it is completely
-              stateless.
+              environment variables for configuration and works out of the box without the need for fancy dashboards or configuration files.
             </p>
           </div>
           <div className={styles.featureCard}>
@@ -92,7 +91,7 @@ function Header() {
               Lightweight
             </Heading>
             <p className={styles.featureCardDescription}>
-              Tinyauth ships as a single binary with no dependencies and
+              Tinyauth ships as a single statically linked binary with no dependencies and
               requires practically no resources to run.
             </p>
           </div>
@@ -101,7 +100,7 @@ function Header() {
               OAuth Support
             </Heading>
             <p className={styles.featureCardDescription}>
-              With Tinyauth you can easily log in to your apps using your
+              With Tinyauth you can easily login to your apps using your
               favorite OAuth providers.
             </p>
           </div>
