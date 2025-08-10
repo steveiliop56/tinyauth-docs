@@ -66,6 +66,7 @@
   color: #3e63dd;
   font-size: 4.25rem;
   font-weight: bold;
+  margin-bottom: 0.5rem;
 }
 
 .headerSubtitle {
@@ -73,6 +74,7 @@
   font-size: 1rem;
   font-weight: 400;
   max-width: 36rem;
+  margin-bottom: 0.5rem;
 }
 
 .quickLinks {
