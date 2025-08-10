@@ -53,7 +53,7 @@
   min-height: 70dvh;
 }
 
-@media (width < 48rem) {
+@media (max-width: 768px) {
   .headerWrapper {
     padding-top: 1rem;
     flex-direction: column;
@@ -91,7 +91,7 @@
   gap: 1rem;
 }
 
-@media (width < 80rem) {
+@media (max-width: 1280px) {
   .quickLinks {
     grid-template-columns: 1fr 1fr;
   }
@@ -224,7 +224,7 @@
   gap: 1rem;
 }
 
-@media (width < 40rem) {
+@media (max-width: 640px) {
   .featureCards {
     grid-template-columns: 1fr;
   }
