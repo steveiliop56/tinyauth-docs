@@ -115,8 +115,8 @@ services:
     restart: unless-stopped
     labels:
       traefik.enable: true
-      traefik.http.routers.nginx.rule: Host(`whoami.example.com`)
-      traefik.http.routers.nginx.middlewares: tinyauth
+      traefik.http.routers.whoami.rule: Host(`whoami.example.com`)
+      traefik.http.routers.whoami.middlewares: tinyauth
 
   tinyauth:
     image: ghcr.io/steveiliop56/tinyauth:v3
