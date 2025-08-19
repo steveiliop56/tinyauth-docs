@@ -77,7 +77,7 @@ whoami:
   image: traefik/whoami:latest
   restart: unless-stopped
   labels:
-    caddy: http://nginx.example.com
+    caddy: http://whoami.example.com
     caddy.reverse_proxy: "{{upstreams 80}}"
     caddy.import: tinyauth_forwarder *
 ```
@@ -121,7 +121,7 @@ services:
     image: traefik/whoami:latest
     restart: unless-stopped
     labels:
-      caddy: http://nginx.example.com
+      caddy: http://whoami.example.com
       caddy.reverse_proxy: "{{upstreams 80}}"
       caddy.import: tinyauth_forwarder *
 ```
