@@ -70,7 +70,7 @@ OAuth doesn't mean security, with the current setup everybody with a Github acco
 :::
 
 :::tip
-Since you have OAuth enabled, you can now remove the `USERS` or `USERS_FILE` environment variables so as you can ony login with your OAuth provider.
+Since you have OAuth enabled, you can now remove the `USERS` or `USERS_FILE` environment variables so as you can only login with your OAuth provider.
 :::
 
 And you are done! After you restart Tinyauth and try to login to an app, you should have an additional option to login with Google.
