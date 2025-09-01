@@ -60,7 +60,7 @@ To add the headers to the proxy responses you need to configure your proxy to fo
 
 ### Traefik
 
-Just add the following in the Tinyauth container lables:
+Just add the following in the Tinyauth container labels:
 
 ```yaml
 traefik.http.middlewares.tinyauth.forwardauth.authResponseHeaders: remote-user # This can be a comma separated list of more headers you will like to copy like the custom ones you set
