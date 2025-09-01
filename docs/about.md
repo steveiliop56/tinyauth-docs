@@ -4,11 +4,11 @@ sidebar_position: 1
 
 # About
 
-Before installing Tinyauth you may be wondering _Why should I use Tinyauth instead of Authelia/Authentik/Keycloack?_ which is a really valid question and I would like to answer in depth.
+Before installing Tinyauth you may be wondering _Why should I use Tinyauth instead of Authelia/Authentik/Keycloak?_ which is a really valid question and I would like to answer in depth.
 
 ## The issue with authentication in homelabs
 
-Most of us like using an authentication middleware in front of our apps to either protect them when they don't offer a login screen or just to add an additional layer of authentication. While the projects mentioned above can certainly do the job and offer a variety of configuration options, they can often be hard to configure for new users, resource hungry (apps like Authentik and Keycloack are designed for businesses and not the average homelabber) or simply too annoying to set up and maintain. This is where Tinyauth comes in.
+Most of us like using an authentication middleware in front of our apps to either protect them when they don't offer a login screen or just to add an additional layer of authentication. While the projects mentioned above can certainly do the job and offer a variety of configuration options, they can often be hard to configure for new users, resource hungry (apps like Authentik and Keycloak are designed for businesses and not the average homelabber) or simply too annoying to set up and maintain. This is where Tinyauth comes in.
 
 ## Why I created Tinyauth
 
