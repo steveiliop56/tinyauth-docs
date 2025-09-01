@@ -71,7 +71,7 @@ Make sure to replace the paths in the service with the actual locations of your 
 :::
 
 :::tip
-If you are using CLI flags, you can remove the `EnvironmentFile` line and add your flags to to the `ExecStart` line, e.g. `ExecStart=/some/path/tinyauth --secret=secret --app-url=https://tinyauth.example.com`.
+If you are using CLI flags, you can remove the `EnvironmentFile` line and add your flags to the `ExecStart` line, e.g. `ExecStart=/some/path/tinyauth --secret=secret --app-url=https://tinyauth.example.com`.
 :::
 
 Finally we need to reload the systemd daemon:
