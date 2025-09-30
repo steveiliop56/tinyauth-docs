@@ -1,0 +1,14 @@
+{
+  "pages": [
+    "---Guides---",
+    "about",
+    "getting-started",
+    "guides",
+    "community",
+    "---Reference---",
+    "...reference",
+    "changelog",
+    "---Development---",
+    "contributing"
+  ]
+}
