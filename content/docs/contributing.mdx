@@ -1,9 +1,7 @@
 ---
 title: Contributing
-description: Interested in contributing to Tinyauth? Below you can find how.
+description: Interested in contributing to Tinyauth? Below you can find out how.
 ---
-
-# Contributing
 
 Contributing is relatively easy, you just need to follow the steps below and you will be up and running with a development server in less than five minutes.
 
@@ -51,15 +49,19 @@ I have designed the development workflow to be entirely in docker, this is becau
 dev.example.com -> 127.0.0.1
 ```
 
-<Callout type="tip">Hello World</Callout>> [!TIP] > You can use
-[sslip.io](https://sslip.io) as a domain if you don't have one to develop with.
+<Callout type="tip">
+  You can use a domain from [sslip.io](https://sslip.io) if you don't have one
+  to develop with.
+</Callout>
 
-Then you can just make sure the domains are correct in the development docker compose file and run:
+Then you can just make sure the domains are correct in the development docker-compose file and run:
 
 ```sh
 docker compose -f docker-compose.dev.yml up --build
 ```
 
-:::tip
-I recommend copying the example `docker-compose.dev.yml` into a `docker-compose.test.yml` file, so as you don't accidentally commit any sensitive information.
-:::
+<Callout type="tip">
+  I recommend copying the example `docker-compose.dev.yml` into a
+  `docker-compose.test.yml` file, so as you don't accidentally commit any
+  sensitive information.
+</Callout>

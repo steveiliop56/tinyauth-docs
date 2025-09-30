@@ -30,7 +30,7 @@ export default function Home() {
           <div className="flex flex-row gap-3">
             <Link
               to="/docs/getting-started"
-              className="text-sm text-neutral-100 bg-fd-info rounded-md font-semibold px-4 py-2.5 hover:opacity-80 hover:scale-105 transition-transform delay-100"
+              className="text-sm text-fd-primary-foreground bg-fd-info rounded-md font-semibold px-4 py-2.5 hover:opacity-80 hover:scale-105 transition-transform delay-100"
             >
               Get Started
             </Link>

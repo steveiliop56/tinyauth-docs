@@ -160,7 +160,7 @@ export function DocsPage({
       {...container}
       className={cn(
         !tocEnabled && "[--fd-toc-width:0px]",
-        container?.className
+        container?.className,
       )}
     >
       {tocPopoverEnabled &&
@@ -214,7 +214,7 @@ export function EditOnGitHub(props: ComponentProps<"a">) {
           size: "sm",
           className: "gap-1.5 not-prose",
         }),
-        props.className
+        props.className,
       )}
     >
       {props.children ?? (
@@ -232,10 +232,14 @@ export function EditOnGitHub(props: ComponentProps<"a">) {
  */
 export const DocsBody = forwardRef<HTMLDivElement, ComponentProps<"div">>(
   (props, ref) => (
-    <div ref={ref} {...props} className={cn("prose flex-1", props.className)}>
+    <div
+      ref={ref}
+      {...props}
+      className={cn("prose prose-h2:mt-6 flex-1", props.className)}
+    >
       {props.children}
     </div>
-  )
+  ),
 );
 
 DocsBody.displayName = "DocsBody";
@@ -271,7 +275,7 @@ export const DocsTitle = forwardRef<HTMLHeadingElement, ComponentProps<"h1">>(
         {props.children}
       </h1>
     );
-  }
+  },
 );
 
 DocsTitle.displayName = "DocsTitle";

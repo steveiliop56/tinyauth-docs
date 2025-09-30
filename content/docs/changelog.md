@@ -1,13 +1,7 @@
 ---
 title: Changelog
-description: Have a look on what has changed in Tinyauth.
+description: Have a look on what has changed in Tinyauth versions.
 ---
-
-# Changelog
-
-Below you can find all release notes from all Tinyauth versions.
-
-This patch includes fixes for #272, #268, #263 and #261. Basically small improvements in the frontend, proxy handler and LDAP.
 
 ## v3.6.2
 

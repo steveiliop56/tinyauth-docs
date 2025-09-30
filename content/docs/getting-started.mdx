@@ -1,13 +1,13 @@
 ---
-title: Geting Started
+title: Getting Started
 description: Get started with Tinyauth.
 ---
 
 As promised, Tinyauth is extremely easy to get up and running.
 
 <Callout type="info">
-  Tinyauth by default ships with the Traefik reverse proxy. If you are using a
-  different proxy, there are available guides for [Nginx Proxy
+  Tinyauth by default ships with the Traefik reverse proxy. If you would like to
+  use a different proxy, there are available guides for [Nginx Proxy
   Manager](/docs/guides/nginx-proxy-manager) and [Caddy](/docs/community/caddy).
 </Callout>
 
@@ -35,7 +35,7 @@ flowchart BR
     user --> totp["Optional TOTP secret"]
 ```
 
-To generate a user you can use the Tinyauth CLI:
+A user can be created with the following CLI command:
 
 ```sh
 docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v4 user create --interactive
@@ -73,7 +73,7 @@ flowchart BR
 
 Now it's time to create the docker-compose file which can be as simple as the following:
 
-```yaml
+```yaml title="docker-compose.yml"
 tinyauth:
   image: ghcr.io/steveiliop56/tinyauth:v4
   container_name: tinyauth
@@ -99,7 +99,7 @@ And that's it! When you try to visit an app you should be redirected to the Tiny
 
 Below is a full example with Traefik, Whoami and Tinyauth:
 
-```yaml
+```yaml title="docker-compose.yml"
 services:
   traefik:
     image: traefik:v3.3
