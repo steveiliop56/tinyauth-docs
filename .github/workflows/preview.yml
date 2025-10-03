@@ -24,7 +24,7 @@ jobs:
 
       - name: Checkout Pull Request
         if: github.event.issue.pull_request && contains(github.event.comment.body, '/preview')
-        run: hub pr checkout ${{ github.event.issue.number }}
+        run: gh pr checkout ${{ github.event.issue.number }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
