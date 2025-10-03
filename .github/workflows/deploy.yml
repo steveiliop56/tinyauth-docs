@@ -15,6 +15,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+
       - name: Setup bun
         uses: oven-sh/setup-bun@v2
 
@@ -22,7 +26,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.bun/install/cache
-          key: ${{ runner.os }}-bun-web-${{ hashFiles('bun.lockb') }}
+          key: ${{ runner.os }}-bun-web-${{ hashFiles('bun.lock') }}
           restore-keys: |
             ${{ runner.os }}-bun-web-
 
@@ -35,7 +39,7 @@ jobs:
       - name: Upload Build Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: build
+          path: build/client
 
   deploy:
     name: Deploy to GitHub Pages
