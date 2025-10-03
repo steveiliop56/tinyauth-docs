@@ -3,8 +3,6 @@ title: Caddy
 description: Learn how to setup Tinyauth with the Caddy reverse proxy.
 ---
 
-# Caddy
-
 _Contributor: [@erwinkramer](https://github.com/erwinkramer)_.
 
 A Caddy configuration for docker compose, based on [caddy-docker-proxy](https://github.com/lucaslorentz/caddy-docker-proxy), that works with Tinyauth to enable a fully labeled configuration.
@@ -55,11 +53,10 @@ Add Tinyauth and place it behind caddy with the `caddy` and `caddy.reverse_proxy
 ```yaml
 tinyauth:
   container_name: tinyauth
-  image: ghcr.io/steveiliop56/tinyauth:v3
+  image: ghcr.io/steveiliop56/tinyauth:v4
   restart: unless-stopped
   environment:
     - APP_URL=http://auth.example.com
-    - SECRET=some-random-32-chars-string
     - USERS=your-username-password-hash
   labels:
     caddy: http://auth.example.com
@@ -111,11 +108,10 @@ services:
 
   tinyauth:
     container_name: tinyauth
-    image: ghcr.io/steveiliop56/tinyauth:v3
+    image: ghcr.io/steveiliop56/tinyauth:v4
     restart: unless-stopped
     environment:
       - APP_URL=http://auth.example.com
-      - SECRET=secret-has-to-be-32-chars
       - USERS=your-username-password-hash
     labels:
       caddy: http://auth.example.com

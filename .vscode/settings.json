@@ -1,4 +1,12 @@
 {
   "cSpell.enabled": true,
-  "cSpell.words": ["Tinyauth", "TOTP", "Traefik"]
+  "cSpell.words": [
+    "appstore",
+    "homelab",
+    "homeserver",
+    "Runtipi",
+    "Tinyauth",
+    "TOTP",
+    "Traefik"
+  ]
 }

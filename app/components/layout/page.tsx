@@ -235,7 +235,10 @@ export const DocsBody = forwardRef<HTMLDivElement, ComponentProps<"div">>(
     <div
       ref={ref}
       {...props}
-      className={cn("prose prose-h2:mt-6 flex-1", props.className)}
+      className={cn(
+        "prose prose-h2:mt-6 prose-img:rounded-sm flex-1",
+        props.className,
+      )}
     >
       {props.children}
     </div>

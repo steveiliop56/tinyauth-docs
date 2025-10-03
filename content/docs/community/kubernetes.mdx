@@ -3,8 +3,6 @@ title: Kubernetes
 description: Learn how to setup Tinyauth with Kubernetes.
 ---
 
-# Kubernetes
-
 _Contributor: [@kdwils](https://github.com/kdwils)_.
 
 ## Use Case
@@ -33,29 +31,6 @@ metadata:
   name: tinyauth
 ```
 
-## Create a secret
-
-First, [generate a secret key](../getting-started.md#installation) based on the installation instructions.
-
-Next, base64 encode the generated secret key, replacing `your-generated-secret` with the actual generated secret, using the following command:
-
-```sh
-echo -n 'your-generated-secret' | base64
-```
-
-Create the secret to store the base64 encoded key:
-
-```yaml
-apiVersion: v1
-data:
-  secretKey: <your base64 encoded key>
-kind: Secret
-metadata:
-  name: tinyauth
-  namespace: tinyauth
-type: Opaque
-```
-
 ## Create a deployment
 
 Now it's time to create the Tinyauth deployment:
@@ -79,17 +54,12 @@ spec:
     spec:
       containers:
         - name: tinyauth
-          image: ghcr.io/steveiliop56/tinyauth:v3
+          image: ghcr.io/steveiliop56/tinyauth:v4
           ports:
             - containerPort: 3000
           env:
             - name: APP_URL
               value: "http://auth.example.com"
-            - name: SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: tinyauth # Reference the secret created earlier
-                  key: secretKey
             - name: USERS
               value: user:$$2a$$10$$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u # Username is user and password is password
           livenessProbe:
@@ -132,10 +102,10 @@ Documentation for these annotations can be found in the ingress-nginx repository
 
 - `nginx.ingress.kubernetes.io/auth-signin-redirect-param` specifies the key of the query parameter used to set the redirect URI.
 
-> [!NOTE]
-> This example uses the `<my-service>.<my-namespace>.svc.cluster.local` in-cluster URI based on the above example for the `auth-url`.
->
-> The `auth-signin` annotation should be a reference to a URI that is accessible to the user.
+<Callout type="info">
+This example uses the `<my-service>.<my-namespace>.svc.cluster.local` in-cluster URI based on the above example for the `auth-url`.
+The `auth-signin` annotation should be a reference to a URI that is accessible to the user.
+</Callout>
 
 ```yaml
 apiVersion: networking.k8s.io/v1
