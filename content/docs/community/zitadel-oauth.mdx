@@ -1,26 +1,22 @@
 ---
 title: Zitadel
-description: Learn how to setup Tinyauth with the Zitadel OAuth provider.
+description: Learn how to set up Tinyauth with the Zitadel OAuth provider.
 ---
 
 _Contributor: [@WilliamB78](https://github.com/WilliamB78)._
 
-Tinyauth has built-in support for any generic OAuth provider, and in this guide we will use Zitadel to authenticate our users. Let's get started!
+Tinyauth has built-in support for any generic OAuth provider. This guide demonstrates how to use Zitadel to authenticate users.
 
 ## Requirements
 
-For this guide, you will need the following:
-
 - A domain name (gTLD required)
-- A Zitadel instance (cloud or self-hosted).
+- A Zitadel instance (cloud or self-hosted)
 
-## Create the Zitadel OAuth app
+## Creating the Zitadel OAuth App
 
-To begin with, you need to create an app in Zitadel. This can be done by visiting the Zitadel Console. You need to create a new project, for the app just use Tinyauth.
+Begin by creating an app in Zitadel. Visit the Zitadel Console and create a new project. For the app, use `Tinyauth`.
 
-Then create a new application by clicking on the "+" blue button.
-
-Follow the wizard and configure the app like this:
+Create a new application by clicking the **+** button. Follow the wizard and configure the app as follows:
 
 | Name                  | Value                                                     |
 | --------------------- | --------------------------------------------------------- |
@@ -29,17 +25,17 @@ Follow the wizard and configure the app like this:
 | Authentication Method | Code                                                      |
 | Redirect URI          | `https://tinyauth.example.com/api/oauth/callback/generic` |
 
-Finalize by clicking on the **Create** button, and copy the client ID and the client secret.
+Finalize by clicking the **Create** button. Copy the client ID and client secret.
 
-After your application gets created, you should have a screen like this:
+After the application is created, the following screens will appear:
 
 ![Zitadel configuration view](/screenshots/zitadel-configuration-view.png)
 
 ![Zitadel redirect view](/screenshots/zitadel-redirect-view.png)
 
-## Configure Tinyauth
+## Configuring Tinyauth
 
-In order for Tinyauth to work with Zitadel we will need to use a custom OAuth provider, to do so, we will need to add the following environment variables to the Tinyauth docker container:
+To integrate Zitadel with Tinyauth, add the following environment variables to the Tinyauth Docker container:
 
 ```yaml
 services:
@@ -55,16 +51,15 @@ services:
 ```
 
 <Callout type="warning">
-  OAuth doesn't mean security, with the current setup everybody with a Zitadel
-  account can login to Tinyauth as a normal user. If you would like to limit
-  which users can login with OAuth, you can add the `OAUTH_WHITELIST`
-  environment variable and only allow your email address to login. For more
-  information check the [configuration](/docs/reference/configuration.md) page.
+  OAuth alone does not guarantee security. By default, any Zitadel account can
+  log in as a normal user. To restrict access, use the `OAUTH_WHITELIST`
+  environment variable to allow specific email addresses. Refer to the
+  [configuration](/docs/reference/configuration) page for details.
 </Callout>
 
 <Callout type="tip">
-  Since you have OAuth enabled, you can now remove the `USERS` or `USERS_FILE`
-  environment variables so as you can ony login with your OAuth provider.
+  With OAuth enabled, the `USERS` or `USERS_FILE` environment variables can be
+  removed to allow login exclusively through the OAuth provider.
 </Callout>
 
-And you are done! After you restart Tinyauth and try to login to an app, you should have an additional option to login with Zitadel.
+Restart Tinyauth. Upon visiting the login screen, an additional option to log in with Zitadel will appear.

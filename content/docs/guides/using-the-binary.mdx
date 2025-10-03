@@ -3,11 +3,11 @@ title: Using the binary
 description: Use the Tinyauth binary instead of the docker image for more advanced setups.
 ---
 
-If you prefer bare-metal over docker, you can use the Tinyauth binary. This setup is ideal for LXC containers or machines that don't need to run docker but you would still like to use Tinyauth to protect your services.
+For setups that do not require Docker, the Tinyauth binary provides a lightweight alternative. This approach is ideal for LXC containers or machines where Docker is unnecessary but Tinyauth is still required to protect services.
 
-## Downloading the binary
+## Downloading the Binary
 
-To begin with, simply download the binary from the [latest](https://github.com/steveiliop56/tinyauth/releases/latest) GitHub release. There are builds available for both `arm64` and `amd64` linux machines. I suggest renaming the binary to `tinyauth` as that's what we will use for the rest of this guide. I also suggest ensuring that the binary is executable:
+The binary can be downloaded from the [latest GitHub release](https://github.com/steveiliop56/tinyauth/releases/latest). Builds are available for both `arm64` and `amd64` Linux machines. Renaming the binary to `tinyauth` is recommended for consistency throughout this guide. Ensure the binary is executable:
 
 ```sh
 chmod +x tinyauth
@@ -15,48 +15,46 @@ chmod +x tinyauth
 
 ## Configuration
 
-To configure Tinyauth, you can use either CLI flags or environment variables (recommended). To use environment variables, you will need to download the example environment file from Github:
+Configuration can be achieved using either CLI flags or environment variables (recommended). To use environment variables, download the example `.env` file from GitHub:
 
 ```sh
 curl -o .env https://raw.githubusercontent.com/steveiliop56/tinyauth/refs/heads/main/.env.example
 ```
 
-Then, you can simply edit the `.env` file and either replace the template values with actual values or simply remove the environment variables you do not need.
+Edit the `.env` file to replace template values with actual values or remove unnecessary variables. Alternatively, CLI flags can be used for configuration, though this method is less recommended due to potential complexity and shell parsing issues. Always use quotes (`'`) to ensure values are passed correctly.
 
-Alternatively, you can use CLI flags to configure Tinyauth. This is not recommended as it can get quite complex and your shell may parse the values incorrectly. Make sure to always use quotes (`'`) to ensure that the values are given to Tinyauth correctly.
-
-A full list of environment variables and CLI flags is available in the [configuration](/docs/reference/configuration) page.
+A complete list of environment variables and CLI flags is available on the [configuration](/docs/reference/configuration) page.
 
 ## Running
 
-After you are done with the configuration, you can start Tinyauth. If you are using environment variables, you need to set them in your shell, this can be done by running:
+Once configured, start Tinyauth. For environment variable-based setups, export the variables in the shell:
 
 ```sh
 export $(grep -v '^#' .env | xargs -d '\n')
 ```
 
 <Callout type="tip">
-  If you like, you can unset the environment variables (perhaps for security
-  reasons) with `unset $(grep -v '^#' .env | sed -E 's/(.*)=.*/\1/' | xargs)`.
+  To unset the environment variables for security purposes, use: `unset $(grep
+  -v '^#' .env | sed -E 's/(.*)=.*/\1/' | xargs)`.
 </Callout>
 
-Finally you can start the Tinyauth server with:
+Start the Tinyauth server:
 
 ```sh
 ./tinyauth
 ```
 
-If you chose to use CLI flags you need to pass them to Tinyauth:
+For CLI flag-based setups, pass the flags directly:
 
 ```sh
 ./tinyauth --app-url=https://tinyauth.example.com
 ```
 
-## Running as a systemd service
+## Running as a systemd Service
 
-If you need Tinyauth to autostart on boot, you can use a systemd service (assuming you are using systemd as your init system). Firstly you will need to create the service:
+To enable Tinyauth to start automatically on boot, create a systemd service. First, create the service file:
 
-```ini title='/etc/systemd/system/tinyauth.service'
+```ini title="/etc/systemd/system/tinyauth.service"
 [Unit]
 Description=Tinyauth service
 After=network.target
@@ -71,32 +69,32 @@ WantedBy=multi-user.target
 ```
 
 <Callout type="info">
-  Make sure to replace the paths in the service with the actual locations of
-  your environment and binary files.
+  Replace the paths in the service file with the actual locations of the
+  environment and binary files.
 </Callout>
 
 <Callout type="tip">
-  If you are using CLI flags, you can remove the `EnvironmentFile` line and add
-  your flags to to the `ExecStart` line, e.g. `ExecStart=/some/path/tinyauth
+  For CLI flag-based setups, remove the `EnvironmentFile` line and append the
+  flags to the `ExecStart` line, e.g., `ExecStart=/some/path/tinyauth
   --app-url=https://tinyauth.example.com`.
 </Callout>
 
-Finally you need to reload the systemd daemon:
+Reload the systemd daemon:
 
 ```sh
 sudo systemctl daemon-reload
 ```
 
-And start the new service:
+Enable and start the service:
 
 ```sh
 sudo systemctl enable --now tinyauth
 ```
 
-You can view the logs of Tinyauth by running:
+Logs can be viewed with:
 
 ```sh
 sudo journalctl -efu tinyauth
 ```
 
-That's it! Tinyauth should automatically start on boot.
+Tinyauth will now start automatically on boot.

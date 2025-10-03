@@ -1,31 +1,29 @@
 ---
 title: Getting Started
-description: Get started with Tinyauth.
+description: Learn how to set up and configure Tinyauth.
 ---
 
-As promised, Tinyauth is extremely easy to get up and running.
-
 <Callout type="info">
-  Tinyauth by default ships with the Traefik reverse proxy. If you would like to
-  use a different proxy, there are available guides for [Nginx Proxy
+  By default, Tinyauth integrates with the Traefik reverse proxy. For
+  alternative proxies, detailed guides are available for [Nginx Proxy
   Manager](/docs/guides/nginx-proxy-manager) and [Caddy](/docs/community/caddy).
 </Callout>
 
-## Community guides
+## Community Resources
 
-If you prefer a guide over documentation on how to get started, there are some amazing guides from the community.
+Community-driven tutorials and guides offer additional insights:
 
-- Tinyauth tutorial by [Jim's Garage](https://youtube.com/watch?v=qmlHirOpzpc).
-- Tinyauth with Pangolin guide by [ivobrett](https://forum.hhf.technology/t/implementing-external-authentication-in-pangolin-using-tinyauth-and-the-middleware-manager/1417) (requires account)
+- A tutorial by [Jim's Garage](https://youtube.com/watch?v=qmlHirOpzpc).
+- A guide on integrating Tinyauth with Pangolin by [ivobrett](https://forum.hhf.technology/t/implementing-external-authentication-in-pangolin-using-tinyauth-and-the-middleware-manager/1417) (requires account).
 
 <Callout type="warning">
-  As with all guides and videos, make sure to always check the documentation for
-  updated deployment instructions and configuration changes.
+  Always refer to the official documentation for the latest deployment
+  instructions and configuration updates.
 </Callout>
 
-## Create a user
+## User Creation
 
-A Tinyauth user consists of three things, a username, a password hash and an optional TOTP secret.
+A Tinyauth user consists of three components: a username, a password hash, and an optional TOTP secret.
 
 ```mermaid
 flowchart BR
@@ -35,25 +33,24 @@ flowchart BR
     user --> totp["Optional TOTP secret"]
 ```
 
-A user can be created with the following CLI command:
+The following CLI command facilitates user creation:
 
 ```sh
 docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v4 user create --interactive
 ```
 
-You will be prompted for username, a password and the CLI will create the user for you. For more information on the create user command check out the CLI [reference](/docs/reference/cli.md#create-user-command).
+This command prompts for a username and password, generating the required user configuration. Additional details are available in the CLI [reference](/docs/reference/cli#create-user-command).
 
 <Callout type="info">
-  If you are using docker-compose or environment variables, make sure to select
-  yes in the format for docker option, so as your bcrypt hash is escaped
-  correctly.
+  When using Docker Compose or environment variables, selecting the "format for
+  docker" option ensures proper escaping of the bcrypt hash.
 </Callout>
 
-You can repeat this step as many times as you like and create a comma separated list of your users.
+Multiple users can be created by repeating this process and separating entries with commas.
 
-## Set up the domains
+## Domain Configuration
 
-The way Tinyauth works is by setting a cookie for the parent domain of the app URL. In other words, if your app URL is `http://tinyauth.example.com`, Tinyauth will set a cookie for `.example.com` in order to be able to authenticate you. This means that all your apps will have to be under this domain. Below you can find an example of an ideal setup:
+Tinyauth sets a cookie for the parent domain of the application URL. For example, if the application URL is `http://tinyauth.example.com`, the cookie is set for `.example.com`, enabling authentication across all subdomains. Below is an example of an ideal domain structure:
 
 ```mermaid
 flowchart BR
@@ -63,15 +60,15 @@ flowchart BR
 ```
 
 <Callout type="warning">
-  You cannot use Tinyauth directly in DDNS services (e.g.
-  `tinyauth562.duckdns.org`) due to browser cookie restrictions. Thus it **_has
-  to_** be under a subdomain (e.g. `tinyauth.mylab562.duckdns.org`) as well as
-  all of your apps.
+  Direct usage with DDNS services (e.g., `tinyauth562.duckdns.org`) is not
+  supported due to browser cookie restrictions. Subdomains (e.g.,
+  `tinyauth.mylab562.duckdns.org`) must be used for both Tinyauth and
+  applications.
 </Callout>
 
-## Installation
+## Deployment
 
-Now it's time to create the docker-compose file which can be as simple as the following:
+The following `docker-compose.yml` configuration deploys Tinyauth:
 
 ```yaml title="docker-compose.yml"
 tinyauth:
@@ -87,17 +84,17 @@ tinyauth:
     traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth/traefik
 ```
 
-Then for every app you want to protect with Tinyauth, just add the following label:
+To protect additional applications, include the following label in their configuration:
 
 ```yaml
 traefik.http.routers.[your-router].middlewares: tinyauth
 ```
 
-And that's it! When you try to visit an app you should be redirected to the Tinyauth login page.
+Accessing a protected application redirects users to the Tinyauth login page.
 
-## Example docker-compose file
+## Full Example
 
-Below is a full example with Traefik, Whoami and Tinyauth:
+Below is a complete example integrating Traefik, Whoami, and Tinyauth:
 
 ```yaml title="docker-compose.yml"
 services:

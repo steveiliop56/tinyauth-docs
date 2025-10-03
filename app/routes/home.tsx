@@ -25,7 +25,7 @@ export default function Home() {
           <p className="max-w-2xl">
             Tinyauth is the easiest way to secure your apps with a login screen.
             Forget endless configuration and complex dashboards and say hello to
-            a five minute installation.
+            a five-minute installation.
           </p>
           <div className="flex flex-row gap-3">
             <Link
@@ -59,7 +59,7 @@ export default function Home() {
             />
             <Card
               title="OAuth and LDAP support"
-              description="With Tinyauth you can easily login to your apps using your favorite OAuth providers or by using a centralized LDAP server."
+              description="With Tinyauth you can you can easily login to your apps using your favorite OAuth providers or by using a centralized LDAP server."
             />
           </div>
         </div>

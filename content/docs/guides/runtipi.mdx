@@ -3,17 +3,17 @@ title: Runtipi
 description: Use Tinyauth with the Runtipi homeserver management platform.
 ---
 
-Runtipi is a very popular open source personal homeserver helper that enables you to manage and run multiple services on a single server. For more information check the [website](https://runtipi.io). Due to the very powerful proxy features it offers, it can be easily integrated with Tinyauth to offer a seamless authentication experience. Let's see how you can set it up in under five minutes.
+Runtipi is an open-source personal homeserver helper designed to manage and run multiple services on a single server. For more details, visit the [official website](https://runtipi.io). With its robust proxy features, Runtipi integrates seamlessly with Tinyauth to provide a smooth authentication experience.
 
-## Create your users and OAuth clients
+## Creating Users and OAuth Clients
 
-You firstly need to create your users, this can be done with the Tinyauth [CLI](/docs/reference/cli#create-user-command). Make sure to select yes in the format for docker option else Tinyauth won't be able to parse the user.
+Users can be created using the Tinyauth [CLI](/docs/reference/cli#create-user-command). Ensure the "format for docker" option is selected to allow Tinyauth to parse the user correctly.
 
-The Runtipi app also includes inputs for Github and Google, so if you would like to use OAuth you can follow the OAuth guides and note down your client IDs and secrets.
+The Runtipi app includes inputs for GitHub and Google. To use OAuth, refer to the OAuth guides and note the client IDs and secrets.
 
-## Change the forward auth middleware
+## Modifying the Forward Auth Middleware
 
-Runtipi by default uses its own login screen for authentication, we want to replace that with Tinyauth. This can be done by enabling advanced settings:
+By default, Runtipi uses its own login screen for authentication. To replace it with Tinyauth, enable advanced settings:
 
 <img
   src="/screenshots/runtipi-enable-advanced-settings.png"
@@ -21,33 +21,36 @@ Runtipi by default uses its own login screen for authentication, we want to repl
   width="256"
 />
 
-And setting the forward auth URL to `http://tinyauth:3000/api/auth/traefik`:
+Set the forward auth URL to:
+
+```
+http://tinyauth:3000/api/auth/traefik
+```
 
 ![Set forward auth URL](/screenshots/runtipi-forward-auth-url.png)
 
-Finally make sure to save your settings and restart Runtipi.
+Save the settings and restart Runtipi.
 
 <Callout type="info">
-  From Runtipi version v4, multiple appstore support was added. This means that
-  the container name may change. If you are unable to get redirected to the
-  Tinyauth login screen, try using
+  From Runtipi version v4, multiple appstore support was added. This may change
+  the container name. If redirection to the Tinyauth login screen fails, use:
   `http://tinyauth_migrated-tinyauth-1:3000/api/auth/traefik` as the forward
-  auth URL instead.
+  auth URL.
 </Callout>
 
-## Install Tinyauth
+## Installing Tinyauth
 
-Now we can go to the appstore tab, click the Tinyauth app, fill in our users, OAuth credentials and any other information you like. But before clicking install, you need to either flip the local domain switch or the expose switch to expose Tinyauth to a domain. This is required for Tinyauth to function as it will not be able to set the cookies correctly through the port. So, depending on your setup either use your local domain as an app URL or the expose domain as app URL (in either case you should use https). Finally click install and everything should be good to go.
+Navigate to the appstore tab, select the Tinyauth app, and fill in the users, OAuth credentials, and other required information. Before installation, enable either the local domain switch or the expose switch to ensure Tinyauth is accessible via a domain. This is necessary for proper cookie handling. Depending on the setup, use either the local domain or the exposed domain as the app URL (ensure HTTPS is used). Complete the installation process.
 
 <Callout type="info">
-  You can customize more aspects of Tinyauth, like adding more OAuth providers
-  by using Runtipi's
+  Additional customization options, such as adding more OAuth providers, are
+  available through Runtipi's
   [user-config](https://runtipi.io/docs/guides/customize-app-config).
 </Callout>
 
-## Enabling authentication for apps
+## Enabling Authentication for Applications
 
-From now on, you can enable authentication for every app you like by opening its settings and flipping the enable authentication switch:
+Authentication can be enabled for any application by opening its settings and toggling the enable authentication switch:
 
 <img
   src="/screenshots/runtipi-install-app-example.png"
@@ -56,8 +59,8 @@ From now on, you can enable authentication for every app you like by opening its
 />
 
 <Callout type="warning">
-  For authentication to work correctly you either need to use the local domain
-  or make sure that the expose domain is under the same root level domain as
-  tinyauth. For example `tinyauth.example.com` and `nginx.example.com` will work
-  but `tinyauth.domain1.com` and `nginx.domain2.com` will **not** work.
+  For authentication to function correctly, ensure the local domain or exposed
+  domain shares the same root-level domain as Tinyauth. For example,
+  `tinyauth.example.com` and `nginx.example.com` will work, but
+  `tinyauth.domain1.com` and `nginx.domain2.com` will not.
 </Callout>

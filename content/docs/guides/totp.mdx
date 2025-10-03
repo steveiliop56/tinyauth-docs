@@ -1,0 +1,26 @@
+---
+title: Two factor authentication
+description: Use TOTP to add an additional layer of security to your accounts.
+---
+
+Tinyauth has built-in support for TOTP, enabling the use of authenticator apps to generate 2FA codes for logging in.
+
+## Generating the Secret
+
+A TOTP secret must first be generated. This requires the current `username:hash`. Use the Tinyauth CLI to create the new user:
+
+```sh
+docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v4 totp generate --interactive
+```
+
+The command prompts for the user and generates a QR code to scan with an authenticator app. Once added, copy the newly generated user (displayed after the `user=` log message) and include it in the Tinyauth user list. Restart the service to apply changes. From this point, logging in will require a TOTP code.
+
+## Verifying the User
+
+To verify the user configuration, the following command can be used:
+
+```sh
+docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v4 user verify --interactive
+```
+
+The command prompts for the `username:hash:totp`, username, password, and a TOTP code from the authenticator app. If successful, a user verified message is displayed.

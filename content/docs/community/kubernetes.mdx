@@ -1,17 +1,15 @@
 ---
 title: Kubernetes
-description: Learn how to setup Tinyauth with Kubernetes.
+description: Learn how to set up Tinyauth with Kubernetes.
 ---
 
-_Contributor: [@kdwils](https://github.com/kdwils)_.
+_Contributor: [@kdwils](https://github.com/kdwils)_
 
 ## Use Case
 
 A simple authentication setup for Kubernetes ingress controllers for securing both internal and externally exposed self-hosted apps.
 
-Ingress controllers like `ingress-nginx` or `traefik` can act as a gateway to enforce authentication and authorization policies before traffic reaches your self-hosted applications.
-
-This is useful for protecting internal tools, admin interfaces, or services exposed to the internet, without needing to modify the applications themselves.
+Ingress controllers like `ingress-nginx` or `traefik` can act as a gateway to enforce authentication and authorization policies before traffic reaches your self-hosted applications. This is useful for protecting internal tools, admin interfaces, or services exposed to the internet, without needing to modify the applications themselves.
 
 ## Prerequisites
 
@@ -20,9 +18,9 @@ This documentation assumes the following prerequisites:
 - An operational Kubernetes cluster
 - An Ingress controller installed for the Ingress section. This documentation demonstrates using `ingress-nginx`, but `traefik` could be used as well.
 
-## Create a namespace
+## Create a Namespace
 
-Firstly, you will need to create a namespace for Tinyauth:
+Firstly, create a namespace for Tinyauth:
 
 ```yaml
 apiVersion: v1
@@ -31,9 +29,9 @@ metadata:
   name: tinyauth
 ```
 
-## Create a deployment
+## Create a Deployment
 
-Now it's time to create the Tinyauth deployment:
+Create the Tinyauth deployment:
 
 ```yaml
 apiVersion: apps/v1
@@ -74,7 +72,7 @@ spec:
 
 ## Create a Service
 
-Finally create the service:
+Create the service:
 
 ```yaml
 apiVersion: v1
@@ -90,21 +88,18 @@ spec:
   type: ClusterIP
 ```
 
-## Ingress Example with ingress-nginx controller
+## Ingress Example with ingress-nginx Controller
 
 This ingress resource configures `ingress-nginx` to forward authentication checks for the host `my-host.domain.com` to a specific URL (`auth-url`). If the user is not authenticated, they will be redirected to a login page (`auth-signin`).
 
 Documentation for these annotations can be found in the ingress-nginx repository [annotations.md](https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/nginx-configuration/annotations.md#annotations).
 
 - `nginx.ingress.kubernetes.io/auth-url` specifies the URL where `ingress-nginx` should send requests to verify if the user is authenticated.
-
 - `nginx.ingress.kubernetes.io/auth-signin` specifies the URL where `ingress-nginx` should send unauthenticated users to sign in.
-
 - `nginx.ingress.kubernetes.io/auth-signin-redirect-param` specifies the key of the query parameter used to set the redirect URI.
 
 <Callout type="info">
-This example uses the `<my-service>.<my-namespace>.svc.cluster.local` in-cluster URI based on the above example for the `auth-url`.
-The `auth-signin` annotation should be a reference to a URI that is accessible to the user.
+This example uses the `<my-service>.<my-namespace>.svc.cluster.local` in-cluster URI based on the above example for the `auth-url`. The `auth-signin` annotation should be a reference to a URI that is accessible to the user.
 </Callout>
 
 ```yaml

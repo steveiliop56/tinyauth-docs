@@ -3,42 +3,42 @@ title: Configuration
 description: Reference on Tinyauth's configuration.
 ---
 
-Tinyauth can be configured either with environment variables or CLI flags. The full list of configuration options is available below.
+Tinyauth can be configured using environment variables or CLI flags. The table below provides a comprehensive list of configuration options.
 
 <Callout type="info">
-  Every configuration option that has a `FILE_` equivalent (e.g. `USERS` and
-  `USERS_FILE`), allows for the `FILE_` environment variable/CLI flag to be used
-  instead of the original one.
+  Configuration options with a `FILE_` equivalent (e.g., `USERS` and
+  `USERS_FILE`) allow the `FILE_` environment variable or CLI flag to be used as
+  an alternative.
 </Callout>
 
 ## General
 
-| Environment               | Flag                        | Description                                                                                      | Default           | Required |
-| ------------------------- | --------------------------- | ------------------------------------------------------------------------------------------------ | ----------------- | -------- |
-| `PORT`                    | `--port`                    | Port to run the server on.                                                                       | 3000              | no       |
-| `ADDRESS`                 | `--address`                 | Address to bind the server to.                                                                   | 0.0.0.0           | no       |
-| `APP_URL`                 | `--app-url`                 | The Tinyauth URL.                                                                                | ``                | yes      |
-| `USERS`                   | `--users`                   | Comma separated list of users in the format `username:hash`.                                     | ``                | yes      |
-| `USERS_FILE`              | `--users-file`              | Path to a file containing users in the format `username:hash`.                                   | ``                | no       |
-| `SECURE_COOKIE`           | `--secure-cookie`           | Send cookie over secure connection only.                                                         | false             | no       |
-| `OAUTH_WHITELIST`         | `--oauth-whitelist`         | Comma separated list of email addresses to whitelist when using OAuth.                           | ``                | no       |
-| `OAUTH_AUTO_REDIRECT`     | `--oauth-auto-redirect`     | Auto redirect to the specified OAuth provider (`github`, `google`, `generic`).                   | none              | no       |
-| `SESSION_EXPIRY`          | `--session-expiry`          | Session (cookie) expiration time in seconds.                                                     | 86400             | no       |
-| `LOGIN_TIMEOUT`           | `--login-timeout`           | Login timeout in seconds after max retries reached (0 to disable).                               | 300               | no       |
-| `LOGIN_MAX_RETRIES`       | `--login-max-retries`       | Maximum login attempts before timeout (0 to disable).                                            | 5                 | no       |
-| `LOG_LEVEL`               | `--log-level`               | Log level (`trace`, `debug`, `info`, `warn`, `error`, `fatal`, `panic`).                         | info              | no       |
-| `APP_TITLE`               | `--app-title`               | Title of the app.                                                                                | Tinyauth          | no       |
-| `FORGOT_PASSWORD_MESSAGE` | `--forgot-password-message` | Message to show on the forgot password page.                                                     | ``                | no       |
-| `BACKGROUND_IMAGE`        | `--background-image`        | Background image URL for the login page.                                                         | /background.jpg   | no       |
-| `RESOURCES_DIR`           | `--resources-dir`           | Path to a directory containing custom resources (e.g. background image).                         | /data/resources   | no       |
-| `DATABASE_PATH`           | `--database-path`           | Path to the Sqlite database file.                                                                | /data/tinyauth.db | no       |
-| `TRUSTED_PROXIES`         | `--trusted-proxies`         | Comma separated list of trusted proxies (IP addresses or CIDRs) for correct client IP detection. | ``                | no       |
-| `DISABLE_ANALYTICS`       | `--disable-analytics`       | Disable anonymous version collection.                                                            | false             | no       |
-| `DISABLE_RESOURCES`       | `--disable-resources`       | Disable the resources server.                                                                    | false             | no       |
+| Environment               | Flag                        | Description                                                                                      | Default             | Required |
+| ------------------------- | --------------------------- | ------------------------------------------------------------------------------------------------ | ------------------- | -------- |
+| `PORT`                    | `--port`                    | Port to run the server on.                                                                       | `3000`              | no       |
+| `ADDRESS`                 | `--address`                 | Address to bind the server to.                                                                   | `0.0.0.0`           | no       |
+| `APP_URL`                 | `--app-url`                 | The Tinyauth URL.                                                                                | ``                  | yes      |
+| `USERS`                   | `--users`                   | Comma-separated list of users in the format `username:hash`.                                     | ``                  | yes      |
+| `USERS_FILE`              | `--users-file`              | Path to a file containing users in the format `username:hash`.                                   | ``                  | no       |
+| `SECURE_COOKIE`           | `--secure-cookie`           | Send cookie over secure connection only.                                                         | `false`             | no       |
+| `OAUTH_WHITELIST`         | `--oauth-whitelist`         | Comma-separated list of email addresses to whitelist when using OAuth.                           | ``                  | no       |
+| `OAUTH_AUTO_REDIRECT`     | `--oauth-auto-redirect`     | Auto redirect to the specified OAuth provider.                                                   | ``                  | no       |
+| `SESSION_EXPIRY`          | `--session-expiry`          | Session (cookie) expiration time in seconds.                                                     | `86400`             | no       |
+| `LOGIN_TIMEOUT`           | `--login-timeout`           | Login timeout in seconds after max retries reached (0 to disable).                               | `300`               | no       |
+| `LOGIN_MAX_RETRIES`       | `--login-max-retries`       | Maximum login attempts before timeout (0 to disable).                                            | `5`                 | no       |
+| `LOG_LEVEL`               | `--log-level`               | Log level (`trace`, `debug`, `info`, `warn`, `error`, `fatal`, `panic`).                         | `info`              | no       |
+| `APP_TITLE`               | `--app-title`               | Title of the app.                                                                                | `Tinyauth`          | no       |
+| `FORGOT_PASSWORD_MESSAGE` | `--forgot-password-message` | Message to show on the forgot password page.                                                     | ``                  | no       |
+| `BACKGROUND_IMAGE`        | `--background-image`        | Background image URL for the login page.                                                         | `/background.jpg`   | no       |
+| `RESOURCES_DIR`           | `--resources-dir`           | Path to a directory containing custom resources (e.g., background image).                        | `/data/resources`   | no       |
+| `DATABASE_PATH`           | `--database-path`           | Path to the SQLite database file.                                                                | `/data/tinyauth.db` | no       |
+| `TRUSTED_PROXIES`         | `--trusted-proxies`         | Comma-separated list of trusted proxies (IP addresses or CIDRs) for correct client IP detection. | ``                  | no       |
+| `DISABLE_ANALYTICS`       | `--disable-analytics`       | Disable anonymous version collection.                                                            | `false`             | no       |
+| `DISABLE_RESOURCES`       | `--disable-resources`       | Disable the resources server.                                                                    | `false`             | no       |
 
 ## OAuth Config
 
-The OAuth config includes a provider ID in the environment variable/flag name. For example `PROVIDERS_GOOGLE_CLIENT_ID`.
+OAuth configuration includes a provider ID in the environment variable or flag name. For example, `PROVIDERS_GOOGLE_CLIENT_ID`.
 
 | Environment                           | Flag                                    | Description                              | Default | Required |
 | ------------------------------------- | --------------------------------------- | ---------------------------------------- | ------- | -------- |
@@ -54,22 +54,21 @@ The OAuth config includes a provider ID in the environment variable/flag name. F
 | `PROVIDERS_[ID]_NAME`                 | `--providers-[id]-name`                 | Name of the OAuth provider.              | ``      | no       |
 
 <Callout type="tip">
-  If you use `google` or `github` as provider IDs, Tinyauth will automatically
-  fill in all of the information needed (e.g. redirect URL, scopes etc.) for
-  you.
+  Using `google` or `github` as provider IDs automatically fills in the required
+  information (e.g., redirect URL, scopes).
 </Callout>
+
 ## LDAP Config
 
-| Environment          | Flag                   | Description                                        | Default    | Required |
-| -------------------- | ---------------------- | -------------------------------------------------- | ---------- | -------- |
-| `LDAP_ADDRESS`       | `--ldap-address`       | LDAP server address (e.g. `ldap://localhost:389`). | ``         | no       |
-| `LDAP_BIND_DN`       | `--ldap-bind-dn`       | LDAP bind DN (e.g. `uid=user,dc=example,dc=com`).  | ``         | no       |
-| `LDAP_BIND_PASSWORD` | `--ldap-bind-password` | LDAP bind password.                                | ``         | no       |
-| `LDAP_BASE_DN`       | `--ldap-base-dn`       | LDAP base DN (e.g. `dc=example,dc=com`).           | ``         | no       |
-| `LDAP_INSECURE`      | `--ldap-insecure`      | Skip certificate verification for the LDAP server. | `false`    | no       |
-| `LDAP_SEARCH_FILTER` | `--ldap-search-filter` | LDAP search filter for user lookup.                | `(uid=%s)` | no       |
+| Environment          | Flag                   | Description                                         | Default    | Required |
+| -------------------- | ---------------------- | --------------------------------------------------- | ---------- | -------- |
+| `LDAP_ADDRESS`       | `--ldap-address`       | LDAP server address (e.g., `ldap://localhost:389`). | ``         | no       |
+| `LDAP_BIND_DN`       | `--ldap-bind-dn`       | LDAP bind DN (e.g., `uid=user,dc=example,dc=com`).  | ``         | no       |
+| `LDAP_BIND_PASSWORD` | `--ldap-bind-password` | LDAP bind password.                                 | ``         | no       |
+| `LDAP_BASE_DN`       | `--ldap-base-dn`       | LDAP base DN (e.g., `dc=example,dc=com`).           | ``         | no       |
+| `LDAP_INSECURE`      | `--ldap-insecure`      | Skip certificate verification for the LDAP server.  | `false`    | no       |
+| `LDAP_SEARCH_FILTER` | `--ldap-search-filter` | LDAP search filter for user lookup.                 | `(uid=%s)` | no       |
 
 <Callout type="tip">
-  For Windows LDAP you will have to use the following search filter:
-  `(&(sAMAccountName=%s))`.
+  For Windows LDAP, use the following search filter: `(&(sAMAccountName=%s))`.
 </Callout>

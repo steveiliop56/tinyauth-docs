@@ -3,17 +3,17 @@ title: Nginx Proxy Manager
 description: Use Tinyauth with the Nginx Proxy Manager reverse proxy.
 ---
 
-Nginx Proxy Manager is definitely a piece of software that everybody loves in the homelab community. This is why it is mandatory that Tinyauth supports it. It's a bit different compared to traefik/caddy due to nginx itself not supporting 302 redirects for the `auth_request` module but Tinyauth accounts for it and has API paths made just for it!
+Nginx Proxy Manager is a popular tool in the homelab community for managing reverse proxies. While it differs from Traefik and Caddy due to Nginx's lack of native 302 redirect support in the `auth_request` module, Tinyauth provides API paths specifically designed to work with it.
 
 <Callout type="info">
-  This tutorial assumes you have some experience with Nginx Proxy Manager.
+  This guide assumes familiarity with Nginx Proxy Manager.
 </Callout>
 
-## Example docker compose file
+## Example Docker Compose File
 
-Throughout this tutorial we will use the following docker compose file:
+The following Docker Compose file demonstrates how to set up Nginx Proxy Manager, Nginx, and Tinyauth:
 
-```yaml
+```yaml title="docker-compose.yml"
 services:
   npm:
     container_name: npm
@@ -45,11 +45,13 @@ volumes:
   npm-letsencrypt:
 ```
 
-You can configure OAuth and access controls as you normally would with docker labels and environment variables, all the configuration will happen through the UI.
+OAuth and access controls can be configured using Docker labels and environment variables. All other configurations are managed through the Nginx Proxy Manager UI.
 
 ## Configuring Nginx Proxy Manager
 
-Firstly you need to create the Tinyauth host, it is really simple as you have to configure it as every other host:
+### Creating the Tinyauth Host
+
+Create a host for Tinyauth in Nginx Proxy Manager. Configure it as any other host:
 
 <img
   src="/screenshots/npm-tinyauth.png"
@@ -57,15 +59,16 @@ Firstly you need to create the Tinyauth host, it is really simple as you have to
   width="512"
 />
 
-You can also setup your SSL if you are using certificates.
+SSL can be set up if certificates are available.
 
 <Callout type="warning">
-  Make sure that block common exploits is disabled. If it is enabled Nginx will
-  not allow URLs in the query parameters which is required for Tinyauth to
-  function.
+  Ensure the "Block Common Exploits" option is disabled. If enabled, Nginx will
+  block URLs in query parameters, which are required for Tinyauth to function.
 </Callout>
 
-Now you need to configure the protected hosts, in this case it is Nginx. For the Details tab you need to fill it the same way you did with Tinyauth which looks like this:
+### Configuring Protected Hosts
+
+For protected hosts, such as Nginx, configure the Details tab similarly to the Tinyauth host:
 
 <img
   src="/screenshots/npm-nginx.png"
@@ -73,13 +76,15 @@ Now you need to configure the protected hosts, in this case it is Nginx. For the
   width="512"
 />
 
-Again, you can configure your SSL as you like.
+SSL can be configured as needed.
 
 <Callout type="info">
-  Here you can keep the block common exploits enabled.
+  The "Block Common Exploits" option can remain enabled for protected hosts.
 </Callout>
 
-Now for the important part. You need the following config in the Advanced tab in order for Nginx to use Tinyauth to authenticate:
+### Advanced Configuration
+
+Add the following configuration in the Advanced tab to enable Tinyauth authentication:
 
 ```shell
 # Root location
@@ -87,7 +92,7 @@ location / {
   # Pass the request to the app
   proxy_pass          $forward_scheme://$server:$port;
 
-  # Add other app specific config here
+  # Add other app-specific config here
 
   # Tinyauth auth request
   auth_request /tinyauth;
@@ -107,18 +112,17 @@ location /tinyauth {
 
 # Tinyauth login redirect
 location @tinyauth_login {
-  return 302 http://tinyauth.example.com/login?redirect_uri=$scheme://$http_host$request_uri; # Make sure to replace the http://tinyauth.example.com with your own app URL
+  return 302 http://tinyauth.example.com/login?redirect_uri=$scheme://$http_host$request_uri; # Replace with your app URL
 }
 ```
 
 <Callout type="info">
-  The `/tinyauth` path can be anything, the guide uses this name for
-  convenience.
+  The `/tinyauth` path can be renamed for convenience.
 </Callout>
 
 <Callout type="info">
-  You may need to add additional configuration under the `/` location for
-  technologies like websockets to work.
+  Additional configuration may be required under the `/` location for
+  technologies like WebSockets.
 </Callout>
 
-Now we can save the host and when you try to access it you should be redirected to the Tinyauth login page if you are not already logged in. Keep in mind you will need to do this for every host you want Tinyauth to protect.
+Save the host configuration. Accessing the protected host will redirect to the Tinyauth login page if not already logged in. Repeat this process for each host to be protected by Tinyauth.

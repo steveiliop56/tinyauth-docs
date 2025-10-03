@@ -3,29 +3,34 @@ title: LDAP
 description: Use a centralized LDAP server for user management in Tinyauth.
 ---
 
-Even though LDAP can be considered a protocol used by businesses, it can be really helpful in centralizing user management in a homelab environment. This is why Tinyauth supports LDAP as a source for users. Let's see how you can set it up.
+LDAP, while often associated with businesses, can be highly effective for centralizing user management in a homelab environment. Tinyauth supports LDAP as a user source, making it easier to manage users across applications.
 
 ## Requirements
 
-To proceed with this guide you will need to have an LDAP server, my recommendation is [LLDAP](https://github.com/lldap/lldap) as it's very lightweight and easy to configure. We are going to use LLDAP for this guide but any LDAP server is compatible.
+An LDAP server is required to proceed. [LLDAP](https://github.com/lldap/lldap) is recommended for its lightweight design and ease of configuration. This guide uses LLDAP, but any LDAP server is compatible.
 
-## Creating the users
+## Creating Users
 
-In order for Tinyauth to work you need two (or more) users. The first one will be the observer user which will have read only access in the database and it will be used by Tinyauth itself to search for the DN of the user that's trying to login. The second user will just be a normal user used to login to Tinyauth and to the apps.
+Tinyauth requires at least two users: an observer user with read-only access to the database (used by Tinyauth to search for user DNs) and a normal user for logging in to Tinyauth and applications.
 
-To create the observer user go to the **Users** tab in LLDAP and click **Create a user**. There provide a username, a password and an email address. Then click **Submit**.
+### Creating the Observer User
+
+1. Navigate to the **Users** tab in LLDAP and click **Create a user**.
+2. Provide a username, password, and email address, then click **Submit**.
 
 ![LLDAP Create a User](/screenshots/lldap-create-user.png)
 
-After your user is created, click in the list and scroll all the way down to the group memberships section. From the group list you need to select the `lldap_strict_readonly` group and click **Add to Group**.
+3. After creating the user, select it from the list and scroll to the group memberships section. Add the user to the `lldap_strict_readonly` group by clicking **Add to Group**.
 
 ![LLDAP Groups](/screenshots/lldap-groups.png)
 
-Now that you have the observer user, you can repeat this process to create another use that does not need to be in any groups.
+### Creating Additional Users
+
+Repeat the process to create additional users. Normal users do not need to belong to any groups.
 
 ## Configuring Tinyauth
 
-Now it's time to configure Tinyauth to connect to the LDAP server, this can be done by adding the following environment variables to the Tinyauth docker container:
+To connect Tinyauth to the LDAP server, add the following environment variables to the Tinyauth Docker container:
 
 ```yaml
 services:
@@ -40,20 +45,20 @@ services:
 ```
 
 <Callout type="info">
-  You can customize the search filter to your needs, this base one will search
-  users based on their UID. The `%s` value will be replaced by the username of
-  the user that's trying to login.
+  The search filter can be customized as needed. The base filter `(uid=%s)`
+  searches for users based on their UID, with `%s` replaced by the username of
+  the user attempting to log in.
 </Callout>
 
 <Callout type="info">
-  Make sure to replace the bind DN and base DN with the values of your own
+  Replace the bind DN and base DN with values specific to the LDAP server
   configuration.
 </Callout>
 
-After restarting, you should be able to login to Tinyauth with the second user you created in LLDAP. You can create as many users as you like and use them to login.
+After restarting, logging in to Tinyauth with the second user created in LLDAP should be possible. Additional users can be created and used for login as needed.
 
 <Callout type="info">
-  There is no indication in the UI that a user is logged in via LDAP since it's
-  treated exactly the same as a user from a file or from environment variables.
-  All access controls apply the same way as they would apply with normal users.
+  LDAP users are treated the same as users from files or environment variables.
+  There is no indication in the UI that a user is logged in via LDAP. All access
+  controls apply equally to LDAP users and standard users.
 </Callout>

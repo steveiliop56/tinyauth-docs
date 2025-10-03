@@ -3,68 +3,61 @@ title: Google OAuth
 description: Use Google's OAuth screen to authenticate to Tinyauth.
 ---
 
-Tinyauth has builtin support for Google OAuth and it is extremely easy to set up. Let's get started!
+Tinyauth has built-in support for Google OAuth, making it straightforward to set up.
 
 ## Requirements
-
-For this guide you will need the following:
 
 - A domain name (gTLDs required)
 - A Google account
 
-## Create the Google OAuth app
+## Creating the Google OAuth App
 
-To begin with, you need to create an app in Google. This can be done by visiting the [Google Cloud Console](https://console.cloud.google.com/). There you need to create a new project (you should already have one by default) and after creating it, you should see a screen like this:
+To begin, create an app in the [Google Cloud Console](https://console.cloud.google.com/). Create a new project (a default project may already exist). After creating the project, the following screen should appear:
 
 ![Google Cloud Console Home](/screenshots/google-cloud-home.png)
 
-From the quick access menu click **APIs & Services** and then from the sidebar click **OAuth consent screen**. There it should just have a button in the middle saying **Get Started**, let's click that.
+From the quick access menu, click **APIs & Services**, then select **OAuth consent screen** from the sidebar. Click the **Get Started** button in the middle of the screen.
 
 <Callout type="info">
-  Google has changed the OAuth section and this guide uses the new OAuth
-  experience. If you see a button saying try the new OAuth experience, please
-  click it so that the guide looks the same as the Google Cloud Console.
+  Google has updated the OAuth section. This guide uses the new OAuth
+  experience. If a button appears saying "Try the new OAuth experience," click
+  it to match the steps in this guide.
 </Callout>
 
-After clicking the button you should see this screen:
+After clicking the button, the following screen should appear:
 
 ![Configure OAuth Consent Screen](/screenshots/google-cloud-oauth-configure.png)
 
-There for app name just use `Tinyauth` and for support email the only option should be your email address.
+- **App Name**: Use `Tinyauth`.
+- **Support Email**: Select the available email address.
+- **Audience**: Choose **External**.
+- **Contact Information**: Enter an email address.
+- Agree to the data use policy and click **Create**.
 
-For audience use the only available type which is **External**.
-
-For contact information, fill in your email address.
-
-Finally agree to the use data policy and click **Create**. After some time you should see the OAuth homepage which looks like this:
+After some time, the OAuth homepage will appear:
 
 ![Google Cloud OAuth Home](/screenshots/google-cloud-oauth-home.png)
 
-In this screen click **Create OAuth Client**.
+Click **Create OAuth Client**.
 
 <Callout type="info">
-  You may see a warning saying that you haven't configured your OAuth Consent
-  Screen, if you see this warning just refresh the page a couple of times and it
-  should let you create your client.
+  If a warning appears about the OAuth Consent Screen not being configured,
+  refresh the page a few times to proceed.
 </Callout>
 
-For application type select web application.
+- **Application Type**: Select **Web Application**.
+- **Name**: Optionally rename the client (default is `Web Client 1`).
+- **Authorized Redirect URIs**: Add the domain with the `/api/oauth/callback/google` suffix, e.g., `https://tinyauth.example.com/api/oauth/callback/google`.
 
-If you like you can give it another name rather than `Web Client 1` which is the default.
-
-For Authorized Redirect URIs click **Add URI** and fill in your domain alongside with the `/api/oauth/callback/google` suffix, e.g. `https://tinyauth.example.com/api/oauth/callback/google`.
-
-Finally click create.
-
-After your application gets created you should have a screen like this:
+Click **Create**. Once the application is created, the following screen will appear:
 
 ![Google Cloud OAuth Clients](/screenshots/google-cloud-oauth-created.png)
 
-Click your client, e.g. `Web Client 1` and copy your Client ID and Client secret shown in the Additional Information section and that's it! We are done with the Google Cloud Console and we can now configure Tinyauth.
+Click the client (e.g., `Web Client 1`) and copy the Client ID and Client Secret from the Additional Information section.
 
-## Configure Tinyauth
+## Configuring Tinyauth
 
-Now that you have your client ID and secret, you can add the following environment variables to the Tinyauth docker container:
+Add the following environment variables to the Tinyauth Docker container:
 
 ```yaml
 services:
@@ -75,16 +68,15 @@ services:
 ```
 
 <Callout type="warning">
-  OAuth doesn't mean security, with the current setup everybody with a Github
-  account can login to Tinyauth as a normal user. If you would like to limit
-  which users can login with OAuth, you can add the `OAUTH_WHITELIST`
-  environment variable and only allow your email address to login. For more
-  information check the [configuration](/docs/reference/configuration.md) page.
+  OAuth alone does not guarantee security. By default, any GitHub account can
+  log in as a normal user. To restrict access, use the `OAUTH_WHITELIST`
+  environment variable to allow specific email addresses. Refer to the
+  [configuration](/docs/reference/configuration) page for details.
 </Callout>
 
 <Callout type="tip">
-  Since you have OAuth enabled, you can now remove the `USERS` or `USERS_FILE`
-  environment variables so as you can ony login with your OAuth provider.
+  With OAuth enabled, the `USERS` or `USERS_FILE` environment variables can be
+  removed to allow login exclusively through the OAuth provider.
 </Callout>
 
-And you are done! After you restart Tinyauth and try to login to an app, you should have an additional option to login with Google.
+Restart Tinyauth. Upon visiting the login screen, an additional option to log in with Google will appear.

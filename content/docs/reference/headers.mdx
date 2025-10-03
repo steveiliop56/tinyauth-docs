@@ -3,96 +3,89 @@ title: Headers
 description: Reference on Tinyauth's header support.
 ---
 
-Setting headers can be useful for authenticating to apps with the credentials from Tinyauth. While Tinyauth offers some defaults, it also allows you to set any headers you like that will be automatically returned in the authentication server response. This can be useful when your application supports header based authentication, where the app trusts the reverse proxy to provide the authentication and use the user information passed from the headers.
-
-Note that the headers mentioned here are not automatically sent to the apps unless you specify it on the reverse proxy middleware you are using. Check out the section [below](#custom-headers) on how to configure your proxy to forward headers.
-
-## Supported headers
+Setting headers can be useful for authenticating to apps with the credentials from Tinyauth. While Tinyauth offers some defaults, it also allows setting custom headers that are automatically returned in the authentication server response. This is particularly useful for applications that support header-based authentication, where the app relies on the reverse proxy to provide authentication and user information.
 
 <Callout type="info">
-  Headers are case-insensitive. Therefore you can use either `Remote-User` or
-  `remote-user` for specifying the header.
+  Headers are case-insensitive. For example, both `Remote-User` and
+  `remote-user` are valid.
 </Callout>
+
+## Supported Headers
 
 ### Remote user
 
-The `Remote-User` header contains the username of the currently logged in user.
-
-If you are using an OAuth provider, Tinyauth will try to retrieve the `preferred_username` claim from the OIDC response. If it isn't included in the response, Tinyauth will make a pseudo one using your email address in the format of `username_domain.com`.
+The `Remote-User` header contains the username of the currently logged-in user. For OAuth providers, the `preferred_username` claim from the OIDC response is used. If unavailable, a pseudo username is generated using the email address in the format `username_domain.com`.
 
 ### Remote email
 
-The `Remote-Email` header contains the email of the currently logged in user.
-
-If you are using simple username and password authentication, a pseudo email address will be created using your username and the currently configured domain. If you are using OAuth then the email from your OAuth provider will be used (retrieved from the `email` claim).
+The `Remote-Email` header contains the email of the currently logged-in user. For username/password authentication, a pseudo email address is created using the username and the configured domain. For OAuth, the email is retrieved from the `email` claim.
 
 ### Remote name
 
-The `Remote-Name` header contains the full name of the currently logged in user.
-
-If you are using simple username and password authentication or your OAuth provider does not provide the `name` claim, a pseudo name will be created either with either your username in the format of `User` or with your email in the format of `User (example.com)`.
+The `Remote-Name` header contains the full name of the currently logged-in user. If the `name` claim is unavailable, a pseudo name is generated using the username or email in formats like `User` or `User (example.com)`.
 
 ### Remote groups
 
-The `Remote-Groups` header contains the groups of the currently logged in user. They are retrieved from the `groups` claim in your OIDC server. They can be used to allow access to specific user groups configured by your OIDC server. For more information check the [OIDC access controls](/docs/guides/access-controls.md#access-controls-using-oidc-groups) guide.
+The `Remote-Groups` header contains the groups of the currently logged-in user, retrieved from the `groups` claim in the OIDC server. These can be used to allow access to specific user groups configured by the OIDC server. More details are available in the [OIDC access controls](/docs/guides/access-controls.md#access-controls-using-oidc-groups) guide.
 
 ### Custom headers
 
-You can set the `tinyauth.headers` label on any container that uses the Tinyauth middleware and it will automatically add them to its response. For example, you can have the following line in your app's labels:
+Custom headers can be set using the `tinyauth.headers` label on any container that uses the Tinyauth middleware. For example:
 
 ```yaml
 tinyauth.apps.[app].response.headers: my-header=cool
 ```
 
-Now, when you authenticate to your app through Tinyauth, your app will receive the `my-header` header.
+When authenticating through Tinyauth, the app will receive the `my-header` header.
 
 <Callout type="warning">
-  Make sure to create a list of trusted proxy URLs that your app accepts headers
-  from. If your app trusts all proxies then anyone can just send the header to
-  your app and possibly bypass any authentication you have set.
+  Ensure a list of trusted proxy URLs is configured for the app. Accepting
+  headers from untrusted proxies can lead to security vulnerabilities.
 </Callout>
 
 <Callout type="info">
-  By default Tinyauth will use the subdomain name of the request and it will try
-  to find a container with a matching name in order to search for the labels.
-  For example, if the request host is `myapp.example.com`, Tinyauth will check
-  for labels in the container named `myapp`. You can change this behavior using
-  the `tinyauth.apps.[app].config.domain` label. For more information check out
-  the [access controls](../guides/access-controls.md#label-discovery) guide.
+  By default, Tinyauth uses the subdomain name of the request to find a matching
+  container for labels. For example, a request to `myapp.example.com` checks for
+  labels that have the subdomain as the app ID. This behavior can be modified
+  using the `tinyauth.apps.[app].config.domain` label. More details are
+  available in the [access
+  controls](/docs/guides/access-controls#label-discovery) guide.
 </Callout>
 
-## Adding headers to proxy
+## Adding Headers to Proxy
 
-To add the headers to the proxy responses you need to configure your proxy to forward the headers. This varies from proxy to proxy.
+Configuring the proxy to forward headers ensures they are included in responses. The configuration varies depending on the proxy.
 
 ### Traefik
 
-Just add the following in the Tinyauth container labels:
+Add the following label to the Tinyauth container:
 
 ```yaml
 traefik.http.middlewares.tinyauth.forwardauth.authResponseHeaders: remote-user # This can be a comma separated list of more headers you will like to copy like the custom ones you set
 ```
 
+Multiple headers can be added as a comma-separated list.
+
 ### Caddy
 
-Just add the following label in the Caddy labels:
+Add the following label to the Caddy configuration:
 
 ```yaml
 caddy.forward_auth.copy_headers: remote-user
 ```
 
-Multiple headers here are separated by space. Therefore multiple headers are passed like this: `remote-user remote-name remote-email remote-groups`
+Multiple headers are separated by spaces, for example: `remote-user remote-name remote-email remote-groups`.
 
 ### Nginx/Nginx Proxy Manager
 
-Add the following lines after the `error_page 401 = @tinyauth_login;`:
+Insert the following lines after the `error_page 401 = @tinyauth_login;` directive:
 
 ```shell
 auth_request_set $tinyauth_remote_user $upstream_http_remote_user;
 proxy_set_header remote-user $tinyauth_remote_user;
 ```
 
-You can repeat this step multiple times to add more headers, for example:
+Additional headers can be added by repeating the steps. For example:
 
 ```shell
 auth_request_set $my_header $upstream_http_my_header;

@@ -1,48 +1,48 @@
 ---
 title: Contributing
-description: Interested in contributing to Tinyauth? Below you can find out how.
+description: Interested in contributing to Tinyauth? Below are the steps to get started.
 ---
 
-Contributing is relatively easy, you just need to follow the steps below and you will be up and running with a development server in less than five minutes.
+Contributing to Tinyauth is straightforward. Follow the steps below to set up a development server in under five minutes.
 
 ## Requirements
 
 - Bun
-- Golang v1.23.2 and above
+- Golang v1.23.2 or later
 - Git
 - Docker
 
-## Cloning the repository
+## Cloning the Repository
 
-You firstly need to clone the repository with:
+Start by cloning the repository:
 
 ```sh
 git clone https://github.com/steveiliop56/tinyauth
 cd tinyauth
 ```
 
-## Install requirements
+## Installing Requirements
 
-Although you will not need the requirements in your machine since the development will happen in docker, I still recommend to install them because this way you will not have import errors. To install the go requirements run:
+While development occurs within Docker, installing the requirements locally is recommended to avoid import errors. Install the Go dependencies:
 
 ```sh
 go mod tidy
 ```
 
-You also need to download the frontend dependencies, this can be done like so:
+Frontend dependencies can be installed as follows:
 
 ```sh
 cd frontend/
 bun install
 ```
 
-## Create your `.env` file
+## Creating the `.env` File
 
-In order to configure the app you need to create an environment file, this can be done by copying the `.env.example` file to `.env` and modifying the environment variables to suit your needs.
+Configuration requires an environment file. Copy the `.env.example` file to `.env` and adjust the environment variables as needed.
 
-## Developing
+## Development Workflow
 
-I have designed the development workflow to be entirely in docker, this is because it will directly work with Traefik and you will not need to do any building in your host machine. The recommended development setup is to have a subdomain pointing to your machine like this:
+The development workflow is designed to run entirely within Docker, ensuring compatibility with Traefik and eliminating the need for local builds. A recommended setup involves pointing a subdomain to the local machine:
 
 ```
 *.dev.example.com -> 127.0.0.1
@@ -50,18 +50,17 @@ dev.example.com -> 127.0.0.1
 ```
 
 <Callout type="tip">
-  You can use a domain from [sslip.io](https://sslip.io) if you don't have one
-  to develop with.
+  A domain from [sslip.io](https://sslip.io) can be used if a custom domain is
+  unavailable.
 </Callout>
 
-Then you can just make sure the domains are correct in the development docker-compose file and run:
+Ensure the domains are correctly configured in the development Docker Compose file, then start the development environment:
 
 ```sh
 docker compose -f docker-compose.dev.yml up --build
 ```
 
 <Callout type="tip">
-  I recommend copying the example `docker-compose.dev.yml` into a
-  `docker-compose.test.yml` file, so as you don't accidentally commit any
-  sensitive information.
+  Copying the example `docker-compose.dev.yml` file to `docker-compose.test.yml`
+  is recommended to prevent accidental commits of sensitive information.
 </Callout>
