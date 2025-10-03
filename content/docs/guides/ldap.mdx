@@ -1,0 +1,64 @@
+---
+title: LDAP
+description: Use a centralized LDAP server for user management in Tinyauth.
+---
+
+LDAP, while often associated with businesses, can be highly effective for centralizing user management in a homelab environment. Tinyauth supports LDAP as a user source, making it easier to manage users across applications.
+
+## Requirements
+
+An LDAP server is required to proceed. [LLDAP](https://github.com/lldap/lldap) is recommended for its lightweight design and ease of configuration. This guide uses LLDAP, but any LDAP server is compatible.
+
+## Creating Users
+
+Tinyauth requires at least two users: an observer user with read-only access to the database (used by Tinyauth to search for user DNs) and a normal user for logging in to Tinyauth and applications.
+
+### Creating the Observer User
+
+1. Navigate to the **Users** tab in LLDAP and click **Create a user**.
+2. Provide a username, password, and email address, then click **Submit**.
+
+![LLDAP Create a User](/screenshots/lldap-create-user.png)
+
+3. After creating the user, select it from the list and scroll to the group memberships section. Add the user to the `lldap_strict_readonly` group by clicking **Add to Group**.
+
+![LLDAP Groups](/screenshots/lldap-groups.png)
+
+### Creating Additional Users
+
+Repeat the process to create additional users. Normal users do not need to belong to any groups.
+
+## Configuring Tinyauth
+
+To connect Tinyauth to the LDAP server, add the following environment variables to the Tinyauth Docker container:
+
+```yaml
+services:
+  tinyauth:
+    environment:
+      - LDAP_ADDRESS=ldap://my-lldap-server:3890
+      - LDAP_BIND_DN=uid=your-observer-user,ou=people,dc=example,dc=com
+      - LDAP_BIND_PASSWORD=your-observer-user-password
+      - LDAP_BASE_DN=dc=example,dc=com
+      - LDAP_SEARCH_FILTER=(uid=%s)
+      - LDAP_INSECURE=true
+```
+
+<Callout type="info">
+  The search filter can be customized as needed. The base filter `(uid=%s)`
+  searches for users based on their UID, with `%s` replaced by the username of
+  the user attempting to log in.
+</Callout>
+
+<Callout type="info">
+  Replace the bind DN and base DN with values specific to the LDAP server
+  configuration.
+</Callout>
+
+After restarting, logging in to Tinyauth with the second user created in LLDAP should be possible. Additional users can be created and used for login as needed.
+
+<Callout type="info">
+  LDAP users are treated the same as users from files or environment variables.
+  There is no indication in the UI that a user is logged in via LDAP. All access
+  controls apply equally to LDAP users and standard users.
+</Callout>

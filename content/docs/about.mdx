@@ -1,0 +1,22 @@
+---
+title: About
+description: A few words about Tinyauth.
+---
+
+Before installing Tinyauth, it is natural to ask, _Why choose Tinyauth over Authelia, Authentik, or Keycloak?_ This is a valid question, and the answer lies in its simplicity and focus.
+
+## The Challenge of Authentication in Homelabs
+
+An authentication middleware is often used to protect applications that lack built-in login screens or to add an extra layer of security. While projects like Authelia, Authentik, and Keycloak are capable solutions, they can be challenging to configure for new users, resource-intensive (as they are designed for enterprise use), or cumbersome to set up and maintain. Tinyauth addresses these challenges.
+
+## The Motivation Behind Tinyauth
+
+Tinyauth was developed as a personal challenge to create a robust application and to resolve the common issues faced with existing authentication solutions. Many alternatives lacked out-of-the-box support for Traefik's forward authentication and required additional plugins and containers. Tinyauth was designed with simplicity as its core principle—no complex dashboards, no intricate configuration files, and no external dependencies. Everything is configured using straightforward environment variables.
+
+## Suitable Use Cases
+
+Tinyauth is not intended for production environments. Its primary purpose is to add a login screen to applications in homelabs or to facilitate resource sharing with family and friends. For scenarios requiring advanced user management, Authentik is recommended.
+
+## Future Direction
+
+Tinyauth has reached a mature state, supporting essential features such as OAuth, TOTP, LDAP, and access controls. It integrates seamlessly with popular proxies like Nginx, Traefik, and Caddy. The focus will remain on maintaining this simplicity while introducing quality-of-life updates. There are no plans to introduce dashboards or complex configuration files, preserving the project's foundational idea.

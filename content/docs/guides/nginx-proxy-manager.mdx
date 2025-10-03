@@ -1,0 +1,128 @@
+---
+title: Nginx Proxy Manager
+description: Use Tinyauth with the Nginx Proxy Manager reverse proxy.
+---
+
+Nginx Proxy Manager is a popular tool in the homelab community for managing reverse proxies. While it differs from Traefik and Caddy due to Nginx's lack of native 302 redirect support in the `auth_request` module, Tinyauth provides API paths specifically designed to work with it.
+
+<Callout type="info">
+  This guide assumes familiarity with Nginx Proxy Manager.
+</Callout>
+
+## Example Docker Compose File
+
+The following Docker Compose file demonstrates how to set up Nginx Proxy Manager, Nginx, and Tinyauth:
+
+```yaml title="docker-compose.yml"
+services:
+  npm:
+    container_name: npm
+    image: jc21/nginx-proxy-manager:2
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+      - 81:81
+    volumes:
+      - npm-data:/data
+      - npm-letsencrypt:/etc/letsencrypt
+
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    restart: unless-stopped
+
+  tinyauth:
+    container_name: tinyauth
+    image: ghcr.io/steveiliop56/tinyauth:v4
+    restart: unless-stopped
+    environment:
+      - APP_URL=http://tinyauth.example.com
+      - USERS=user:$$2a$$10$$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u # user:password
+
+volumes:
+  npm-data:
+  npm-letsencrypt:
+```
+
+OAuth and access controls can be configured using Docker labels and environment variables. All other configurations are managed through the Nginx Proxy Manager UI.
+
+## Configuring Nginx Proxy Manager
+
+### Creating the Tinyauth Host
+
+Create a host for Tinyauth in Nginx Proxy Manager. Configure it as any other host:
+
+<img
+  src="/screenshots/npm-tinyauth.png"
+  alt="Nginx Proxy Manager Tinyauth host"
+  width="512"
+/>
+
+SSL can be set up if certificates are available.
+
+<Callout type="warning">
+  Ensure the "Block Common Exploits" option is disabled. If enabled, Nginx will
+  block URLs in query parameters, which are required for Tinyauth to function.
+</Callout>
+
+### Configuring Protected Hosts
+
+For protected hosts, such as Nginx, configure the Details tab similarly to the Tinyauth host:
+
+<img
+  src="/screenshots/npm-nginx.png"
+  alt="Nginx Proxy Manager Nginx host"
+  width="512"
+/>
+
+SSL can be configured as needed.
+
+<Callout type="info">
+  The "Block Common Exploits" option can remain enabled for protected hosts.
+</Callout>
+
+### Advanced Configuration
+
+Add the following configuration in the Advanced tab to enable Tinyauth authentication:
+
+```shell
+# Root location
+location / {
+  # Pass the request to the app
+  proxy_pass          $forward_scheme://$server:$port;
+
+  # Add other app-specific config here
+
+  # Tinyauth auth request
+  auth_request /tinyauth;
+  error_page 401 = @tinyauth_login;
+}
+
+# Tinyauth auth request
+location /tinyauth {
+  # Pass request to Tinyauth
+  proxy_pass http://tinyauth:3000/api/auth/nginx;
+
+  # Pass the request headers
+  proxy_set_header x-forwarded-proto $scheme;
+  proxy_set_header x-forwarded-host $http_host;
+  proxy_set_header x-forwarded-uri $request_uri;
+}
+
+# Tinyauth login redirect
+location @tinyauth_login {
+  return 302 http://tinyauth.example.com/login?redirect_uri=$scheme://$http_host$request_uri; # Replace with your app URL
+}
+```
+
+<Callout type="info">
+  The `/tinyauth` path can be renamed for convenience.
+</Callout>
+
+<Callout type="info">
+  Additional configuration may be required under the `/` location for
+  technologies like WebSockets.
+</Callout>
+
+Save the host configuration. Accessing the protected host will redirect to the Tinyauth login page if not already logged in. Repeat this process for each host to be protected by Tinyauth.

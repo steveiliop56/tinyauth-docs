@@ -1,0 +1,21 @@
+---
+title: Flow
+description: Reference on Tinyauth's authentication flow.
+---
+
+Tinyauth operates with a straightforward authentication process. The sequence diagram below illustrates the flow of authentication:
+
+```mermaid
+sequenceDiagram
+    User->>Proxy: Request resource
+    Proxy->>Tinyauth: Forward auth request
+    Tinyauth->>User: Login screen
+    User->>Tinyauth: Login
+    Tinyauth->>User: Set cookie
+    Tinyauth->>User: Redirect to resource
+    User->>Proxy: Request resource
+    Proxy->>Tinyauth: Forward auth request
+    Tinyauth->>Proxy: Success
+    Proxy->>App: User request
+    App->>User: Response
+```
