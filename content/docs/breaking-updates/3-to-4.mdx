@@ -1,0 +1,161 @@
+---
+title: Updating from v3 to v4
+description: A guide to help migrate from Tinyauth v3 to v4.
+---
+
+Tinyauth v4 introduces several breaking changes that require manual migration. This guide outlines the necessary updates for a smooth upgrade.
+
+## SQLite Database
+
+Starting from v4, Tinyauth is a stateful application that uses a SQLite database to store sessions. This change improves security. For Docker setups, include the following volume:
+
+```yaml
+services:
+  tinyauth:
+    volumes:
+      - ./data:/data
+```
+
+For binary setups, the database path can be changed using the following option:
+
+| Environment     | Flag              | Description                                        | Default             | Required |
+| --------------- | ----------------- | -------------------------------------------------- | ------------------- | -------- |
+| `DATABASE_PATH` | `--database-path` | The path where the SQLite database will be stored. | `/data/tinyauth.db` | no       |
+
+<Callout type="info">
+  The SQLite database does not store configuration options. All configuration is
+  still done using environment variables or CLI flags. If persisting sessions
+  across restarts is of no concern, the database volume can be omitted.
+</Callout>
+
+## OAuth
+
+The OAuth backend has been rewritten to support multiple OAuth providers. The following options are deprecated:
+
+- `GITHUB_CLIENT_ID`/`--github-client-id`
+- `GITHUB_CLIENT_SECRET`/`--github-client-secret`
+- `GITHUB_CLIENT_SECRET_FILE`/`--github-client-secret-file`
+- `GOOGLE_CLIENT_ID`/`--google-client-id`
+- `GOOGLE_CLIENT_SECRET`/`--google-client-secret`
+- `GOOGLE_CLIENT_SECRET_FILE`/`--google-client-secret-file`
+- `GENERIC_CLIENT_ID`/`--generic-client-id`
+- `GENERIC_CLIENT_SECRET`/`--generic-client-secret`
+- `GENERIC_CLIENT_SECRET_FILE`/`--generic-client-secret-file`
+- `GENERIC_AUTH_URL`/`--generic-auth-url`
+- `GENERIC_TOKEN_URL`/`--generic-token-url`
+- `GENERIC_USER_URL`/`--generic-user-url`
+- `GENERIC_SCOPES`/`--generic-scopes`
+- `GENERIC_NAME`/`--generic-name`
+- `GENERIC_SKIP_SSL`/`--generic-skip-ssl`
+
+The new configuration for the OAuth providers includes a dynamic name in the configuration key (provider ID) that will be used for the callback URLs and identification within the API endpoints. The new configuration options are:
+
+| Environment                                 | Flag                                          | Description                                                         | Default                                    | Required |
+| ------------------------------------------- | --------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------ | -------- |
+| `PROVIDERS_[PROVIDER]_CLIENT_ID`            | `--providers-[provider]-client-id`            | The client ID for the OAuth client.                                 | ``                                         | yes      |
+| `PROVIDERS_[PROVIDER]_CLIENT_SECRET`        | `--providers-[provider]-client-secret`        | The client secret for the OAuth client.                             | ``                                         | yes      |
+| `PROVIDERS_[PROVIDER]_CLIENT_SECRET_FILE`   | `--providers-[provider]-client-secret-file`   | A path to a file containing the client secret for the OAuth client. | ``                                         | no       |
+| `PROVIDERS_[PROVIDER]_SCOPES`               | `--providers-[provider]-scopes`               | The scopes needed for the OAuth provider.                           | ``                                         | yes      |
+| `PROVIDERS_[PROVIDER]_AUTH_URL`             | `--providers-[provider]-auth-url`             | The authentication URL for the OAuth provider.                      | ``                                         | yes      |
+| `PROVIDERS_[PROVIDER]_TOKEN_URL`            | `--providers-[provider]-token-url`            | The token URL for the OAuth provider.                               | ``                                         | yes      |
+| `PROVIDERS_[PROVIDER]_USER_INFO_URL`        | `--providers-[provider]-user-info-url`        | The user information URL for the OAuth provider.                    | ``                                         | yes      |
+| `PROVIDERS_[PROVIDER]_INSECURE_SKIP_VERIFY` | `--providers-[provider]-insecure-skip-verify` | Skip SSL certificate check for provider.                            | `false`                                    | no       |
+| `PROVIDERS_[PROVIDER]_NAME`                 | `--providers-[provider]-name`                 | The name of the OAuth provider (for the UI button).                 | Provider ID with first letter capitalized. | no       |
+
+For example, to configure Google OAuth:
+
+```
+PROVIDERS_GOOGLE_CLIENT_ID=my-client-id
+PROVIDERS_GOOGLE_CLIENT_SECRET=my-client-secret
+```
+
+Or with CLI flags:
+
+```
+--providers-google-client-id=my-client-id --providers-google-client-secret=my-client-secret
+```
+
+<Callout type="info">
+  Using `google` or `github` as provider IDs automatically fills in required
+  information (e.g., redirect URL, scopes).
+</Callout>
+
+## Labels
+
+Labels have been restructured. Deprecated labels include:
+
+- `tinyauth.users`
+- `tinyauth.allowed`
+- `tinyauth.headers`
+- `tinyauth.domain`
+- `tinyauth.basic.password.plain`
+- `tinyauth.basic.password.file`
+- `tinyauth.basic.username`
+- `tinyauth.oauth.whitelist`
+- `tinyauth.oauth.groups`
+- `tinyauth.ip.allow`
+- `tinyauth.ip.block`
+- `tinyauth.ip.bypass`
+
+The new structure uses app-specific identifiers:
+
+| Name                                                  | Description                                                                                                                             |
+| ----------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `tinyauth.apps.[app].config.domain`                   | The domain where the protected app is exposed at. Tinyauth will use this to identify the correct container.                             |
+| `tinyauth.apps.[app].users.allow`                     | A comma separated list of users that are allowed to access the app.                                                                     |
+| `tinyauth.apps.[app].users.block`                     | A comma separated list of users that are not allowed to access the app.                                                                 |
+| `tinyauth.apps.[app].oauth.whitelist`                 | A comma separated list or a regex of email addresses that are allowed to access the app (coming from OAuth).                            |
+| `tinyauth.apps.[app].oauth.groups`                    | A comma separated list of OAuth groups required by a user to access the app.                                                            |
+| `tinyauth.apps.[app].ip.allow`                        | A comma separated list of IP addresses or CIDRs that are allowed to access the app.                                                     |
+| `tinyauth.apps.[app].ip.block`                        | A comma separated list of IP addresses or CIDRs that are not allowed to access the app.                                                 |
+| `tinyauth.apps.[app].ip.bypass`                       | A comma separated list of IP addresses or CIDRs in which authentication won't be required to access the app.                            |
+| `tinyauth.apps.[app].response.headers`                | A comma separated list of headers that Tinyauth will include in its response (useful for authenticating to protected apps with tokens). |
+| `tinyauth.apps.[app].response.basicauth.username`     | Username used by Tinyauth to authenticate to a target app using basic authentication.                                                   |
+| `tinyauth.apps.[app].response.basicauth.password`     | Password used by Tinyauth to authenticate to a target app using basic authentication.                                                   |
+| `tinyauth.apps.[app].response.basicauth.passwordfile` | A path to a file containing the password used by Tinyauth to authenticate to a target app using basic authentication.                   |
+| `tinyauth.apps.[app].path.allow`                      | A regex of paths that do not need authentication.                                                                                       |
+| `tinyauth.apps.[app].path.block`                      | A regex of paths that will require authentication (meaning that all other paths are allowed).                                           |
+
+For example if your current configuration looks like this:
+
+```yaml
+services:
+  whoami:
+    labels:
+      tinyauth.users: user1,user2
+```
+
+You will have to change it too:
+
+```yaml
+services:
+  whoami:
+    labels:
+      tinyauth.apps.whoami.users.allow: user1,user2
+```
+
+<Callout type="info">
+  The label discovery mechanism now uses the app name in the request subdomain.
+  For example, `myapp.example.com` matches `tinyauth.apps.myapp.foo: bar`.
+  Container name based label discovery is no longer supported.
+</Callout>
+
+<Callout type="info">
+  It is advised that you switch to the `tinyauth.apps.[app].config.domain` label
+  for better discovery.
+</Callout>
+
+## Configuration Changes
+
+The following options are deprecated:
+
+- `SECRET`/`--secret`
+- `SECRET_FILE`/`--secret-file`
+- `DISABLE_CONTINUE`/`--disable-continue`
+
+Changed options:
+
+| Current                             | New                                 | Values                                                      |
+| ----------------------------------- | ----------------------------------- | ----------------------------------------------------------- |
+| `COOKIE_SECURE` (`--cookie-secure`) | `SECURE_COOKIE` (`--secure-cookie`) | `true` or `false`                                           |
+| `LOG_LEVEL` (`--log-level`)         | `LOG_LEVEL` (`--log-level`)         | `trace`, `debug`, `info`, `warn`, `error`, `fatal`, `panic` |
