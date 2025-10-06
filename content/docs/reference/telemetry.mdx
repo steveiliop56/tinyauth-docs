@@ -1,0 +1,28 @@
+---
+title: Telemetry
+description: Information about telemetry in Tinyauth.
+---
+
+Tinyauth includes a heartbeat feature that send anonymous version information to get some insights on the usage of Tinyauth. The collected information includes:
+
+- Tinyauth version
+- Instance UUID (generated with UUID v4 from the app URL)
+- Time of the request
+
+<Callout type="info">
+  The UUID generated from the app URL is an irreversible hash and cannot be used
+  to identify the instance.
+</Callout>
+
+The data is sent to `https://api.tinyauth.app/v1/instances/hearbeat` every 12 hours. No personal, sensitive or identifiable information is collected. The heartbeat can be disabled with:
+
+| Environment         | CLI Flag              | Default |
+| ------------------- | --------------------- | ------- |
+| `DISABLE_ANALYTICS` | `--disable-analytics` | `false` |
+
+<Callout type="info">
+  Your IP address may be stored in an in-memory cache for a short period to
+  prevent abuse of the API server.
+</Callout>
+
+The telemetry server source is available on [GitHub](https://github.com/steveiliop56/tinyauth-analytics) licensed under the MIT license.
