@@ -3,6 +3,41 @@ title: Changelog
 description: Overview of changes and updates in Tinyauth versions.
 ---
 
+## v4.0.0
+
+<Callout type="warning">
+  This is a breaking release, please follow the migration guide in the
+  [documentation](/docs/breaking-updates/3-to-4.mdx).
+</Callout>
+
+### New Features
+
+- SQLite database for storing sessions
+- Warning in UI when current domain doesn't match configured one
+- Trusted proxies configuration option (`TRUSTED_PROXIES`/`--trusted-proxies`)
+- File server allowing you to serve static assets like the background image (`RESOURCES_DIR`/`--resources-dir`)
+- Dash substitute for slash in IP labels allowing for CIDR usage in Kubernetes
+- Ensure app URL is not in the public suffix list to avoid cookie issues
+- Multiple OAuth providers
+
+### Improvements
+
+- App labels reworked to allow for cleaner ACL configuration
+- Improved OAuth auto redirect flow for a more seamless redirection
+- Continue screen refactored to a redirect handler removing the need to click extra buttons
+- Autofocus TOTP form
+
+### Fixes
+
+- Disable indexing in the login screen preventing it from appearing in search engines
+
+### Technical
+
+- A large part of the code base has been rewritten aiming for cleaner, readable and maintainable code
+- Reworked file structure for a better development experience
+- Bump dependencies
+- Update translations
+
 ## v3.6.2
 
 ### Improvements
