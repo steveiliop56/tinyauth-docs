@@ -28,6 +28,20 @@ docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v4 [options]
 
 The main command starts the API and web UI, waiting for incoming connections. All options are configurable with CLI flags or environment variables. A complete list of configuration options is available on the [configuration](/docs/reference/configuration) page.
 
+### Health check command
+
+The health check command verifies if Tinyauth is running correctly:
+
+```sh
+./tinyauth healthcheck
+```
+
+By default, it will use `http://127.0.0.1:3000` to check the health endpoint. The URL will automatically change if you set the `PORT` and/or `ADDRESS` environment variables. You can also specify a custom URL with:
+
+```sh
+./tinyauth healthcheck http://tinyauth.example.com
+```
+
 ### Create User Command
 
 The create command simplifies user creation. To create a user interactively:
@@ -42,12 +56,12 @@ This launches an interactive TUI to input a username and password, generating th
 ./tinyauth user create --username user@example.com --password password
 ```
 
-| Flag            | Description                                                | Default | Required |
-| --------------- | ---------------------------------------------------------- | ------- | -------- |
-| `--username`    | Username for creating the user.                            | ``      | yes      |
-| `--password`    | Password for creating the user.                            | ``      | yes      |
-| `--docker`      | Format output for Docker Compose or environment variables. | `false` | no       |
-| `--interactive` | Use an interactive TUI for user creation.                  | `false` | no       |
+| Flag                   | Description                                                | Default | Required |
+| ---------------------- | ---------------------------------------------------------- | ------- | -------- |
+| `--username`           | Username for creating the user.                            | ``      | yes      |
+| `--password`           | Password for creating the user.                            | ``      | yes      |
+| `--docker`             | Format output for Docker Compose or environment variables. | `false` | no       |
+| `--interactive` (`-i`) | Use an interactive TUI for user creation.                  | `false` | no       |
 
 ### Verify User Command
 
@@ -67,13 +81,13 @@ A TUI prompts for the `username:hash`, username, and password, verifying the cre
   Use quotes (`'`) in bash shells to ensure the hash is passed correctly.
 </Callout>
 
-| Flag            | Description                                | Default | Required |
-| --------------- | ------------------------------------------ | ------- | -------- |
-| `--user`        | The `username:hash` combination to verify. | ``      | yes      |
-| `--username`    | Username for verification.                 | ``      | yes      |
-| `--password`    | Password for verification.                 | ``      | yes      |
-| `--interactive` | Use an interactive TUI for verification.   | `false` | no       |
-| `--totp`        | Optional TOTP code for verification.       | ``      | no       |
+| Flag                   | Description                                | Default | Required |
+| ---------------------- | ------------------------------------------ | ------- | -------- |
+| `--user`               | The `username:hash` combination to verify. | ``      | yes      |
+| `--username`           | Username for verification.                 | ``      | yes      |
+| `--password`           | Password for verification.                 | ``      | yes      |
+| `--interactive` (`-i`) | Use an interactive TUI for verification.   | `false` | no       |
+| `--totp`               | Optional TOTP code for verification.       | ``      | no       |
 
 ### Generate TOTP Command
 
@@ -93,7 +107,7 @@ This prompts for the current `username:hash` and generates a `username:hash:secr
   Use quotes (`'`) in bash shells to ensure the hash is passed correctly.
 </Callout>
 
-| Flag            | Description                                        | Default | Required |
-| --------------- | -------------------------------------------------- | ------- | -------- |
-| `--user`        | The `username:hash` combination to verify.         | ``      | yes      |
-| `--interactive` | Use an interactive TUI for creating the TOTP user. | `false` | no       |
+| Flag                   | Description                                        | Default | Required |
+| ---------------------- | -------------------------------------------------- | ------- | -------- |
+| `--user`               | The `username:hash` combination to verify.         | ``      | yes      |
+| `--interactive` (`-i`) | Use an interactive TUI for creating the TOTP user. | `false` | no       |
