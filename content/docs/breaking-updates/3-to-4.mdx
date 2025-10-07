@@ -159,3 +159,12 @@ Changed options:
 | ----------------------------------- | ----------------------------------- | ----------------------------------------------------------- |
 | `COOKIE_SECURE` (`--cookie-secure`) | `SECURE_COOKIE` (`--secure-cookie`) | `true` or `false`                                           |
 | `LOG_LEVEL` (`--log-level`)         | `LOG_LEVEL` (`--log-level`)         | `trace`, `debug`, `info`, `warn`, `error`, `fatal`, `panic` |
+
+## API Changes
+
+The API has been updated. If you are using the API directly, please refer to the [controller](https://github.com/steveiliop56/tinyauth/tree/main/internal/controller) sources. All API paths have the `/api` prefix. Most importantly, the health check path changed.
+
+| Current Path       | New Path       | Method | Description                   |
+| ------------------ | -------------- | ------ | ----------------------------- |
+| `/api/healthcheck` | `/api/healthz` | `GET`  | Check if Tinyauth is running. |
+| `/api/healthcheck` | `/api/healthz` | `HEAD` | Check if Tinyauth is running. |
