@@ -75,9 +75,10 @@ Or with CLI flags:
 --providers-google-client-id=my-client-id --providers-google-client-secret=my-client-secret
 ```
 
-<Callout type="info">
-  Using `google` or `github` as provider IDs automatically fills in required
-  information (e.g., redirect URL, scopes).
+<Callout type="tip">
+  Using `google` or `github` as provider IDs, triggers automatic filling of the
+  required information (e.g., redirect URL, scopes). You will only have to
+  provide the client ID and secret.
 </Callout>
 
 ## Labels
@@ -155,16 +156,16 @@ The following options are deprecated:
 
 Changed options:
 
-| Current                             | New                                 | Values                                                      |
-| ----------------------------------- | ----------------------------------- | ----------------------------------------------------------- |
-| `COOKIE_SECURE` (`--cookie-secure`) | `SECURE_COOKIE` (`--secure-cookie`) | `true` or `false`                                           |
-| `LOG_LEVEL` (`--log-level`)         | `LOG_LEVEL` (`--log-level`)         | `trace`, `debug`, `info`, `warn`, `error`, `fatal`, `panic` |
+| Current                             | New                                 |
+| ----------------------------------- | ----------------------------------- |
+| `COOKIE_SECURE` (`--cookie-secure`) | `SECURE_COOKIE` (`--secure-cookie`) |
+| `LOG_LEVEL` (`--log-level`)         | `LOG_LEVEL` (`--log-level`)         |
 
 ## API Changes
 
 The API has been updated. If you are using the API directly, please refer to the [controller](https://github.com/steveiliop56/tinyauth/tree/main/internal/controller) sources. All API paths have the `/api` prefix. Most importantly, the health check path changed.
 
-| Current Path       | New Path       | Method | Description                   |
-| ------------------ | -------------- | ------ | ----------------------------- |
-| `/api/healthcheck` | `/api/healthz` | `GET`  | Check if Tinyauth is running. |
-| `/api/healthcheck` | `/api/healthz` | `HEAD` | Check if Tinyauth is running. |
+| Current Path       | New Path       | Method |
+| ------------------ | -------------- | ------ |
+| `/api/healthcheck` | `/api/healthz` | `GET`  |
+| `/api/healthcheck` | `/api/healthz` | `HEAD` |
