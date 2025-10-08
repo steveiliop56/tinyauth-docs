@@ -169,3 +169,9 @@ The API has been updated. If you are using the API directly, please refer to the
 | ------------------ | -------------- | ------ |
 | `/api/healthcheck` | `/api/healthz` | `GET`  |
 | `/api/healthcheck` | `/api/healthz` | `HEAD` |
+
+There is also a new `tinyauth healthcheck` command which will automatically check if the server is healthy using your current configuration. The Docker image comes with the following health check:
+
+```dockerfile
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 CMD ["tinyauth", "healthcheck"]
+```
