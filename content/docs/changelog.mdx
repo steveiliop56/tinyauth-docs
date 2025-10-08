@@ -19,6 +19,7 @@ description: Overview of changes and updates in Tinyauth versions.
 - Dash substitute for slash in IP labels allowing for CIDR usage in Kubernetes
 - Ensure app URL is not in the public suffix list to avoid cookie issues
 - Multiple OAuth providers
+- [Helm](https://helm.tinyauth.app) chart for Kubernetes deployments
 
 ### Improvements
 
@@ -26,10 +27,12 @@ description: Overview of changes and updates in Tinyauth versions.
 - Improved OAuth auto redirect flow for a more seamless redirection
 - Continue screen refactored to a redirect handler removing the need to click extra buttons
 - Autofocus TOTP form
+- Set page title using `APP_TITLE` environment variable
 
 ### Fixes
 
 - Disable indexing in the login screen preventing it from appearing in search engines
+- Do not allow authentication if Tinyauth fails to get the labels
 
 ### Technical
 
