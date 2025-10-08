@@ -5,6 +5,8 @@ import { baseOptions } from "@/lib/layout.shared";
 import { Card } from "@/components/card";
 import { MdiGithub } from "@/components/github";
 import { IcBaselineDiscord } from "@/components/discord";
+import { useEffect, useState } from "react";
+import CountUp from "@/components/countup";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -16,7 +18,33 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
+type InstanceResponse = {
+  total: number;
+  instances: Array<{
+    last_seen: string;
+    uuid: string;
+    version: string;
+  }>;
+};
+
+const fetchInstances = async (): Promise<InstanceResponse> => {
+  const res = await fetch("https://api.tinyauth.app/v1/instances/all");
+  if (!res.ok) {
+    throw new Error("Failed to fetch instances");
+  }
+  const data = await res.json();
+  return data as InstanceResponse;
+};
+
 export default function Home() {
+  const [instances, setInstances] = useState(0);
+
+  useEffect(() => {
+    fetchInstances().then((data) => {
+      setInstances(data.total);
+    });
+  }, []);
+
   return (
     <HomeLayout {...baseOptions()}>
       <div className="px-4 pb-4 pt-[5%] flex flex-col items-center flex-1 gap-8 mb-4">
@@ -27,6 +55,16 @@ export default function Home() {
             Forget endless configuration and complex dashboards and say hello to
             a five-minute installation.
           </p>
+          <div className="bg-fd-success/20 border border-fd-success/40 rounded-full px-3 py-1 text-sm font-medium">
+            <CountUp
+              from={0}
+              to={instances}
+              separator=","
+              direction="up"
+              duration={1}
+            />
+            <span>+ Active Instances (v4)</span>
+          </div>
           <div className="flex flex-row gap-3">
             <Link
               to="/docs/getting-started"
