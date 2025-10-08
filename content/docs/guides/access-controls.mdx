@@ -18,7 +18,7 @@ services:
 
 Restart Tinyauth after setting the volume.
 
-<Callout type="tip">
+<Callout type="info">
   For increased security, use a Docker socket proxy like [Tecnativa's](https://github.com/Tecnativa/docker-socket-proxy). Configure Tinyauth to use the proxy by adding the following environment variable:
 
 ```yaml
@@ -66,7 +66,7 @@ Only `user1` will be able to access the app. To block specific users, use the `u
 tinyauth.apps.myapp.users.block: user2
 ```
 
-<Callout type="tip">
+<Callout type="info">
   Both `users.allow` and `users.block` labels can accept a comma-separated list
   of users or a regex string (enclosed with `/`).
 </Callout>
@@ -83,7 +83,7 @@ tinyauth.apps.myapp.oauth.whitelist: user1@example.com
 
 Only `user1@example.com` will be able to access the app.
 
-<Callout type="tip">
+<Callout type="info">
   The `oauth.whitelist` label can accept a comma-separated list of users or a
   regex string (enclosed with `/`).
 </Callout>

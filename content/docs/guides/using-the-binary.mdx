@@ -33,7 +33,7 @@ Once configured, start Tinyauth. For environment variable-based setups, export t
 export $(grep -v '^#' .env | xargs -d '\n')
 ```
 
-<Callout type="tip">
+<Callout type="info">
   To unset the environment variables for security purposes, use: `unset $(grep
   -v '^#' .env | sed -E 's/(.*)=.*/\1/' | xargs)`.
 </Callout>
@@ -73,7 +73,7 @@ WantedBy=multi-user.target
   environment and binary files.
 </Callout>
 
-<Callout type="tip">
+<Callout type="info">
   For CLI flag-based setups, remove the `EnvironmentFile` line and append the
   flags to the `ExecStart` line, e.g., `ExecStart=/some/path/tinyauth
   --app-url=https://tinyauth.example.com`.

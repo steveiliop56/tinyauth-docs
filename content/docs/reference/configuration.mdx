@@ -53,7 +53,7 @@ OAuth configuration includes a provider ID in the environment variable or flag n
 | `PROVIDERS_[ID]_TOKEN_URL`            | `--providers-[id]-token-url`            | OAuth token URL.                         | ``      | yes      |
 | `PROVIDERS_[ID]_USER_INFO_URL`        | `--providers-[id]-user-info-url`        | URL to fetch user info.                  | ``      | yes      |
 
-<Callout type="tip">
+<Callout type="info">
   Using `google` or `github` as provider IDs, triggers automatic filling of the
   required information (e.g., redirect URL, scopes). You will only have to
   provide the client ID and secret.
@@ -70,6 +70,6 @@ OAuth configuration includes a provider ID in the environment variable or flag n
 | `LDAP_INSECURE`      | `--ldap-insecure`      | Skip certificate verification for the LDAP server.  | `false`    | no       |
 | `LDAP_SEARCH_FILTER` | `--ldap-search-filter` | LDAP search filter for user lookup.                 | `(uid=%s)` | no       |
 
-<Callout type="tip">
+<Callout type="info">
   For Windows LDAP, use the following search filter: `(&(sAMAccountName=%s))`.
 </Callout>

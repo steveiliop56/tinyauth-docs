@@ -49,7 +49,7 @@ The development workflow is designed to run entirely within Docker, ensuring com
 dev.example.com -> 127.0.0.1
 ```
 
-<Callout type="tip">
+<Callout type="info">
   A domain from [sslip.io](https://sslip.io) can be used if a custom domain is
   unavailable.
 </Callout>
@@ -60,7 +60,7 @@ Ensure the domains are correctly configured in the development Docker Compose fi
 docker compose -f docker-compose.dev.yml up --build
 ```
 
-<Callout type="tip">
+<Callout type="info">
   Copying the example `docker-compose.dev.yml` file to `docker-compose.test.yml`
   is recommended to prevent accidental commits of sensitive information.
 </Callout>
