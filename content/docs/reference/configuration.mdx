@@ -1,0 +1,75 @@
+---
+title: Configuration
+description: Reference on Tinyauth's configuration.
+---
+
+Tinyauth can be configured using environment variables or CLI flags. The table below provides a comprehensive list of configuration options.
+
+<Callout type="info">
+  Configuration options with a `FILE_` equivalent (e.g., `USERS` and
+  `USERS_FILE`) allow the `FILE_` environment variable or CLI flag to be used as
+  an alternative.
+</Callout>
+
+## General
+
+| Environment               | Flag                        | Description                                                                                      | Default             | Required |
+| ------------------------- | --------------------------- | ------------------------------------------------------------------------------------------------ | ------------------- | -------- |
+| `ADDRESS`                 | `--address`                 | Address to bind the server to.                                                                   | `0.0.0.0`           | no       |
+| `APP_TITLE`               | `--app-title`               | Title of the app.                                                                                | `Tinyauth`          | no       |
+| `APP_URL`                 | `--app-url`                 | The Tinyauth URL.                                                                                | ``                  | yes      |
+| `BACKGROUND_IMAGE`        | `--background-image`        | Background image URL for the login page.                                                         | `/background.jpg`   | no       |
+| `DATABASE_PATH`           | `--database-path`           | Path to the SQLite database file.                                                                | `/data/tinyauth.db` | no       |
+| `DISABLE_ANALYTICS`       | `--disable-analytics`       | Disable anonymous version collection.                                                            | `false`             | no       |
+| `DISABLE_RESOURCES`       | `--disable-resources`       | Disable the resources server.                                                                    | `false`             | no       |
+| `FORGOT_PASSWORD_MESSAGE` | `--forgot-password-message` | Message to show on the forgot password page.                                                     | ``                  | no       |
+| `LOG_LEVEL`               | `--log-level`               | Log level (`trace`, `debug`, `info`, `warn`, `error`, `fatal`, `panic`).                         | `info`              | no       |
+| `LOGIN_MAX_RETRIES`       | `--login-max-retries`       | Maximum login attempts before timeout (0 to disable).                                            | `5`                 | no       |
+| `LOGIN_TIMEOUT`           | `--login-timeout`           | Login timeout in seconds after max retries reached (0 to disable).                               | `300`               | no       |
+| `OAUTH_AUTO_REDIRECT`     | `--oauth-auto-redirect`     | Auto redirect to the specified OAuth provider.                                                   | ``                  | no       |
+| `OAUTH_WHITELIST`         | `--oauth-whitelist`         | Comma-separated list of email addresses to whitelist when using OAuth.                           | ``                  | no       |
+| `PORT`                    | `--port`                    | Port to run the server on.                                                                       | `3000`              | no       |
+| `RESOURCES_DIR`           | `--resources-dir`           | Path to a directory containing custom resources (e.g., background image).                        | `/data/resources`   | no       |
+| `SECURE_COOKIE`           | `--secure-cookie`           | Send cookie over secure connection only.                                                         | `false`             | no       |
+| `SESSION_EXPIRY`          | `--session-expiry`          | Session (cookie) expiration time in seconds.                                                     | `86400`             | no       |
+| `TRUSTED_PROXIES`         | `--trusted-proxies`         | Comma-separated list of trusted proxies (IP addresses or CIDRs) for correct client IP detection. | ``                  | no       |
+| `USERS`                   | `--users`                   | Comma-separated list of users in the format `username:hash`.                                     | ``                  | yes      |
+| `USERS_FILE`              | `--users-file`              | Path to a file containing users in the format `username:hash`.                                   | ``                  | no       |
+
+## OAuth Config
+
+OAuth configuration includes a provider ID in the environment variable or flag name. For example, `PROVIDERS_GOOGLE_CLIENT_ID`.
+
+| Environment                           | Flag                                    | Description                              | Default | Required |
+| ------------------------------------- | --------------------------------------- | ---------------------------------------- | ------- | -------- |
+| `PROVIDERS_[ID]_AUTH_URL`             | `--providers-[id]-auth-url`             | OAuth authorization URL.                 | ``      | yes      |
+| `PROVIDERS_[ID]_CLIENT_ID`            | `--providers-[id]-client-id`            | OAuth client ID.                         | ``      | yes      |
+| `PROVIDERS_[ID]_CLIENT_SECRET`        | `--providers-[id]-client-secret`        | OAuth client secret.                     | ``      | yes      |
+| `PROVIDERS_[ID]_CLIENT_SECRET_FILE`   | `--providers-[id]-client-secret-file`   | Path to a file containing client secret. | ``      | no       |
+| `PROVIDERS_[ID]_INSECURE_SKIP_VERIFY` | `--providers-[id]-insecure-skip-verify` | Skip TLS certificate verification.       | ``      | no       |
+| `PROVIDERS_[ID]_NAME`                 | `--providers-[id]-name`                 | Name of the OAuth provider.              | ``      | no       |
+| `PROVIDERS_[ID]_REDIRECT_URL`         | `--providers-[id]-redirect-url`         | OAuth redirect URL.                      | ``      | yes      |
+| `PROVIDERS_[ID]_SCOPES`               | `--providers-[id]-scopes`               | List of OAuth scopes.                    | ``      | yes      |
+| `PROVIDERS_[ID]_TOKEN_URL`            | `--providers-[id]-token-url`            | OAuth token URL.                         | ``      | yes      |
+| `PROVIDERS_[ID]_USER_INFO_URL`        | `--providers-[id]-user-info-url`        | URL to fetch user info.                  | ``      | yes      |
+
+<Callout type="info">
+  Using `google` or `github` as provider IDs, triggers automatic filling of the
+  required information (e.g., redirect URL, scopes). You will only have to
+  provide the client ID and secret.
+</Callout>
+
+## LDAP Config
+
+| Environment          | Flag                   | Description                                         | Default    | Required |
+| -------------------- | ---------------------- | --------------------------------------------------- | ---------- | -------- |
+| `LDAP_ADDRESS`       | `--ldap-address`       | LDAP server address (e.g., `ldap://localhost:389`). | ``         | no       |
+| `LDAP_BASE_DN`       | `--ldap-base-dn`       | LDAP base DN (e.g., `dc=example,dc=com`).           | ``         | no       |
+| `LDAP_BIND_DN`       | `--ldap-bind-dn`       | LDAP bind DN (e.g., `uid=user,dc=example,dc=com`).  | ``         | no       |
+| `LDAP_BIND_PASSWORD` | `--ldap-bind-password` | LDAP bind password.                                 | ``         | no       |
+| `LDAP_INSECURE`      | `--ldap-insecure`      | Skip certificate verification for the LDAP server.  | `false`    | no       |
+| `LDAP_SEARCH_FILTER` | `--ldap-search-filter` | LDAP search filter for user lookup.                 | `(uid=%s)` | no       |
+
+<Callout type="info">
+  For Windows LDAP, use the following search filter: `(&(sAMAccountName=%s))`.
+</Callout>

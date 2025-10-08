@@ -1,0 +1,113 @@
+---
+title: CLI
+description: Reference on the Tinyauth CLI.
+---
+
+Tinyauth offers a simple CLI to configure the app and manage users.
+
+## Commands
+
+All commands can be run from the standalone Tinyauth binary:
+
+```sh
+./tinyauth [options]
+```
+
+Alternatively, when running the app through Docker:
+
+```sh
+docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v4 [options]
+```
+
+<Callout type="info">
+  When using Docker Compose, the command `docker compose run tinyauth [options]`
+  can also be used.
+</Callout>
+
+### Main Command
+
+The main command starts the API and web UI, waiting for incoming connections. All options are configurable with CLI flags or environment variables. A complete list of configuration options is available on the [configuration](/docs/reference/configuration) page.
+
+### Healthcheck command
+
+The health check command verifies if Tinyauth is running correctly:
+
+```sh
+./tinyauth healthcheck
+```
+
+By default, it will use `http://127.0.0.1:3000` to check the health endpoint. The URL will automatically change if you set the `PORT` and/or `ADDRESS` environment variables. You can also specify a custom URL with:
+
+```sh
+./tinyauth healthcheck http://tinyauth.example.com
+```
+
+### Create User Command
+
+The create command simplifies user creation. To create a user interactively:
+
+```sh
+./tinyauth user create --interactive
+```
+
+This launches an interactive TUI to input a username and password, generating the `username:hash` format required by Tinyauth. It can also format the user for Docker Compose or environment variables. For non-interactive creation:
+
+```sh
+./tinyauth user create --username user@example.com --password password
+```
+
+| Flag                   | Description                                                | Default | Required |
+| ---------------------- | ---------------------------------------------------------- | ------- | -------- |
+| `--username`           | Username for creating the user.                            | ``      | yes      |
+| `--password`           | Password for creating the user.                            | ``      | yes      |
+| `--docker`             | Format output for Docker Compose or environment variables. | `false` | no       |
+| `--interactive` (`-i`) | Use an interactive TUI for user creation.                  | `false` | no       |
+
+### Verify User Command
+
+The verify command checks if a username and password match the `username:hash`. For interactive verification:
+
+```sh
+./tinyauth user verify --interactive
+```
+
+A TUI prompts for the `username:hash`, username, and password, verifying the credentials. For non-interactive verification:
+
+```sh
+./tinyauth user verify --user 'user@example.com:$2a$10$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u' --username user@example.com --password password
+```
+
+<Callout type="info">
+  Use quotes (`'`) in bash shells to ensure the hash is passed correctly.
+</Callout>
+
+| Flag                   | Description                                | Default | Required |
+| ---------------------- | ------------------------------------------ | ------- | -------- |
+| `--user`               | The `username:hash` combination to verify. | ``      | yes      |
+| `--username`           | Username for verification.                 | ``      | yes      |
+| `--password`           | Password for verification.                 | ``      | yes      |
+| `--interactive` (`-i`) | Use an interactive TUI for verification.   | `false` | no       |
+| `--totp`               | Optional TOTP code for verification.       | ``      | no       |
+
+### Generate TOTP Command
+
+Tinyauth can auto generate TOTP codes for you, the combination is `username:hash:secret`. You can generate a TOTP user with:
+
+```sh
+./tinyauth totp generate -i
+```
+
+This prompts for the current `username:hash` and generates a `username:hash:secret` along with a QR code for adding to an authenticator app. For non-interactive generation:
+
+```sh
+./tinyauth totp generate --user 'user@example.com:$2a$10$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u'
+```
+
+<Callout type="info">
+  Use quotes (`'`) in bash shells to ensure the hash is passed correctly.
+</Callout>
+
+| Flag                   | Description                                        | Default | Required |
+| ---------------------- | -------------------------------------------------- | ------- | -------- |
+| `--user`               | The `username:hash` combination to verify.         | ``      | yes      |
+| `--interactive` (`-i`) | Use an interactive TUI for creating the TOTP user. | `false` | no       |

@@ -1,0 +1,35 @@
+---
+title: Labels
+description: Reference on the labels used by Tinyauth.
+---
+
+Tinyauth uses labels to manage access control for protected resources. Labels are key-value pairs that can be assigned to users and resources, allowing for flexible and granular access control. The full list of labels is available below.
+
+## Discovery
+
+Tinyauth uses the app ID in labels and the request subdomain to match labels with the app. For example, a request to `app1.example.com` triggers Tinyauth to search for containers with the `tinyauth.apps.app1.foo: bar` label. To use the domain instead, add the following label:
+
+```yaml
+tinyauth.apps.myapp.domain: myapp.example.com
+```
+
+Tinyauth will now use the domain to match labels instead of the app ID.
+
+## Full List
+
+| Name                                                  | Description                                                                                                                             |
+| ----------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `tinyauth.apps.[app].config.domain`                   | The domain where the protected app is exposed at. Tinyauth will use this to identify the correct container.                             |
+| `tinyauth.apps.[app].users.allow`                     | A comma separated list of users that are allowed to access the app.                                                                     |
+| `tinyauth.apps.[app].users.block`                     | A comma separated list of users that are not allowed to access the app.                                                                 |
+| `tinyauth.apps.[app].oauth.whitelist`                 | A comma separated list or a regex of email addresses that are allowed to access the app (coming from OAuth).                            |
+| `tinyauth.apps.[app].oauth.groups`                    | A comma separated list of OAuth groups required by a user to access the app.                                                            |
+| `tinyauth.apps.[app].ip.allow`                        | A comma separated list of IP addresses or CIDRs that are allowed to access the app.                                                     |
+| `tinyauth.apps.[app].ip.block`                        | A comma separated list of IP addresses or CIDRs that are not allowed to access the app.                                                 |
+| `tinyauth.apps.[app].ip.bypass`                       | A comma separated list of IP addresses or CIDRs in which authentication won't be required to access the app.                            |
+| `tinyauth.apps.[app].response.headers`                | A comma separated list of headers that Tinyauth will include in its response (useful for authenticating to protected apps with tokens). |
+| `tinyauth.apps.[app].response.basicauth.username`     | Username used by Tinyauth to authenticate to a target app using basic authentication.                                                   |
+| `tinyauth.apps.[app].response.basicauth.password`     | Password used by Tinyauth to authenticate to a target app using basic authentication.                                                   |
+| `tinyauth.apps.[app].response.basicauth.passwordfile` | A path to a file containing the password used by Tinyauth to authenticate to a target app using basic authentication.                   |
+| `tinyauth.apps.[app].path.allow`                      | A regex of paths that do not need authentication.                                                                                       |
+| `tinyauth.apps.[app].path.block`                      | A regex of paths that will require authentication (meaning that all other paths are allowed).                                           |

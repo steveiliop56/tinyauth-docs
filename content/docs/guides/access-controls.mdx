@@ -1,0 +1,145 @@
+---
+title: Access controls
+description: Tinyauth has support for docker label-based access controls.
+---
+
+Tinyauth supports basic access controls with Docker labels. These labels can restrict or allow access to applications.
+
+## Modifying the Tinyauth Container
+
+To enable access controls, add the following volume to the Tinyauth container:
+
+```yaml
+services:
+  tinyauth:
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+```
+
+Restart Tinyauth after setting the volume.
+
+<Callout type="info">
+  For increased security, use a Docker socket proxy like [Tecnativa's](https://github.com/Tecnativa/docker-socket-proxy). Configure Tinyauth to use the proxy by adding the following environment variable:
+
+```yaml
+services:
+  tinyauth:
+    environment:
+      DOCKER_HOST: tcp://docker-socket-proxy:2375
+```
+
+Ensure Tinyauth can reach the Docker socket proxy container.
+
+</Callout>
+
+## Label Structure
+
+Access control labels follow this structure:
+
+```yaml
+tinyauth.apps.[app].[key]: [value]
+```
+
+Where `[app]` is the name of the app to protect. This app ID must be unique for each protected app.
+
+## Label Discovery
+
+Tinyauth uses the app ID in labels and the request subdomain to match labels with the app. For example, a request to `app1.example.com` triggers Tinyauth to search for containers with the `tinyauth.apps.app1.foo: bar` label. To use the domain instead, add the following label:
+
+```yaml
+tinyauth.apps.myapp.domain: myapp.example.com
+```
+
+Tinyauth will now use the domain to match labels instead of the app ID.
+
+## User ACLs
+
+To restrict access to specific users, use the `users.allow` label:
+
+```yaml
+tinyauth.apps.myapp.users.allow: user1
+```
+
+Only `user1` will be able to access the app. To block specific users, use the `users.block` label:
+
+```yaml
+tinyauth.apps.myapp.users.block: user2
+```
+
+<Callout type="info">
+  Both `users.allow` and `users.block` labels can accept a comma-separated list
+  of users or a regex string (enclosed with `/`).
+</Callout>
+
+<Callout type="info">These labels also apply to LDAP users.</Callout>
+
+## OAuth Whitelist
+
+To restrict access to specific OAuth users, use the `oauth.whitelist` label:
+
+```yaml
+tinyauth.apps.myapp.oauth.whitelist: user1@example.com
+```
+
+Only `user1@example.com` will be able to access the app.
+
+<Callout type="info">
+  The `oauth.whitelist` label can accept a comma-separated list of users or a
+  regex string (enclosed with `/`).
+</Callout>
+
+## Path ACLs
+
+To skip authentication for specific paths, use the `path.allow` label:
+
+```yaml
+tinyauth.apps.myapp.path.allow: ^\/api
+```
+
+To block access to specific paths, use the `path.block` label:
+
+```yaml
+tinyauth.apps.myapp.path.block: ^\/admin
+```
+
+<Callout type="warning">
+  Path labels use regex strings. For example, `^\/api` matches paths starting
+  with `/api`, while `^\/ping$` matches the exact path `/ping`.
+</Callout>
+
+## IP-Based Access Controls
+
+To allow access based on IP addresses or CIDRs, use the `ip.allow` label:
+
+```yaml
+tinyauth.apps.myapp.ip.allow: 10.10.5.5,10.10.10.0/24
+```
+
+To block specific IPs or subnets, use the `ip.block` label:
+
+```yaml
+tinyauth.apps.myapp.ip.block: 192.168.1.1,192.168.0.0/16
+```
+
+## Bypassing Authentication for IPs
+
+To disable authentication for specific IPs or subnets, use the `ip.bypass` label:
+
+```yaml
+tinyauth.apps.myapp.ip.bypass: 10.10.5.5,10.10.10.0/24
+```
+
+## Access Controls Using OIDC Groups
+
+Some OIDC servers, like Pocket ID, support user groups in the OIDC response. To use groups, ensure the `groups` scope is included in the OAuth provider configuration. Then, add the `oauth.groups` label:
+
+```yaml
+tinyauth.apps.myapp.oauth.groups: admin
+```
+
+Only users in the `admin` group will be allowed to access the app.
+
+<Callout type="warning">
+  The `oauth.groups` label is only supported for custom OAuth providers, not for
+  Google or GitHub.
+</Callout>

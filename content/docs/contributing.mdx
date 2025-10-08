@@ -1,0 +1,66 @@
+---
+title: Contributing
+description: Interested in contributing to Tinyauth? Below are the steps to get started.
+---
+
+Contributing to Tinyauth is straightforward. Follow the steps below to set up a development server in under five minutes.
+
+## Requirements
+
+- Bun
+- Golang v1.23.2 or later
+- Git
+- Docker
+
+## Cloning the Repository
+
+Start by cloning the repository:
+
+```sh
+git clone https://github.com/steveiliop56/tinyauth
+cd tinyauth
+```
+
+## Installing Requirements
+
+While development occurs within Docker, installing the requirements locally is recommended to avoid import errors. Install the Go dependencies:
+
+```sh
+go mod tidy
+```
+
+Frontend dependencies can be installed as follows:
+
+```sh
+cd frontend/
+bun install
+```
+
+## Creating the `.env` File
+
+Configuration requires an environment file. Copy the `.env.example` file to `.env` and adjust the environment variables as needed.
+
+## Development Workflow
+
+The development workflow is designed to run entirely within Docker, ensuring compatibility with Traefik and eliminating the need for local builds. A recommended setup involves pointing a subdomain to the local machine:
+
+```
+*.dev.example.com -> 127.0.0.1
+dev.example.com -> 127.0.0.1
+```
+
+<Callout type="info">
+  A domain from [sslip.io](https://sslip.io) can be used if a custom domain is
+  unavailable.
+</Callout>
+
+Ensure the domains are correctly configured in the development Docker Compose file, then start the development environment:
+
+```sh
+docker compose -f docker-compose.dev.yml up --build
+```
+
+<Callout type="info">
+  Copying the example `docker-compose.dev.yml` file to `docker-compose.test.yml`
+  is recommended to prevent accidental commits of sensitive information.
+</Callout>
