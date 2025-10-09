@@ -75,6 +75,13 @@ Or with CLI flags:
 --providers-google-client-id=my-client-id --providers-google-client-secret=my-client-secret
 ```
 
+<Callout type="warning">
+  Make sure to change the callback URLs in your OAuth provider settings to match
+  the provider ID. For example, if your config is `PROVIDERS_GOOGLE_CLIENT_ID`,
+  the provider ID is `google` and the callback URL is
+  `https://tinyauth.example.com/api/oauth/callback/google`.
+</Callout>
+
 <Callout type="info">
   Using `google` or `github` as provider IDs, triggers automatic filling of the
   required information (e.g., redirect URL, scopes). You will only have to
