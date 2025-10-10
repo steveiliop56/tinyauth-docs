@@ -47,7 +47,7 @@ Where `[app]` is the name of the app to protect. This app ID must be unique for 
 Tinyauth uses the app ID in labels and the request subdomain to match labels with the app. For example, a request to `app1.example.com` triggers Tinyauth to search for containers with the `tinyauth.apps.app1.foo: bar` label. To use the domain instead, add the following label:
 
 ```yaml
-tinyauth.apps.myapp.domain: myapp.example.com
+tinyauth.apps.myapp.config.domain: myapp.example.com
 ```
 
 Tinyauth will now use the domain to match labels instead of the app ID.
