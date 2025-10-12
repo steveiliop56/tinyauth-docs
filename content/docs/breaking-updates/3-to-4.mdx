@@ -56,11 +56,16 @@ The new configuration for the OAuth providers includes a dynamic name in the con
 | `PROVIDERS_[PROVIDER]_CLIENT_SECRET`        | `--providers-[provider]-client-secret`        | The client secret for the OAuth client.                             | ``                                         | yes      |
 | `PROVIDERS_[PROVIDER]_CLIENT_SECRET_FILE`   | `--providers-[provider]-client-secret-file`   | A path to a file containing the client secret for the OAuth client. | ``                                         | no       |
 | `PROVIDERS_[PROVIDER]_SCOPES`               | `--providers-[provider]-scopes`               | The scopes needed for the OAuth provider.                           | ``                                         | yes      |
+| `PROVIDERS_[PROVIDER]_REDIRECT_URL` [^1]    | `--providers-[provider]-redirect-url`         | The redirect URL for the OAuth provider.                            | ``                                         | yes      |
 | `PROVIDERS_[PROVIDER]_AUTH_URL`             | `--providers-[provider]-auth-url`             | The authentication URL for the OAuth provider.                      | ``                                         | yes      |
 | `PROVIDERS_[PROVIDER]_TOKEN_URL`            | `--providers-[provider]-token-url`            | The token URL for the OAuth provider.                               | ``                                         | yes      |
-| `PROVIDERS_[PROVIDER]_USER_INFO_URL`        | `--providers-[provider]-user-info-url`        | The user information URL for the OAuth provider.                    | ``                                         | yes      |
+| `PROVIDERS_[PROVIDER]_USER_INFO_URL` [^2]   | `--providers-[provider]-user-info-url`        | The user information URL for the OAuth provider.                    | ``                                         | yes      |
 | `PROVIDERS_[PROVIDER]_INSECURE_SKIP_VERIFY` | `--providers-[provider]-insecure-skip-verify` | Skip SSL certificate check for provider.                            | `false`                                    | no       |
 | `PROVIDERS_[PROVIDER]_NAME`                 | `--providers-[provider]-name`                 | The name of the OAuth provider (for the UI button).                 | Provider ID with first letter capitalized. | no       |
+
+[^1]: This is required for now. While some providers handle this automatically, it's suggested you set it anyway.
+
+[^2]: Please notice the added `_INFO_` in the name of this option.
 
 For example, to configure Google OAuth:
 

@@ -23,14 +23,14 @@ Some apps already offer authentication methods like basic auth (e.g., browser po
    services:
      whoami:
        labels:
-         tinyauth.apps.whoami.response.basic.username: username
-         tinyauth.apps.whoami.response.basic.password: password
+         tinyauth.apps.whoami.response.basicauth.username: username
+         tinyauth.apps.whoami.response.basicauth.password: password
    ```
 
    <Callout type="info">
-     Use the `tinyauth.apps.whoami.response.basic.passwordfile` label instead of
-     the plain one to keep the password secure in a secret file. Ensure the
-     secret file is added as a volume to Tinyauth.
+     Use the `tinyauth.apps.whoami.response.basicauth.passwordfile` label
+     instead of the plain one to keep the password secure in a secret file.
+     Ensure the secret file is added as a volume to Tinyauth.
    </Callout>
 
 4. Restart the app. Logging in to Tinyauth will automatically log in to the protected app using basic auth.
