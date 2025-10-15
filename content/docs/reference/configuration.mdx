@@ -36,6 +36,11 @@ Tinyauth can be configured using environment variables or CLI flags. The table b
 | `USERS`                   | `--users`                   | Comma-separated list of users in the format `username:hash`.                                     | ``                  | yes      |
 | `USERS_FILE`              | `--users-file`              | Path to a file containing users in the format `username:hash`.                                   | ``                  | no       |
 
+<Callout type="warning">
+  The `trace` log level will log sensitive information such as usernames, emails
+  and access controls. Use with caution.
+</Callout>
+
 ## OAuth Config
 
 OAuth configuration includes a provider ID in the environment variable or flag name. For example, `PROVIDERS_GOOGLE_CLIENT_ID`.

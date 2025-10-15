@@ -3,6 +3,32 @@ title: Changelog
 description: Overview of changes and updates in Tinyauth versions.
 ---
 
+## v4.0.1
+
+<Callout>
+  This release contains a security fix regarding label discovery, please update
+  as soon as possible.
+</Callout>
+
+### Improvements
+
+- Move docker connection check to start-up so as label discovery can fail in case of a socket proxy crash
+- Use GIN recovery module to translate panics to 500 errors
+- Sort OAuth providers based on name length
+- Allow root cookie domain redirects
+- Use more verbose logging for the `trace` log level
+
+### Fixes
+
+- Ensure data directory exists on docker images
+- Remove trailing spaces before checking OAuth username and name
+- Do not use container name for label discovery
+
+### Technical
+
+- Use docker meta flavors for images
+- Bump dependencies
+
 ## v4.0.0
 
 <Callout type="warning">
