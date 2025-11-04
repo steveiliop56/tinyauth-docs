@@ -77,10 +77,10 @@ Select users to include in the group:
 Configure Tinyauth-protected apps to require OAuth groups by adding the `oauth.groups` label:
 
 ```yaml
-tinyauth.apps.myapp.oauth.groups: admin
+tinyauth.apps.myapp.oauth.groups: admins
 ```
 
-In this example, only Pocket ID users in the `admin` group can access the app. Users outside the group will be redirected to an unauthorized page.
+In this example, only Pocket ID users in the `admins` group can access the app. Users outside the group will be redirected to an unauthorized page.
 
 <Callout type="warning">
   By default, Tinyauth uses the subdomain name of the request to find a matching
