@@ -23,10 +23,10 @@ Tinyauth can be configured using environment variables or CLI flags. The table b
 | `DISABLE_ANALYTICS`       | `--disable-analytics`       | Disable anonymous version collection.                                                            | `false`             | no       |
 | `DISABLE_RESOURCES`       | `--disable-resources`       | Disable the resources server.                                                                    | `false`             | no       |
 | `FORGOT_PASSWORD_MESSAGE` | `--forgot-password-message` | Message to show on the forgot password page.                                                     | ``                  | no       |
+| `LOG_JSON`                | `--log-json`                | Enable JSON formatted logs.                                                                      | `false`             | no       |
 | `LOG_LEVEL`               | `--log-level`               | Log level (`trace`, `debug`, `info`, `warn`, `error`, `fatal`, `panic`).                         | `info`              | no       |
 | `LOGIN_MAX_RETRIES`       | `--login-max-retries`       | Maximum login attempts before timeout (0 to disable).                                            | `5`                 | no       |
 | `LOGIN_TIMEOUT`           | `--login-timeout`           | Login timeout in seconds after max retries reached (0 to disable).                               | `300`               | no       |
-| `LOG_JSON`                | `--log-json`                | Enable JSON formatted logs.                                                                      | `false`             | no       |
 | `OAUTH_AUTO_REDIRECT`     | `--oauth-auto-redirect`     | Auto redirect to the specified OAuth provider.                                                   | ``                  | no       |
 | `OAUTH_WHITELIST`         | `--oauth-whitelist`         | Comma-separated list of email addresses to whitelist when using OAuth.                           | ``                  | no       |
 | `PORT`                    | `--port`                    | Port to run the server on.                                                                       | `3000`              | no       |
