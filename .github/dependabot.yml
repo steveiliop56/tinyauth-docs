@@ -1,0 +1,11 @@
+version: 2
+updates:
+  - package-ecosystem: "bun"
+    directory: "/"
+    groups:
+      minor-patch:
+        update-types:
+          - "patch"
+          - "minor"
+    schedule:
+      interval: "daily"
