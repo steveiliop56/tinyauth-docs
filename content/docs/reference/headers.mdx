@@ -28,6 +28,11 @@ The `Remote-Name` header contains the full name of the currently logged-in user.
 
 The `Remote-Groups` header contains the groups of the currently logged-in user, retrieved from the `groups` claim in the OIDC server. These can be used to allow access to specific user groups configured by the OIDC server. More details are available in the [OIDC access controls](/docs/guides/access-controls.md#access-controls-using-oidc-groups) guide.
 
+<Callout type="warning">
+  Remote groups are only available for OIDC providers that support the `groups`
+  claim. LDAP groups are **not** supported.
+</Callout>
+
 ### Custom headers
 
 Custom headers can be set using the `tinyauth.headers` label on any container that uses the Tinyauth middleware. For example:

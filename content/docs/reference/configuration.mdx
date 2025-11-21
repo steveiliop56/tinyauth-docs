@@ -26,12 +26,14 @@ Tinyauth can be configured using environment variables or CLI flags. The table b
 | `LOG_LEVEL`               | `--log-level`               | Log level (`trace`, `debug`, `info`, `warn`, `error`, `fatal`, `panic`).                         | `info`              | no       |
 | `LOGIN_MAX_RETRIES`       | `--login-max-retries`       | Maximum login attempts before timeout (0 to disable).                                            | `5`                 | no       |
 | `LOGIN_TIMEOUT`           | `--login-timeout`           | Login timeout in seconds after max retries reached (0 to disable).                               | `300`               | no       |
+| `LOG_JSON`                | `--log-json`                | Enable JSON formatted logs.                                                                      | `false`             | no       |
 | `OAUTH_AUTO_REDIRECT`     | `--oauth-auto-redirect`     | Auto redirect to the specified OAuth provider.                                                   | ``                  | no       |
 | `OAUTH_WHITELIST`         | `--oauth-whitelist`         | Comma-separated list of email addresses to whitelist when using OAuth.                           | ``                  | no       |
 | `PORT`                    | `--port`                    | Port to run the server on.                                                                       | `3000`              | no       |
 | `RESOURCES_DIR`           | `--resources-dir`           | Path to a directory containing custom resources (e.g., background image).                        | `/data/resources`   | no       |
 | `SECURE_COOKIE`           | `--secure-cookie`           | Send cookie over secure connection only.                                                         | `false`             | no       |
 | `SESSION_EXPIRY`          | `--session-expiry`          | Session (cookie) expiration time in seconds.                                                     | `86400`             | no       |
+| `SOCKET_PATH`             | `--socket-path`             | Path to the Unix socket to bind the server to.                                                   | ``                  | no       |
 | `TRUSTED_PROXIES`         | `--trusted-proxies`         | Comma-separated list of trusted proxies (IP addresses or CIDRs) for correct client IP detection. | ``                  | no       |
 | `USERS`                   | `--users`                   | Comma-separated list of users in the format `username:hash`.                                     | ``                  | yes      |
 | `USERS_FILE`              | `--users-file`              | Path to a file containing users in the format `username:hash`.                                   | ``                  | no       |
