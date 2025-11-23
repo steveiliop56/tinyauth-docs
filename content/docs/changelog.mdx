@@ -3,9 +3,38 @@ title: Changelog
 description: Overview of changes and updates in Tinyauth versions.
 ---
 
+## v4.1.0
+
+### New Features
+
+- Light mode
+- Support for listening on UNIX sockets
+- Log new sessions in `TRACE`
+- Support for logging in JSON
+- Add option to disable UI warnings
+
+### Improvements
+
+- Generate OAuth verifier on every login attempt
+- Add routine to cleanup expired sessions
+- Log unsafe redirect URI in OAuth controller
+
+### Fixes
+
+- Ensure OAuth providers have the `PROVIDERS_` prefix
+- Allow for all sub-domains to be considered safe for redirects
+
+### Technical
+
+- Use Gorm generics for all database actions
+- Attempt to clean-up the decoders logic
+- Make air development workflow faster by not installing delve on every reload
+- Bump dependencies
+- Update translations
+
 ## v4.0.1
 
-<Callout>
+<Callout type="warning">
   This release contains a security fix regarding label discovery, please update
   as soon as possible.
 </Callout>
