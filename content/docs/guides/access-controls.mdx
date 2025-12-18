@@ -53,8 +53,9 @@ tinyauth.apps.myapp.config.domain: myapp.example.com
 Tinyauth will now use the domain to match labels instead of the app ID.
 
 <Callout type="info">
-To ensure labels are discovered, you must include `/var/run/docker.sock:/var/run/docker.sock` in the volumes.
-Labels can be set either on the tinyauth container or the app, however, if you use multiple hosts and the app is running on a different host than tinyauth, labels must be set on the tinyauth container.
+  Labels can be set either on the Tinyauth container or the app. However, if you
+  use multiple hosts and the app is running on a different host than Tinyauth,
+  labels must be set on the Tinyauth container.
 </Callout>
 
 ## User ACLs
