@@ -52,6 +52,12 @@ tinyauth.apps.myapp.config.domain: myapp.example.com
 
 Tinyauth will now use the domain to match labels instead of the app ID.
 
+<Callout type="info">
+  Labels can be set either on the Tinyauth container or the app. However, if you
+  use multiple hosts and the app is running on a different host than Tinyauth,
+  labels must be set on the Tinyauth container.
+</Callout>
+
 ## User ACLs
 
 To restrict access to specific users, use the `users.allow` label:
