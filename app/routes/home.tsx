@@ -63,7 +63,7 @@ export default function Home() {
               direction="up"
               duration={1}
             />
-            <span>+ Active Instances (v4)</span>
+            <span>+ Active Instances</span>
           </div>
           <div className="flex flex-row gap-3">
             <Link
