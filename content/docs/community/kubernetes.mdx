@@ -1,22 +1,22 @@
 ---
 title: Kubernetes
-description: Learn how to set up Tinyauth with Kubernetes.
+description: Learn how to set up Tinyauth with Kubernetes resources.
 ---
 
-_Contributor: [@kdwils](https://github.com/kdwils)_
+_Contributors: [@kdwils](https://github.com/kdwils), [@pushpinderbal](https://github.com/pushpinderbal)_
 
 ## Use Case
 
-A simple authentication setup for Kubernetes ingress controllers for securing both internal and externally exposed self-hosted apps.
+Kubernetes hosted applications are commonly exposed externally using [Ingress Controllers](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) or the newer [Gateway API](https://kubernetes.io/docs/concepts/services-networking/gateway/). These can act as a gateway to enforce authentication and authorization policies before traffic reaches your self-hosted applications. This is useful for protecting internal tools, admin interfaces, or services exposed to the internet - without needing to modify the applications themselves, especially those that do not have built-in authentication mechanisms.
 
-Ingress controllers like `ingress-nginx` or `traefik` can act as a gateway to enforce authentication and authorization policies before traffic reaches your self-hosted applications. This is useful for protecting internal tools, admin interfaces, or services exposed to the internet, without needing to modify the applications themselves.
+Popular reverse proxies like NGINX, Traefik, and Envoy provide Ingress controller and Gateway API implementations for Kubernetes that can be integrated with Tinyauth.
 
 ## Prerequisites
 
 This documentation assumes the following prerequisites:
 
 - An operational Kubernetes cluster
-- An Ingress controller installed for the Ingress section. This documentation demonstrates using `ingress-nginx`, but `traefik` could be used as well.
+- An operational Ingress controller or Gateway API implementation (this guide demonstrates `ingress-nginx` and `Istio`, but `traefik` can be used as well).
 
 ## Create a Namespace
 
@@ -62,11 +62,11 @@ spec:
               value: user:$$2a$$10$$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u # Username is user and password is password
           livenessProbe:
             httpGet:
-              path: /api/healthcheck
+              path: /api/healthz
               port: 3000
           readinessProbe:
             httpGet:
-              path: /api/healthcheck
+              path: /api/healthz
               port: 3000
 ```
 
@@ -88,7 +88,11 @@ spec:
   type: ClusterIP
 ```
 
-## Ingress Example with ingress-nginx Controller
+## Using with ingress-nginx
+
+<Callout type="warning">
+`ingress-nginx` is set to be [retired in March 2026](https://kubernetes.io/blog/2025/11/11/ingress-nginx-retirement/). Consider migrating to a supported ingress component.
+</Callout>
 
 This ingress resource configures `ingress-nginx` to forward authentication checks for the host `my-host.domain.com` to a specific URL (`auth-url`). If the user is not authenticated, they will be redirected to a login page (`auth-signin`).
 
@@ -126,3 +130,92 @@ spec:
                 port:
                   number: 8080
 ```
+
+## Using with Istio
+
+External authorization in Istio is configured using the `AuthorizationPolicy` CRD and can be set up to use Tinyauth as the external authorization provider for both Ingress and Gateway API resources. Istio uses Envoy proxy under the hood, so this configuration can also be adapted for standalone [Envoy filters](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/ext_authz_filter).
+
+### Define the External Authorizer
+
+Add Tinyauth as an external authorization provider in your Istio mesh configuration.
+
+<Callout type="info">
+This example uses the `<my-service>.<my-namespace>.svc.cluster.local` in-cluster URI with the assumption that Istio and Tinyauth exist in the same Kubernetes cluster and the Tinyauth service is accessible from the Istio ingress pods. The URL accessible to end users (e.g., `http://auth.example.com`) is configured with `TINYAUTH_APPURL`.
+</Callout>
+
+```yaml
+extensionProviders:
+- name: "tinyauth"
+  envoyExtAuthzHttp:
+    service: "tinyauth.tinyauth.svc.cluster.local"
+    port: "3000"
+    pathPrefix: "/api/auth/envoy?path="
+    includeRequestHeadersInCheck: ["cookie", "x-forwarded-for", "x-forwarded-proto", "x-forwarded-host", "accept"]
+    includeAdditionalHeadersInCheck:
+      "x-forwarded-proto": "%REQ(:SCHEME)%"
+      "x-forwarded-host": "%REQ(:AUTHORITY)%"
+      "x-forwarded-uri": "%REQ(:PATH)%"
+      "x-forwarded-method": "%REQ(:METHOD)%"
+    headersToDownstreamOnAllow: ["set-cookie"]
+    headersToDownstreamOnDeny: ["content-type", "set-cookie"]
+```
+
+<Callout type="info" title="Note on Envoy Behavior">
+- Envoy forwards requests to the external authorizer with the original path from the client request. The `pathPrefix` configuration above prefixes the path with an endpoint that Tinyauth recognizes, while Tinyauth ignores the original request path.
+- Unlike other proxy implementations, Envoy connects to the external authorization backend using the original HTTP method from the client request and cannot be configured to use a static method. Tinyauth handles this by allowing all standard HTTP methods on the `/api/auth/envoy` endpoint. See [envoyproxy/envoy#5357](https://github.com/envoyproxy/envoy/issues/5357) for more information related to this behavior.
+</Callout>
+
+If you install Istio using helm, you can supply `extensionProviders` configuration in the `values.yaml` files as follows:
+
+```yaml
+meshConfig:
+  extensionProviders:
+  - name: "tinyauth"
+    ....<rest of the config as above>....
+```
+
+### Create Authorization Policy
+
+Given that you have a `HTTPRoute` under a Gateway that exposes your application, you can now create an `AuthorizationPolicy` to protect it using Tinyauth.
+
+```yaml
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: myapp-http-route
+  labels:
+    app: myapp
+spec:
+  parentRefs:
+    - name: my-public-gateway
+      namespace: ingress
+      sectionName: https
+  hostnames:
+    - myapp.example.com
+  rules:
+    - backendRefs:
+        - name: myapp-service
+          port: 80
+```
+
+```yaml
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: tinyauth-policy
+  namespace: my-namespace
+spec:
+  targetRefs:
+    - kind: Gateway
+      group: gateway.networking.k8s.io
+      name: my-public-gateway
+  action: CUSTOM
+  provider:
+    name: "tinyauth"
+  rules:
+  - to:
+    - operation:
+        hosts: ["myapp.example.com"]
+```
+
+For more information, refer to the Istio [External Authorization](https://istio.io/latest/docs/tasks/security/authorization/authz-custom/) and [Authorization Policy](https://istio.io/latest/docs/reference/config/security/authorization-policy/) documentation.
