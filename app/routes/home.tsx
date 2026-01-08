@@ -97,7 +97,7 @@ export default function Home() {
             />
             <Card
               title="OAuth and LDAP support"
-              description="With Tinyauth you can you can easily login to your apps using your favorite OAuth providers or by using a centralized LDAP server."
+              description="With Tinyauth you can easily log in to your apps using your favorite OAuth providers or by using a centralized LDAP server."
             />
           </div>
         </div>
