@@ -1,0 +1,92 @@
+---
+import { Card } from "@astrojs/starlight/components";
+---
+
+<script>
+    import { getInstances } from "../../lib/get-instances";
+    import { CountUp } from "countup.js";
+
+    class InstancesCount extends HTMLElement {
+        connectedCallback() {
+            async function updateData() {
+                const instances = await getInstances();
+                const counter = new CountUp("instances-count", instances.total);
+                if (!counter.error) {
+                    counter.start();
+                } else {
+                    console.error(counter.error);
+                }
+            }
+            updateData();
+        }
+    }
+
+    customElements.define("instances-count", InstancesCount);
+</script>
+
+<div class="home-container">
+    <h1 class="home-title">Tinyauth</h1>
+    <p class="home-description">
+        Tinyauth is the easiest way to secure your apps with a login screen.
+        Forget endless configuration and complex dashboards and say hello to a
+        five-minute installation.
+    </p>
+    <instances-count class="instances-count-container">
+        <p class="instances-count">
+            <span id="instances-count">0</span>+ Active Instances
+        </p>
+    </instances-count>
+    <div class="nav-buttons-container">
+        <a href="/docs/getting-started" class="link-button link-button-primary"
+            >Get started</a
+        >
+        <a
+            href="https://demo.tinyauth.app"
+            class="link-button link-button-secondary">Demo</a
+        >
+    </div>
+    <img alt="Screenshot" src="/tinyauth-dark.png" class="hero-image" />
+    <div class="feature-card">
+        <Card title="Simple"
+            >Tinyauth focuses on simplicity. It is designed to only require
+            environment variables for configuration and works out of the box
+            without the need for fancy dashboards or configuration files.</Card
+        >
+        <Card title="Lightweight"
+            >Tinyauth ships as a single statically linked binary with no
+            dependencies and requires practically no resources to run.</Card
+        >
+        <Card title="OAuth and LDAP support"
+            >With Tinyauth you can easily log in to your apps using your
+            favorite OAuth providers or by using a centralized LDAP server.</Card
+        >
+    </div>
+    <h1>Join the community</h1>
+    <div class="feature-card">
+        <Card title="Discord" icon="discord">
+            <div class="community-card-body">
+                <p>
+                    Join our Discord server to chat with the community, ask
+                    questions, and get help.
+                </p>
+                <a
+                    href="https://discord.gg/eHzVaCzRRd"
+                    class="link-button link-button-secondary">Discord</a
+                >
+            </div>
+        </Card>
+        <Card title="GitHub" icon="github">
+            <div class="community-card-body">
+                <p>
+                    Check out the source code, report issues, and contribute to
+                    the project on GitHub.
+                </p>
+                <a
+                    href="https://github.com/steveiliop56/tinyauth"
+                    class="link-button link-button-secondary"
+                    >Browse the source</a
+                >
+            </div>
+        </Card>
+    </div>
+</div>

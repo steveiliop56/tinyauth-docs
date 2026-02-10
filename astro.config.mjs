@@ -1,0 +1,76 @@
+// @ts-check
+import { defineConfig } from "astro/config";
+import starlight from "@astrojs/starlight";
+import starlightThemeRapide from "starlight-theme-rapide";
+import mermaid from "astro-mermaid";
+
+// https://astro.build/config
+export default defineConfig({
+  integrations: [
+    mermaid({
+      theme: "forest",
+      autoTheme: true,
+    }),
+    starlight({
+      plugins: [starlightThemeRapide()],
+      customCss: ["./src/styles/theme.css", "./src/styles/home.css"],
+      title: "Tinyauth",
+      logo: {
+        src: "./public/tinyauth.png",
+      },
+      favicon: "/favicon.ico",
+      social: [
+        {
+          icon: "github",
+          label: "GitHub",
+          href: "https://github.com/steveiliop56/tinyath",
+        },
+        {
+          icon: "discord",
+          label: "Discord",
+          href: "https://discord.gg/eHzVaCzRRd",
+        },
+      ],
+      sidebar: [
+        {
+          label: "Home",
+          items: [
+            {
+              label: "About",
+              slug: "docs/about",
+            },
+            {
+              label: "Getting Started",
+              slug: "docs/getting-started",
+            },
+          ],
+        },
+        {
+          label: "Guides",
+          autogenerate: { directory: "docs/guides" },
+        },
+        {
+          label: "Community",
+          autogenerate: { directory: "docs/community" },
+        },
+        {
+          label: "Reference",
+          autogenerate: { directory: "docs/reference" },
+        },
+        {
+          label: "Breaking Updates",
+          autogenerate: { directory: "docs/breaking-updates" },
+        },
+        {
+          label: "Contributing",
+          items: [
+            {
+              label: "Development",
+              link: "/docs/contributing",
+            },
+          ],
+        },
+      ],
+    }),
+  ],
+});

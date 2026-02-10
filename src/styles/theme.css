@@ -1,0 +1,21 @@
+:root {
+    --sl-hue-base: 140;
+}
+
+:root {
+    --sl-color-accent: #fafafa;
+    --sl-color-accent-high: #f5f5f5;
+}
+
+:root[data-theme="light"] {
+    --sl-color-accent: #171717;
+    --sl-color-accent-high: #0a0a0a;
+}
+
+.site-title {
+    gap: 0.5rem;
+}
+
+.site-title img {
+    height: 2rem;
+}
