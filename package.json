@@ -17,5 +17,8 @@
     "mermaid": "^11.12.2",
     "sharp": "^0.34.2",
     "starlight-theme-rapide": "^0.5.2"
+  },
+  "engines": {
+    "node": "v25.5.0"
   }
 }
