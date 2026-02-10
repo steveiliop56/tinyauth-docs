@@ -63,12 +63,7 @@ export default defineConfig({
         },
         {
           label: "Contributing",
-          items: [
-            {
-              label: "Development",
-              link: "/docs/contributing",
-            },
-          ],
+          autogenerate: { directory: "docs/contributing" },
         },
       ],
     }),

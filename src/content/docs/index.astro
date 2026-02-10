@@ -27,9 +27,8 @@ import { Card } from "@astrojs/starlight/components";
 <div class="home-container">
     <h1 class="home-title">Tinyauth</h1>
     <p class="home-description">
-        Tinyauth is the easiest way to secure your apps with a login screen.
-        Forget endless configuration and complex dashboards and say hello to a
-        five-minute installation.
+        Tinyauth is a tiny OpenID Connect (OIDC) authentication and
+        authorization server for your self-hosted applications.
     </p>
     <instances-count class="instances-count-container">
         <p class="instances-count">
@@ -48,9 +47,8 @@ import { Card } from "@astrojs/starlight/components";
     <img alt="Screenshot" src="/tinyauth-dark.png" class="hero-image" />
     <div class="feature-card">
         <Card title="Simple"
-            >Tinyauth focuses on simplicity. It is designed to only require
-            environment variables for configuration and works out of the box
-            without the need for fancy dashboards or configuration files.</Card
+            >Tinyauth works out of the box using only environment variables. No
+            dashboards or config files needed.</Card
         >
         <Card title="Lightweight"
             >Tinyauth ships as a single statically linked binary with no
@@ -59,6 +57,11 @@ import { Card } from "@astrojs/starlight/components";
         <Card title="OAuth and LDAP support"
             >With Tinyauth you can easily log in to your apps using your
             favorite OAuth providers or by using a centralized LDAP server.</Card
+        >
+        <Card title="OpenID Connect"
+            >Tinyauth is the tiniest OIDC server you have ever seen. It is
+            designed to be simple and easy to use, with a focus on security and
+            performance.</Card
         >
     </div>
     <h1>Join the community</h1>

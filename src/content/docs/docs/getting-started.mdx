@@ -41,7 +41,7 @@ flowchart BR
 The following CLI command facilitates user creation:
 
 ```sh
-docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v4 user create --interactive
+docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v5 user create --interactive
 ```
 
 This command prompts for a username and password, generating the required user configuration. Additional details are available in the CLI [reference](/docs/reference/cli#create-user-command).
@@ -77,12 +77,11 @@ The following `docker-compose.yml` configuration deploys Tinyauth:
 
 ```yaml title="docker-compose.yml"
 tinyauth:
-  image: ghcr.io/steveiliop56/tinyauth:v4
-  container_name: tinyauth
+  image: ghcr.io/steveiliop56/tinyauth:v5
   restart: unless-stopped
   environment:
-    - APP_URL=https://tinyauth.example.com
-    - USERS=your-username-password-hash
+    - TINYAUTH_APPURL=https://tinyauth.example.com
+    - TINYAUTH_AUTH_USERS=your-username-password-hash
   labels:
     traefik.enable: true
     traefik.http.routers.tinyauth.rule: Host(`tinyauth.example.com`)
@@ -105,7 +104,6 @@ Below is a complete example integrating Traefik, Whoami, and Tinyauth:
 services:
   traefik:
     image: traefik:v3.3
-    container_name: traefik
     command: --api.insecure=true --providers.docker
     restart: unless-stopped
     ports:
@@ -115,7 +113,6 @@ services:
 
   whoami:
     image: traefik/whoami:latest
-    container_name: whoami
     restart: unless-stopped
     labels:
       traefik.enable: true
@@ -123,12 +120,11 @@ services:
       traefik.http.routers.whoami.middlewares: tinyauth
 
   tinyauth:
-    image: ghcr.io/steveiliop56/tinyauth:v4
-    container_name: tinyauth
+    image: ghcr.io/steveiliop56/tinyauth:v5
     restart: unless-stopped
     environment:
-      - APP_URL=https://tinyauth.example.com
-      - USERS=user:$$2a$$10$$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u # user:password
+      - TINYAUTH_APPURL=https://tinyauth.example.com
+      - TINYAUTH_AUTH_USERS=user:$$2a$$10$$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u # user:password
     labels:
       traefik.enable: true
       traefik.http.routers.tinyauth.rule: Host(`tinyauth.example.com`)

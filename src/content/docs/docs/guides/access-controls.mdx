@@ -3,9 +3,13 @@ title: Access controls
 description: Tinyauth has support for docker label-based access controls.
 ---
 
-Tinyauth supports basic access controls with Docker labels. These labels can restrict or allow access to applications.
+Tinyauth supports basic access controls with either Docker labels or environment variables. These labels (or environment variables) can restrict or allow access to applications.
 
 ## Modifying the Tinyauth Container
+
+:::note
+You can skip this step if you're using environment variables.
+:::
 
 To enable access controls, add the following volume to the Tinyauth container:
 
@@ -19,7 +23,7 @@ services:
 Restart Tinyauth after setting the volume.
 
 :::note
-  For increased security, use a Docker socket proxy like [Tecnativa's](https://github.com/Tecnativa/docker-socket-proxy). Configure Tinyauth to use the proxy by adding the following environment variable:
+For increased security, use a Docker socket proxy like [Tecnativa's](https://github.com/Tecnativa/docker-socket-proxy). Configure Tinyauth to use the proxy by adding the following environment variable:
 
 ```yaml
 services:
@@ -29,9 +33,21 @@ services:
 ```
 
 Ensure Tinyauth can reach the Docker socket proxy container.
+
+If you like, you can also restrict Tinyauth's access to the Docker socket using the following labels:
+
+```yaml
+services:
+  tinyauth:
+    labels:
+        socket-proxy.allow.get: /v1\..*/(version|containers/.*|events.*)|/_ping
+        socket-proxy.allow.head: /_ping'
+```
+
+*Thank you [@dombyte](https://github.com/dombyte) for the suggestion.*
 :::
 
-## Label Structure
+## Access Controls Structure
 
 Access control labels follow this structure:
 
@@ -39,17 +55,29 @@ Access control labels follow this structure:
 tinyauth.apps.[app].[key]: [value]
 ```
 
+Similarly environment variables follow this structure:
+
+```sh
+TINYAUTH_APPS_[APP]_[KEY]=[VALUE]
+```
+
 Where `[app]` is the name of the app to protect. This app ID must be unique for each protected app.
 
-## Label Discovery
+## Access Controls Discovery
 
-Tinyauth uses the app ID in labels and the request subdomain to match labels with the app. For example, a request to `app1.example.com` triggers Tinyauth to search for containers with the `tinyauth.apps.app1.foo: bar` label. To use the domain instead, add the following label:
+Tinyauth uses the app ID in labels (or environment variables) and the request subdomain to match the configuration with the app. For example, a request to `app1.example.com` triggers Tinyauth to search for containers with the `tinyauth.apps.app1.foo: bar` label or the `TINYAUTH_APPS_APP1_FOO=bar` environment. To use the domain instead, add the following label:
 
 ```yaml
 tinyauth.apps.myapp.config.domain: myapp.example.com
 ```
 
-Tinyauth will now use the domain to match labels instead of the app ID.
+Or the following environment variable:
+
+```sh
+TINYAUTH_APPS_MYAPP_CONFIG_DOMAIN=myapp.example.com
+```
+
+Tinyauth will now use the domain to match the configuration instead of the app ID.
 
 :::note
   Labels can be set either on the Tinyauth container or the app. However, if you
@@ -57,7 +85,13 @@ Tinyauth will now use the domain to match labels instead of the app ID.
   labels must be set on the Tinyauth container.
 :::
 
+:::caution
+Labels are dynamic and can be updated at runtime, environment variables are not and require a restart of Tinyauth to take effect.
+:::
+
 ## User ACLs
+
+*Going forward, the guide will use the labels format but everything mentioned also applies to environment variables.*
 
 To restrict access to specific users, use the `users.allow` label:
 
@@ -149,4 +183,18 @@ Only users in the `admin` group will be allowed to access the app.
 :::caution
   The `oauth.groups` label is only supported for custom OAuth providers, not for
   Google or GitHub.
+:::
+
+## Access Controls Using LDAP Groups
+
+Tinyauth also supports fetching the user's groups from the LDAP server and using them for access control. To use LDAP groups, add the `ldap.groups` label:
+
+```yaml
+tinyauth.apps.myapp.ldap.groups: admin
+```
+
+Only users in the `admin` group will be allowed to access the app.
+
+:::note
+For performance reasons, LDAP groups are not fetched for every request. Instead, they are fetched periodically and cached. By default, the cache is refreshed every 15 minutes. If you need to refresh the cache more frequently you can change the `TINYAUTH_LDAP_GROUPCACHETTL` environment variable (accepts interval in seconds).
 :::
