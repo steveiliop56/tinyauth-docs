@@ -7,6 +7,11 @@ import mermaid from "astro-mermaid";
 // https://astro.build/config
 export default defineConfig({
   site: "https://tinyauth.app",
+  server: {
+    host: "0.0.0.0",
+    port: 3000,
+    allowedHosts: true,
+  },
   integrations: [
     mermaid({
       theme: "forest",
