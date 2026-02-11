@@ -4,9 +4,9 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "start": "astro preview --host",
+    "start": "astro preview --host --allowed-hosts=true",
     "build": "astro build",
-    "preview": "astro preview --host",
+    "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
