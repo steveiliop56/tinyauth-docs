@@ -14,24 +14,26 @@ Tinyauth has built-in support for any generic OAuth provider. This guide demonst
 
 ## Creating the Zitadel OAuth App
 
-Begin by creating an app in Zitadel. Visit the Zitadel Console and create a new project. For the app, use `Tinyauth`.
+Begin by creating an app in Zitadel. Visit the Zitadel Console and create a new project. For project name use Tinyauth and for framework select other.
 
-Create a new application by clicking the **+** button. Follow the wizard and configure the app as follows:
+![Zitadel new project](/screenshots/zitadel/project-new.png)
+
+Then, create a new application by clicking the **+** button. Follow the wizard and configure the app as follows:
 
 | Name                  | Value                                                     |
 | --------------------- | --------------------------------------------------------- |
 | Name                  | Tinyauth                                                  |
 | Type                  | Web                                                       |
-| Authentication Method | Code                                                      |
-| Redirect URI          | `https://tinyauth.example.com/api/oauth/callback/generic` |
+| Grant Types           | Authorization Code                                        |
+| Response Types        | Code                                                      |
+| Authentication Method | Basic                                                     |
+| Redirect URI          | `https://tinyauth.example.com/api/oauth/callback/zitadel` |
+
+![Zitadel new app](/screenshots/zitadel/app-new.png)
 
 Finalize by clicking the **Create** button. Copy the client ID and client secret.
 
-After the application is created, the following screens will appear:
-
-![Zitadel configuration view](/screenshots/zitadel-configuration-view.png)
-
-![Zitadel redirect view](/screenshots/zitadel-redirect-view.png)
+![Zitadel app credentials](/screenshots/zitadel/app-creds.png)
 
 ## Configuring Tinyauth
 
@@ -41,25 +43,30 @@ To integrate Zitadel with Tinyauth, add the following environment variables to t
 services:
   tinyauth:
     environment:
-      - PROVIDERS_ZITADEL_SCOPES=openid profile email preferred_username groups
-      - PROVIDERS_ZITADEL_AUTH_URL=https://zitadel.example.com/oauth/v2/authorize
-      - PROVIDERS_ZITADEL_TOKEN_URL=https://zitadel.example.com/oauth/v2/token
-      - PROVIDERS_ZITADEL_USER_INFO_URL=https://zitadel.example.com/oidc/v1/userinfo
-      - PROVIDERS_ZITADEL_REDIRECT_URL=https://tinyauth.example.com/api/oauth/callback/zitadel
-      - PROVIDERS_ZITADEL_CLIENT_ID=your-zitadel-client-id
-      - PROVIDERS_ZITADEL_CLIENT_SECRET=your-zitadel-client-secret
-      - PROVIDERS_ZITADEL_NAME=Zitadel
+      - TINYAUTH_OAUTH_PROVIDERS_ZITADEL_SCOPES=openid profile email preferred_username groups
+      - TINYAUTH_OAUTH_PROVIDERS_ZITADEL_AUTHURL=https://zitadel.example.com/oauth/v2/authorize
+      - TINYAUTH_OAUTH_PROVIDERS_ZITADEL_TOKENURL=https://zitadel.example.com/oauth/v2/token
+      - TINYAUTH_OAUTH_PROVIDERS_ZITADEL_USERINFOURL=https://zitadel.example.com/oidc/v1/userinfo
+      - TINYAUTH_OAUTH_PROVIDERS_ZITADEL_REDIRECTURL=https://tinyauth.example.com/api/oauth/callback/zitadel
+      - TINYAUTH_OAUTH_PROVIDERS_ZITADEL_CLIENTID=your-zitadel-client-id
+      - TINYAUTH_OAUTH_PROVIDERS_ZITADEL_CLIENTSECRET=your-zitadel-client-secret
+      - TINYAUTH_OAUTH_PROVIDERS_ZITADEL_NAME=Zitadel
 ```
+
+:::note
+    Zitadel should be accessed using HTTPS and a trusted certificate. In case this is not possible (e.g. self-signed certificates), you will need to use `TINYAUTH_OAUTH_PROVIDERS_ZITADEL_INSECURE=true` in order for Tinyauth to skip the certificate check.
+:::
+
 
 :::caution
   OAuth alone does not guarantee security. By default, any Zitadel account can
-  log in as a normal user. To restrict access, use the `OAUTH_WHITELIST`
+  log in as a normal user. To restrict access, use the `TINYAUTH_OAUTH_WHITELIST`
   environment variable to allow specific email addresses. Refer to the
   [configuration](/docs/reference/configuration) page for details.
 :::
 
 :::note
-  With OAuth enabled, the `USERS` or `USERS_FILE` environment variables can be
+  With OAuth enabled, the `TINYAUTH_AUTH_USERS` or `TINYAUTH_AUTHUSERSFILE` environment variable can be
   removed to allow login exclusively through the OAuth provider.
 :::
 

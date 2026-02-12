@@ -19,3 +19,8 @@
 .site-title img {
     height: 2rem;
 }
+
+td,
+th {
+    padding-left: 0.5rem;
+}

@@ -56,20 +56,30 @@ export default defineConfig({
           autogenerate: { directory: "docs/guides" },
         },
         {
-          label: "Community",
-          autogenerate: { directory: "docs/community" },
-        },
-        {
           label: "Reference",
+          collapsed: true,
           autogenerate: { directory: "docs/reference" },
         },
         {
+          label: "Community",
+          collapsed: true,
+          autogenerate: {
+            directory: "docs/community",
+          },
+        },
+        {
           label: "Breaking Updates",
-          autogenerate: { directory: "docs/breaking-updates" },
+          collapsed: true,
+          autogenerate: {
+            directory: "docs/breaking-updates",
+          },
         },
         {
           label: "Contributing",
-          autogenerate: { directory: "docs/contributing" },
+          collapsed: true,
+          autogenerate: {
+            directory: "docs/contributing",
+          },
         },
       ],
     }),
