@@ -21,7 +21,17 @@ Configuration can be achieved using either CLI flags or environment variables (r
 curl -o .env https://raw.githubusercontent.com/steveiliop56/tinyauth/refs/heads/main/.env.example
 ```
 
-Edit the `.env` file to replace template values with actual values or remove unnecessary variables. Alternatively, CLI flags can be used for configuration, though this method is less recommended due to potential complexity and shell parsing issues. Always use quotes (`'`) to ensure values are passed correctly.
+:::note
+It is recommended to use a tag when downloading the example `.env` file to ensure you are using the latest stable version and not a development one. For example:
+
+```sh
+curl -o .env https://raw.githubusercontent.com/steveiliop56/tinyauth/refs/tags/v5.0.0/.env.example
+```
+
+Will download the example `.env` file for the `v5.0.0` tag.
+:::
+
+Edit the `.env` file to replace template values with actual values or remove unnecessary ones. Alternatively, CLI flags can be used for configuration, though this method is less recommended due to potential complexity and shell parsing issues. Always use quotes (`'`) to ensure values are passed correctly.
 
 A complete list of environment variables and CLI flags is available on the [configuration](/docs/reference/configuration) page.
 
@@ -47,7 +57,7 @@ Start the Tinyauth server:
 For CLI flag-based setups, pass the flags directly:
 
 ```sh
-./tinyauth --app-url=https://tinyauth.example.com
+./tinyauth --appurl=https://tinyauth.example.com
 ```
 
 ## Running as a systemd Service
@@ -76,7 +86,7 @@ WantedBy=multi-user.target
 :::note
   For CLI flag-based setups, remove the `EnvironmentFile` line and append the
   flags to the `ExecStart` line, e.g., `ExecStart=/some/path/tinyauth
-  --app-url=https://tinyauth.example.com`.
+  --appurl=https://tinyauth.example.com`.
 :::
 
 Reload the systemd daemon:

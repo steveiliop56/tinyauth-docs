@@ -10,14 +10,18 @@ Tinyauth has built-in support for TOTP, enabling the use of authenticator apps t
 A TOTP secret must first be generated. This requires the current `username:hash`. Use the Tinyauth CLI to create the new user:
 
 ```sh
-docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v4 totp generate --interactive
+docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v5 totp generate --interactive
 ```
 
-The command prompts for the user and generates a QR code to scan with an authenticator app. Once added, copy the newly generated user (displayed after the `user=` log message) and include it in the Tinyauth user list. Restart the service to apply changes. From this point, logging in will require a TOTP code.
+The command prompts for the user and generates a QR code to scan with an authenticator app. Once added, copy the newly generated user (displayed after the `user=` log message) and include it in the Tinyauth user list. Restart Tinyauth to apply changes. From this point, logging in will require a TOTP code.
+
+:::note
+Due to the way the QR code library works in Tinyauth, the QR code may be **massive** and may not fit on a standard screen. If this happens, you can try resizing your terminal window or using a different terminal emulator.
+:::
 
 ## Verifying the User
 
-To verify the user configuration, the following command can be used:
+If you want to ensure that the user is configured correctly, you can use the following command:
 
 ```sh
 docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v4 user verify --interactive
