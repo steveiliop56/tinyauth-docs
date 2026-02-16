@@ -57,7 +57,7 @@ Start the Tinyauth server:
 For CLI flag-based setups, pass the flags directly:
 
 ```sh
-./tinyauth --appurl=https://tinyauth.example.com
+./tinyauth --appUrl=https://tinyauth.example.com
 ```
 
 ## Running as a systemd Service
@@ -86,7 +86,7 @@ WantedBy=multi-user.target
 :::note
   For CLI flag-based setups, remove the `EnvironmentFile` line and append the
   flags to the `ExecStart` line, e.g., `ExecStart=/some/path/tinyauth
-  --appurl=https://tinyauth.example.com`.
+  --appUrl=https://tinyauth.example.com`.
 :::
 
 Reload the systemd daemon:
