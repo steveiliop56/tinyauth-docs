@@ -13,64 +13,73 @@ Tinyauth can be configured using environment variables or CLI flags. The table b
 
 ## General
 
-| Environment | Flag | Description | Default | Required |
-| --- | --- | --- | --- | --- |
-| `TINYAUTH_APPURL` | `--appUrl` | The base URL where the app is hosted. | `` | true |
-| `TINYAUTH_RESOURCESDIR` | `--resourcesDir` | The directory where resources are stored. | `./resources` | false |
-| `TINYAUTH_DATABASEPATH` | `--databasePath` | The path to the database file. | `./tinyauth.db` | false |
-| `TINYAUTH_DISABLEANALYTICS` | `--disableAnalytics` | Disable analytics. | `false` | false |
-| `TINYAUTH_DISABLERESOURCES` | `--disableResources` | Disable resources server. | `false` | false |
-| `TINYAUTH_DISABLEUIWARNINGS` | `--disableUIWarnings` | Disable UI warnings. | `false` | false |
+| Environment | Flag | Description | Default |
+| - | - | - | - |
+| `TINYAUTH_APPURL` | `--appUrl` | The base URL where the app is hosted. | `` |
+| `TINYAUTH_RESOURCESDIR` | `--resourcesDir` | The directory where resources are stored. | `./resources` |
+| `TINYAUTH_DATABASEPATH` | `--databasePath` | The path to the database file. | `./tinyauth.db` |
+| `TINYAUTH_DISABLEANALYTICS` | `--disableAnalytics` | Disable analytics. | `false` |
+| `TINYAUTH_DISABLERESOURCES` | `--disableResources` | Disable resources server. | `false` |
 
 ## Server
 
-| Environment | Flag | Description | Default | Required |
-| --- | --- | --- | --- | --- |
-| `TINYAUTH_SERVER_PORT` | `--server.port` | The port on which the server listens. | `3000` | false |
-| `TINYAUTH_SERVER_ADDRESS` | `--server.address` | The address on which the server listens. | `0.0.0.0` | false |
-| `TINYAUTH_SERVER_SOCKETPATH` | `--server.socketPath` | The path to the Unix socket. | `` | false |
-| `TINYAUTH_SERVER_TRUSTEDPROXIES` | `--server.trustedProxies` | Comma-separated list of trusted proxy addresses. | `` | false |
+| Environment | Flag | Description | Default |
+| - | - | - | - |
+| `TINYAUTH_SERVER_PORT` | `--server.port` | The port on which the server listens. | `3000` |
+| `TINYAUTH_SERVER_ADDRESS` | `--server.address` | The address on which the server listens. | `0.0.0.0` |
+| `TINYAUTH_SERVER_SOCKETPATH` | `--server.socketPath` | The path to the Unix socket. | `` |
 
-## Auth
+## Authentication
 
-| Environment | Flag | Description | Default | Required |
-| --- | --- | --- | --- | --- |
-| `TINYAUTH_AUTH_USERS` | `--auth.users` | Comma-separated list of users (username:hash:totp). | `` | true |
-| `TINYAUTH_AUTH_USERSFILE` | `--auth.usersFile` | Path to the users file. | `` | false |
-| `TINYAUTH_AUTH_SECURECOOKIE` | `--auth.secureCookie` | Enable secure cookies. | `false` | false |
-| `TINYAUTH_AUTH_SESSIONEXPIRY` | `--auth.sessionExpiry` | Session expiry time in seconds. | `86400` | false |
-| `TINYAUTH_AUTH_SESSIONMAXLIFETIME` | `--auth.sessionMaxLifetime` | Maximum session lifetime in seconds. | `0` | false |
-| `TINYAUTH_AUTH_LOGINTIMEOUT` | `--auth.loginTimeout` | Login timeout in seconds. | `300` | false |
-| `TINYAUTH_AUTH_LOGINMAXRETRIES` | `--auth.loginMaxRetries` | Maximum login retries. | `3` | false |
+| Environment | Flag | Description | Default |
+| - | - | - | - |
+| `TINYAUTH_AUTH_IP_ALLOW` | `--auth.ip.allow` | List of allowed IPs or CIDR ranges. | `` |
+| `TINYAUTH_AUTH_IP_BLOCK` | `--auth.ip.block` | List of blocked IPs or CIDR ranges. | `` |
+| `TINYAUTH_AUTH_USERS` | `--auth.users` | Comma-separated list of users (username:hashed_password). | `` |
+| `TINYAUTH_AUTH_USERSFILE` | `--auth.usersFile` | Path to the users file. | `` |
+| `TINYAUTH_AUTH_SECURECOOKIE` | `--auth.secureCookie` | Enable secure cookies. | `false` |
+| `TINYAUTH_AUTH_SESSIONEXPIRY` | `--auth.sessionExpiry` | Session expiry time in seconds. | `86400` |
+| `TINYAUTH_AUTH_SESSIONMAXLIFETIME` | `--auth.sessionMaxLifetime` | Maximum session lifetime in seconds. | `0` |
+| `TINYAUTH_AUTH_LOGINTIMEOUT` | `--auth.loginTimeout` | Login timeout in seconds. | `300` |
+| `TINYAUTH_AUTH_LOGINMAXRETRIES` | `--auth.loginMaxRetries` | Maximum login retries. | `3` |
+| `TINYAUTH_AUTH_TRUSTEDPROXIES` | `--auth.trustedProxies` | Comma-separated list of trusted proxy addresses. | `` |
 
-### Auth IP
+## ACLs
 
-| Environment | Flag | Description | Default | Required |
-| --- | --- | --- | --- | --- |
-| `TINYAUTH_AUTH_IP_ALLOW` | `--auth.ip.allow` | List of allowed IPs or CIDR ranges. | `` | false |
-| `TINYAUTH_AUTH_IP_BLOCK` | `--auth.ip.block` | List of blocked IPs or CIDR ranges. | `` | false |
+| Environment | Flag | Description | Default |
+| - | - | - | - |
+| `TINYAUTH_APPS_[NAME]_CONFIG_DOMAIN` | `--apps.[name].config.domain` | The domain of the app. | `` |
+| `TINYAUTH_APPS_[NAME]_USERS_ALLOW` | `--apps.[name].users.allow` | Comma-separated list of allowed users. | `` |
+| `TINYAUTH_APPS_[NAME]_USERS_BLOCK` | `--apps.[name].users.block` | Comma-separated list of blocked users. | `` |
+| `TINYAUTH_APPS_[NAME]_OAUTH_WHITELIST` | `--apps.[name].oauth.whitelist` | Comma-separated list of allowed OAuth groups. | `` |
+| `TINYAUTH_APPS_[NAME]_OAUTH_GROUPS` | `--apps.[name].oauth.groups` | Comma-separated list of required OAuth groups. | `` |
+| `TINYAUTH_APPS_[NAME]_IP_ALLOW` | `--apps.[name].ip.allow` | List of allowed IPs or CIDR ranges. | `` |
+| `TINYAUTH_APPS_[NAME]_IP_BLOCK` | `--apps.[name].ip.block` | List of blocked IPs or CIDR ranges. | `` |
+| `TINYAUTH_APPS_[NAME]_IP_BYPASS` | `--apps.[name].ip.bypass` | List of IPs or CIDR ranges that bypass authentication. | `` |
+| `TINYAUTH_APPS_[NAME]_RESPONSE_HEADERS` | `--apps.[name].response.headers` | Custom headers to add to the response. | `` |
+| `TINYAUTH_APPS_[NAME]_RESPONSE_BASICAUTH_USERNAME` | `--apps.[name].response.basicauth.username` | Basic auth username. | `` |
+| `TINYAUTH_APPS_[NAME]_RESPONSE_BASICAUTH_PASSWORD` | `--apps.[name].response.basicauth.password` | Basic auth password. | `` |
+| `TINYAUTH_APPS_[NAME]_RESPONSE_BASICAUTH_PASSWORDFILE` | `--apps.[name].response.basicauth.passwordFile` | Path to the file containing the basic auth password. | `` |
+| `TINYAUTH_APPS_[NAME]_PATH_ALLOW` | `--apps.[name].path.allow` | Comma-separated list of allowed paths. | `` |
+| `TINYAUTH_APPS_[NAME]_PATH_BLOCK` | `--apps.[name].path.block` | Comma-separated list of blocked paths. | `` |
+| `TINYAUTH_APPS_[NAME]_LDAP_GROUPS` | `--apps.[name].ldap.groups` | Comma-separated list of required LDAP groups. | `` |
 
 ## OAuth
 
-| Environment | Flag | Description | Default | Required |
-| --- | --- | --- | --- | --- |
-| `TINYAUTH_OAUTH_WHITELIST` | `--oauth.whitelist` | Comma-separated list of allowed OAuth domains. | `` | false |
-| `TINYAUTH_OAUTH_AUTOREDIRECT` | `--oauth.autoRedirect` | The OAuth provider to use for automatic redirection. | `` | false |
-
-OAuth configuration includes a provider ID in the environment variable or flag name. For example, `TINYAUTH_OAUTH_PROVIDERS_GOOGLE_CLIENTID`.
-
-| Environment | Flag | Description | Default | Required |
-| --- | --- | --- | --- | --- |
-| `TINYAUTH_OAUTH_PROVIDERS_[ID]_CLIENTID` | `--oauth.providers.[id].clientId` | OAuth client ID. | `` | true |
-| `TINYAUTH_OAUTH_PROVIDERS_[ID]_CLIENTSECRET` | `--oauth.providers.[id].clientSecret` | OAuth client secret. | `` | true |
-| `TINYAUTH_OAUTH_PROVIDERS_[ID]_CLIENTSECRETFILE` | `--oauth.providers.[id].clientSecretFile` | Path to the file containing the OAuth client secret. | `` | false |
-| `TINYAUTH_OAUTH_PROVIDERS_[ID]_SCOPES` | `--oauth.providers.[id].scopes` | OAuth scopes. | `` | true |
-| `TINYAUTH_OAUTH_PROVIDERS_[ID]_REDIRECTURL` | `--oauth.providers.[id].redirectUrl` | OAuth redirect URL. | `` | false |
-| `TINYAUTH_OAUTH_PROVIDERS_[ID]_AUTHURL` | `--oauth.providers.[id].authUrl` | OAuth authorization URL. | `` | true |
-| `TINYAUTH_OAUTH_PROVIDERS_[ID]_TOKENURL` | `--oauth.providers.[id].tokenUrl` | OAuth token URL. | `` | true |
-| `TINYAUTH_OAUTH_PROVIDERS_[ID]_USERINFOURL` | `--oauth.providers.[id].userinfoUrl` | OAuth userinfo URL. | `` | true |
-| `TINYAUTH_OAUTH_PROVIDERS_[ID]_INSECURE` | `--oauth.providers.[id].insecure` | Allow insecure OAuth connections. | `false` | false |
-| `TINYAUTH_OAUTH_PROVIDERS_[ID]_NAME` | `--oauth.providers.[id].name` | Provider name in UI. | `` | false |
+| Environment | Flag | Description | Default |
+| - | - | - | - |
+| `TINYAUTH_OAUTH_WHITELIST` | `--oauth.whitelist` | Comma-separated list of allowed OAuth domains. | `` |
+| `TINYAUTH_OAUTH_AUTOREDIRECT` | `--oauth.autoRedirect` | The OAuth provider to use for automatic redirection. | `` |
+| `TINYAUTH_OAUTH_PROVIDERS_[NAME]_CLIENTID` | `--oauth.providers.[name].clientId` | OAuth client ID. | `` |
+| `TINYAUTH_OAUTH_PROVIDERS_[NAME]_CLIENTSECRET` | `--oauth.providers.[name].clientSecret` | OAuth client secret. | `` |
+| `TINYAUTH_OAUTH_PROVIDERS_[NAME]_CLIENTSECRETFILE` | `--oauth.providers.[name].clientSecretFile` | Path to the file containing the OAuth client secret. | `` |
+| `TINYAUTH_OAUTH_PROVIDERS_[NAME]_SCOPES` | `--oauth.providers.[name].scopes` | OAuth scopes. | `` |
+| `TINYAUTH_OAUTH_PROVIDERS_[NAME]_REDIRECTURL` | `--oauth.providers.[name].redirectUrl` | OAuth redirect URL. | `` |
+| `TINYAUTH_OAUTH_PROVIDERS_[NAME]_AUTHURL` | `--oauth.providers.[name].authUrl` | OAuth authorization URL. | `` |
+| `TINYAUTH_OAUTH_PROVIDERS_[NAME]_TOKENURL` | `--oauth.providers.[name].tokenUrl` | OAuth token URL. | `` |
+| `TINYAUTH_OAUTH_PROVIDERS_[NAME]_USERINFOURL` | `--oauth.providers.[name].userinfoUrl` | OAuth userinfo URL. | `` |
+| `TINYAUTH_OAUTH_PROVIDERS_[NAME]_INSECURE` | `--oauth.providers.[name].insecure` | Allow insecure OAuth connections. | `false` |
+| `TINYAUTH_OAUTH_PROVIDERS_[NAME]_NAME` | `--oauth.providers.[name].name` | Provider name in UI. | `` |
 
 :::note
   Using `google` or `github` as provider IDs, triggers automatic filling of the
@@ -78,87 +87,59 @@ OAuth configuration includes a provider ID in the environment variable or flag n
   provide the client ID and secret.
 :::
 
-:::note
-  Options marked as required are mandatory only when you are the OIDC client.
-:::
-
-
 ## OIDC
 
-| Environment | Flag | Description | Default | Required |
-| --- | --- | --- | --- | --- |
-| `TINYAUTH_OIDC_PRIVATEKEYPATH` | `--oidc.privateKeyPath` | Path to the private key file. | `./tinyauth_oidc_key` | false |
-| `TINYAUTH_OIDC_PUBLICKEYPATH` | `--oidc.publicKeyPath` | Path to the public key file. | `./tinyauth_oidc_key.pub` | false |
-
-OIDC client configuration includes a client ID in the environment variable or flag name. For example, `TINYAUTH_OIDC_CLIENTS_MYAPP_CLIENT_ID`.
-
-| Environment | Flag | Description | Default | Required |
-| --- | --- | --- | --- | --- |
-| `TINYAUTH_OIDC_CLIENTS_[ID]_CLIENTID` | `--oidc.clients.[id].clientId` | OIDC client ID. | `` | true |
-| `TINYAUTH_OIDC_CLIENTS_[ID]_CLIENTSECRET` | `--oidc.clients.[id].clientSecret` | OIDC client secret. | `` | true |
-| `TINYAUTH_OIDC_CLIENTS_[ID]_CLIENTSECRETFILE` | `--oidc.clients.[id].clientSecretFile` | Path to the file containing the OIDC client secret. | `` | false |
-| `TINYAUTH_OIDC_CLIENTS_[ID]_TRUSTEDREDIRECTURIS` | `--oidc.clients.[id].trustedRedirectUris` | List of trusted redirect URIs. | `` | true |
-| `TINYAUTH_OIDC_CLIENTS_[ID]_NAME` | `--oidc.clients.[id].name` | Client name in UI. | `` | true |
-
-:::note
-  Options marked as required are mandatory only when you are the OIDC server.
-:::
+| Environment | Flag | Description | Default |
+| - | - | - | - |
+| `TINYAUTH_OIDC_PRIVATEKEYPATH` | `--oidc.privateKeyPath` | Path to the private key file. | `./tinyauth_oidc_key` |
+| `TINYAUTH_OIDC_PUBLICKEYPATH` | `--oidc.publicKeyPath` | Path to the public key file. | `./tinyauth_oidc_key.pub` |
+| `TINYAUTH_OIDC_CLIENTS_[NAME]_CLIENTID` | `--oidc.clients.[name].clientId` | OIDC client ID. | `` |
+| `TINYAUTH_OIDC_CLIENTS_[NAME]_CLIENTSECRET` | `--oidc.clients.[name].clientSecret` | OIDC client secret. | `` |
+| `TINYAUTH_OIDC_CLIENTS_[NAME]_CLIENTSECRETFILE` | `--oidc.clients.[name].clientSecretFile` | Path to the file containing the OIDC client secret. | `` |
+| `TINYAUTH_OIDC_CLIENTS_[NAME]_TRUSTEDREDIRECTURIS` | `--oidc.clients.[name].trustedRedirectUris` | List of trusted redirect URIs. | `` |
+| `TINYAUTH_OIDC_CLIENTS_[NAME]_NAME` | `--oidc.clients.[name].name` | Client name in UI. | `` |
 
 ## UI
 
-| Environment | Flag | Description | Default | Required |
-| --- | --- | --- | --- | --- |
-| `TINYAUTH_UI_TITLE` | `--ui.title` | The title of the UI. | `Tinyauth` | false |
-| `TINYAUTH_UI_FORGOTPASSWORDMESSAGE` | `--ui.forgotPasswordMessage` | Message displayed on the forgot password page. | `You can change your password by changing the configuration.` | false |
-| `TINYAUTH_UI_BACKGROUNDIMAGE` | `--ui.backgroundImage` | Path to the background image. | `/background.jpg` | false |
+| Environment | Flag | Description | Default |
+| - | - | - | - |
+| `TINYAUTH_UI_TITLE` | `--ui.title` | The title of the UI. | `Tinyauth` |
+| `TINYAUTH_UI_FORGOTPASSWORDMESSAGE` | `--ui.forgotPasswordMessage` | Message displayed on the forgot password page. | `You can change your password by changing the configuration.` |
+| `TINYAUTH_UI_BACKGROUNDIMAGE` | `--ui.backgroundImage` | Path to the background image. | `/background.jpg` |
+| `TINYAUTH_UI_DISABLEWARNINGS` | `--ui.disableWarnings` | Disable UI warnings. | `false` |
 
 ## LDAP
 
-| Environment | Flag | Description | Default | Required |
-| --- | --- | --- | --- | --- |
-| `TINYAUTH_LDAP_ADDRESS` | `--ldap.address` | LDAP server address. | `` | true |
-| `TINYAUTH_LDAP_BINDDN` | `--ldap.bindDn` | Bind DN for LDAP authentication. | `` | true |
-| `TINYAUTH_LDAP_BINDPASSWORD` | `--ldap.bindPassword` | Bind password for LDAP authentication. | `` | true |
-| `TINYAUTH_LDAP_BASEDN` | `--ldap.baseDn` | Base DN for LDAP searches. | `` | true |
-| `TINYAUTH_LDAP_INSECURE` | `--ldap.insecure` | Allow insecure LDAP connections. | `false` | false |
-| `TINYAUTH_LDAP_SEARCHFILTER` | `--ldap.searchFilter` | LDAP search filter. | `(uid=%s)` | false |
-| `TINYAUTH_LDAP_AUTHCERT` | `--ldap.authCert` | Certificate for mTLS authentication. | `` | false |
-| `TINYAUTH_LDAP_AUTHKEY` | `--ldap.authKey` | Certificate key for mTLS authentication. | `` | false |
-| `TINYAUTH_LDAP_GROUPCACHETTL` | `--ldap.groupCacheTTL` | Cache duration for LDAP group membership in seconds. | `900` | false |
+| Environment | Flag | Description | Default |
+| - | - | - | - |
+| `TINYAUTH_LDAP_ADDRESS` | `--ldap.address` | LDAP server address. | `` |
+| `TINYAUTH_LDAP_BINDDN` | `--ldap.bindDn` | Bind DN for LDAP authentication. | `` |
+| `TINYAUTH_LDAP_BINDPASSWORD` | `--ldap.bindPassword` | Bind password for LDAP authentication. | `` |
+| `TINYAUTH_LDAP_BASEDN` | `--ldap.baseDn` | Base DN for LDAP searches. | `` |
+| `TINYAUTH_LDAP_INSECURE` | `--ldap.insecure` | Allow insecure LDAP connections. | `false` |
+| `TINYAUTH_LDAP_SEARCHFILTER` | `--ldap.searchFilter` | LDAP search filter. | `(uid=%s)` |
+| `TINYAUTH_LDAP_AUTHCERT` | `--ldap.authCert` | Certificate for mTLS authentication. | `` |
+| `TINYAUTH_LDAP_AUTHKEY` | `--ldap.authKey` | Certificate key for mTLS authentication. | `` |
+| `TINYAUTH_LDAP_GROUPCACHETTL` | `--ldap.groupCacheTTL` | Cache duration for LDAP group membership in seconds. | `900` |
 
 :::note
   For Windows LDAP, use the following search filter: `(&(sAMAccountName=%s))`.
 :::
 
-:::note
-  Options marked as required are mandatory only when you are using LDAP authentication.
-:::
-
-## Experimental
-
-| Environment | Flag | Description | Default | Required |
-| --- | --- | --- | --- | --- |
-| `TINYAUTH_EXPERIMENTAL_CONFIGFILE` | `--experimental.configFile` | Path to config file. | `` | false |
-
 ## Log
 
-| Environment | Flag | Description | Default | Required |
-| --- | --- | --- | --- | --- |
-| `TINYAUTH_LOG_LEVEL` | `--log.level` | Log level (trace, debug, info, warn, error). | `info` | false |
-| `TINYAUTH_LOG_JSON` | `--log.json` | Enable JSON formatted logs. | `false` | false |
+| Environment | Flag | Description | Default |
+| - | - | - | - |
+| `TINYAUTH_LOG_LEVEL` | `--log.level` | Log level (trace, debug, info, warn, error). | `info` |
+| `TINYAUTH_LOG_JSON` | `--log.json` | Enable JSON formatted logs. | `false` |
+| `TINYAUTH_LOG_STREAMS_HTTP_ENABLED` | `--log.streams.http.enabled` | Enable this log stream. | `true` |
+| `TINYAUTH_LOG_STREAMS_HTTP_LEVEL` | `--log.streams.http.level` | Log level for this stream. Use global if empty. | `` |
+| `TINYAUTH_LOG_STREAMS_APP_ENABLED` | `--log.streams.app.enabled` | Enable this log stream. | `true` |
+| `TINYAUTH_LOG_STREAMS_APP_LEVEL` | `--log.streams.app.level` | Log level for this stream. Use global if empty. | `` |
+| `TINYAUTH_LOG_STREAMS_AUDIT_ENABLED` | `--log.streams.audit.enabled` | Enable this log stream. | `false` |
+| `TINYAUTH_LOG_STREAMS_AUDIT_LEVEL` | `--log.streams.audit.level` | Log level for this stream. Use global if empty. | `` |
 
 :::caution
   The `trace` log level will log sensitive information such as usernames, emails
   and access controls. Use with caution.
 :::
-
-### Log Streams
-
-| Environment | Flag | Description | Default | Required |
-| --- | --- | --- | --- | --- |
-| `TINYAUTH_LOG_STREAMS_HTTP_ENABLED` | `--log.streams.http.enabled` | Enable this log stream. | `true` | false |
-| `TINYAUTH_LOG_STREAMS_HTTP_LEVEL` | `--log.streams.http.level` | Log level for this stream. Use global if empty. | `` | false |
-| `TINYAUTH_LOG_STREAMS_APP_ENABLED` | `--log.streams.app.enabled` | Enable this log stream. | `true` | false |
-| `TINYAUTH_LOG_STREAMS_APP_LEVEL` | `--log.streams.app.level` | Log level for this stream. Use global if empty. | `` | false |
-| `TINYAUTH_LOG_STREAMS_AUDIT_ENABLED` | `--log.streams.audit.enabled` | Enable this log stream. | `false` | false |
-| `TINYAUTH_LOG_STREAMS_AUDIT_LEVEL` | `--log.streams.audit.level` | Log level for this stream. Use global if empty. | `` | false |
