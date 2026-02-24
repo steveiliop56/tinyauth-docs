@@ -3,6 +3,8 @@ title: Updating from v4 to v5
 description: A guide to help migrate from Tinyauth v4 to v5.
 ---
 
+import ConfigMigrator from "./4-to-5-migrator.astro";
+
 Tinyauth v5 introduces only configuration changes.
 
 ## Configuration Changes
@@ -11,7 +13,7 @@ In Tinyauth v4, the configuration was a mess - most options were not always doin
 
 ### Environment Variables
 
-Environment variables follow the following format:
+Environment variables, now, follow the following format:
 
 ```
 TINYAUTH_<SECTION>_<KEY>=<VALUE>
@@ -29,4 +31,16 @@ CLI flags follow the following format:
 
 This format may seem unintuitive at first, but it's actually quite powerful and better than the previous delimiter-based format. It allows you to specify configuration options in a way that's easy to remember and easy to type.
 
-Due to the new categorization of the configuration options, there is no way to automatically migrate from the previous format to the new one. You will need to manually update your configuration files and environment variables to use the new format. The [configuration](/docs/reference/configuration) reference describes all available options.
+### Configuration Migrator
+
+Since the entire configuration format has changed, you will need to update your entire configuration. To make this process easier, we've provided a configuration migrator that can help you migrate your CLI flags and environment variables to the new format.
+
+<ConfigMigrator />
+
+:::caution
+Dynamic configuration is not supported by this migrator. You will need to manually update your configuration files and environment variables to use the new format. For more information, see the [configuration](/docs/reference/configuration) reference.
+:::
+
+:::note
+For the migrator to work correctly, please specify one environment variable or CLI flag per line. Even though the migrator supports comments and blank lines, it's recommended to keep the input clean and easy to read. Additionally, you should ideally not mix CLI flags and environment variables in one go (even though the migrator supports it).
+:::

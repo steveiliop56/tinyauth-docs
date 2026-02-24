@@ -59,7 +59,7 @@ main:has(.home-container) {
     line-height: 1.25rem;
     font-weight: 600;
     color: var(--sl-color-bg);
-    transition-property: transform;
+    transition-property: transform, opacity;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 300ms;
     transition-delay: 100ms;

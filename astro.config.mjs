@@ -19,7 +19,11 @@ export default defineConfig({
     }),
     starlight({
       plugins: [starlightThemeRapide()],
-      customCss: ["./src/styles/theme.css", "./src/styles/home.css"],
+      customCss: [
+        "./src/styles/theme.css",
+        "./src/styles/home.css",
+        "./src/styles/4-to-5.css",
+      ],
       title: "Tinyauth",
       logo: {
         src: "./public/tinyauth.png",
