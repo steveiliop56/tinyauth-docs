@@ -5,11 +5,15 @@ description: A guide to help migrate from Tinyauth v4 to v5.
 
 import ConfigMigrator from "./4-to-5-migrator.astro";
 
+:::note
+In order to follow this migration guide, you need to have Tinyauth v4 running. In case you are coming from Tinyauth v3, you need to migrate to v4 first. For migrating from Tinyauth v3, please refer to the [migration guide](/docs/breaking-updates/3-to-4).
+:::
+
 Tinyauth v5 introduces only configuration changes.
 
 ## Configuration Changes
 
-In Tinyauth v4, the configuration was a mess - most options were not always doing what they were supposed to do, they were hard to keep track of and generally not very intuitive. In Tinyauth v5, we've simplified the configuration format into one unified scheme across all configuration mediums.
+In Tinyauth v4, the configuration was a mess - some options were not doing what they were supposed to do, they were hard to keep track of and generally not very intuitive. In Tinyauth v5, we've simplified the configuration format into one unified scheme across all configuration mediums.
 
 ### Environment Variables
 

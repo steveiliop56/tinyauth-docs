@@ -33,7 +33,7 @@ export default defineConfig({
         {
           icon: "github",
           label: "GitHub",
-          href: "https://github.com/steveiliop56/tinyath",
+          href: "https://github.com/steveiliop56/tinyauth",
         },
         {
           icon: "discord",

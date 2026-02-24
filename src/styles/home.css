@@ -1,6 +1,16 @@
 /* hack i know */
-main:has(.home-container) .content-panel:first-child {
-    display: none;
+main:has(.home-container) {
+    &:has(.sl-banner) .content-panel:nth-child(2) {
+        display: none;
+    }
+
+    &:not(.content-panel:has(.sl-banner)) .content-panel:first-of-type {
+        display: none;
+    }
+
+    .sl-banner {
+        margin-bottom: 0.5rem;
+    }
 }
 
 main:has(.home-container) {
@@ -20,9 +30,11 @@ main:has(.home-container) {
     font-size: 2.25rem;
     line-height: calc(2.5 / 2.25);
     font-weight: 700;
+    margin: 0;
 }
 
 .home-description {
+    margin: 0;
     max-width: 42rem;
 }
 
@@ -31,9 +43,9 @@ main:has(.home-container) {
 }
 
 .instances-count {
-    background-color: oklch(72.3% 0.219 149.579 / 0.2);
-    border: 1px solid;
-    border-color: oklch(72.3% 0.219 149.579 / 0.4);
+    color: var(--sl-color-green-high);
+    background-color: var(--sl-color-green-low);
+    border: 1px solid var(--sl-color-green);
     border-radius: 9999px;
     font-size: 0.875rem;
     line-height: calc(1.25 / 0.875);
