@@ -9,14 +9,15 @@ _Contributors: [@kdwils](https://github.com/kdwils), [@pushpinderbal](https://gi
 
 Kubernetes hosted applications are commonly exposed externally using [Ingress Controllers](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) or the newer [Gateway API](https://kubernetes.io/docs/concepts/services-networking/gateway/). These can act as a gateway to enforce authentication and authorization policies before traffic reaches your self-hosted applications. This is useful for protecting internal tools, admin interfaces, or services exposed to the internet - without needing to modify the applications themselves, especially those that do not have built-in authentication mechanisms.
 
-Popular reverse proxies like NGINX, Traefik, and Envoy provide Ingress controller and Gateway API implementations for Kubernetes that can be integrated with Tinyauth.
+Popular reverse proxies like Nginx, Traefik, and Envoy provide Ingress controller and Gateway API implementations for Kubernetes that can be integrated with Tinyauth.
 
 ## Prerequisites
 
-This documentation assumes the following prerequisites:
+This guide assumes the following prerequisites:
 
 - An operational Kubernetes cluster
 - An operational Ingress controller or Gateway API implementation (this guide demonstrates `ingress-nginx` and `Istio`, but `traefik` can be used as well).
+- Experience with Kubernetes
 
 ## Create a Namespace
 
@@ -52,13 +53,13 @@ spec:
     spec:
       containers:
         - name: tinyauth
-          image: ghcr.io/steveiliop56/tinyauth:v4
+          image: ghcr.io/steveiliop56/tinyauth:v5
           ports:
             - containerPort: 3000
           env:
-            - name: APP_URL
-              value: "http://auth.example.com"
-            - name: USERS
+            - name: TINYAUTH_APPURL
+              value: http://auth.example.com
+            - name: TINYAUTH_AUTH_USERS
               value: user:$$2a$$10$$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u # Username is user and password is password
           livenessProbe:
             httpGet:
