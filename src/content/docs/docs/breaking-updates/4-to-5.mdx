@@ -1,0 +1,32 @@
+---
+title: Updating from v4 to v5
+description: A guide to help migrate from Tinyauth v4 to v5.
+---
+
+Tinyauth v5 introduces only configuration changes.
+
+## Configuration Changes
+
+In Tinyauth v4, the configuration was a mess - most options were not always doing what they were supposed to do, they were hard to keep track of and generally not very intuitive. In Tinyauth v5, we've simplified the configuration format into one unified scheme across all configuration mediums.
+
+### Environment Variables
+
+Environment variables follow the following format:
+
+```
+TINYAUTH_<SECTION>_<KEY>=<VALUE>
+```
+
+The `TINYAUTH_` prefix is used to distinguish Tinyauth configuration from other environment variables. All environment variables that are prefixed with `TINYAUTH_` are considered configuration options and in case of a mis-configuration, unlike previous versions, Tinyauth will refuse to start.
+
+### CLI Flags
+
+CLI flags follow the following format:
+
+```
+--section.key=value
+```
+
+This format may seem unintuitive at first, but it's actually quite powerful and better than the previous delimiter-based format. It allows you to specify configuration options in a way that's easy to remember and easy to type.
+
+Due to the new categorization of the configuration options, there is no way to automatically migrate from the previous format to the new one. You will need to manually update your configuration files and environment variables to use the new format. The [configuration](/docs/reference/configuration) reference describes all available options.

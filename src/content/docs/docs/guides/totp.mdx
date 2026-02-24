@@ -24,7 +24,7 @@ Due to the way the QR code library works in Tinyauth, the QR code may be **massi
 If you want to ensure that the user is configured correctly, you can use the following command:
 
 ```sh
-docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v4 user verify --interactive
+docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v5 user verify --interactive
 ```
 
 The command prompts for the `username:hash:totp`, username, password, and a TOTP code from the authenticator app. If successful, a user verified message is displayed.
