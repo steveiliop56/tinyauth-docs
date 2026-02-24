@@ -39,3 +39,4 @@ Tinyauth will now use the domain to match labels instead of the app ID.
 | `tinyauth.apps.[app].response.basicauth.passwordfile` | A path to a file containing the password used by Tinyauth to authenticate to a target app using basic authentication.                   |
 | `tinyauth.apps.[app].path.allow`                      | A regex of paths that do not need authentication.                                                                                       |
 | `tinyauth.apps.[app].path.block`                      | A regex of paths that will require authentication (meaning that all other paths are allowed).                                           |
+| `tinyauth.apps.[app].ldap.groups`                    | A comma separated list of LDAP groups required by a user to access the app.                                                            |

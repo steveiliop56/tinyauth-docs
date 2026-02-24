@@ -26,12 +26,16 @@ The `Remote-Name` header contains the full name of the currently logged-in user.
 
 ### Remote groups
 
-The `Remote-Groups` header contains the groups of the currently logged-in user, retrieved from the `groups` claim in the OIDC server. These can be used to allow access to specific user groups configured by the OIDC server. More details are available in the [OIDC access controls](/docs/guides/access-controls.md#access-controls-using-oidc-groups) guide.
+The `Remote-Groups` header contains the groups of the currently logged-in user, retrieved from the `groups` claim in the OIDC server or from the LDAP server. These can be used to allow access to specific user groups configured by the OIDC or LDAP server. More details are available in the [OIDC access controls](/docs/guides/access-controls#access-controls-using-oidc-groups) and [LDAP access controls](/docs/guides/access-controls#access-controls-using-ldap-groups) guides.
 
 :::caution
   Remote groups are only available for OIDC providers that support the `groups`
-  claim. LDAP groups are **not** supported.
+  claim.
 :::
+
+### Remote sub
+
+The `Remote-Sub` header contains the subject identifier of the currently logged-in user, retrieved from the `sub` claim in the OIDC server. This can be used to uniquely identify the user across different authentication providers.
 
 ### Custom headers
 

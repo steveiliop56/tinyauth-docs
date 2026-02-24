@@ -3,6 +3,51 @@ title: Changelog
 description: Overview of changes and updates in Tinyauth versions.
 ---
 
+## v5.0.0
+
+:::caution
+This is a breaking release, please refer to the [documentation]() for migration instructions.
+:::
+
+### New Features
+
+- Experimental config file support
+- Add support for Envoy proxy [@pushpinderbal](https://github.com/pushpinderbal)
+- Refresh session cookie whilst session is active
+- Forward `sub` claim from OAuth providers in the `Remote-Sub` header
+- Support for ACLs using environment variables/CLI flags/config file
+- Add mTLS / client certificate authentication support in LDAP [@plaes](https://github.com/plaes)
+- Add support for global IP filters
+- Configurable component level logging [@pushpinderbal](https://github.com/pushpinderbal)
+- LDAP group ACLs
+- Auto submit TOTP code when it gets typed in
+- OIDC server
+
+### Improvements
+
+- Auto create database directory if it doesn't exist [@modrin](https://github.com/modrin)
+- Use one unified config format for environment variables, CLI flags and config file
+- Improve frontend performance by minimizing use-effect calls and chunk size [@nicotsx](https://github.com/nicotsx)
+
+### Fixes
+
+- Fix language detection storing incorrect code in local storage
+- Add rate-limiting in the forward auth endpoint to prevent brute-force attacks using basic auth [@offw0rld](https://github.com/offw0rld)
+- Hide username provider when no users are configured [@pushpinderbal](https://github.com/pushpinderbal)
+- Set Gin mode in code rather than environment variables
+- Ensure safe redirect check checks for periods
+
+### Technical
+
+- Bump dependencies
+- Update translations
+- Fix [CVE-2025-55182](https://github.com/advisories/GHSA-fv66-9v8q-g76r "CVE-2025-55182") in React [@d3vv3](https://github.com/d3vv3)
+- Split app bootstrap into smaller jobs for better readability and maintainability
+- Use correct module name - Tinyauth now listed in [pkg.go.dev](https://pkg.go.dev/github.com/steveiliop56/tinyauth)
+- Replace GORM with vanilla SQL and SQLC for smaller size and more maintainable code
+- Add a `Makefile` to simplify development
+- Simplify user parsing logic since we can offload things to paerser
+
 ## v4.1.0
 
 ### New Features
