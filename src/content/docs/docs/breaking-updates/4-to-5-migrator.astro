@@ -5,31 +5,28 @@
 <script>
     import { migrateConfig } from "../../../../lib/4-to-5-config-migrator";
 
-    document.addEventListener("DOMContentLoaded", () => {
-        const cfgForm = document.querySelector("#cfg-form");
-        const cfgNew = document.querySelector("#cfg-new") as HTMLElement;
+    const cfgForm = document.querySelector("#cfg-form");
+    const cfgNew = document.querySelector("#cfg-new") as HTMLElement;
 
-        if (!cfgForm || !cfgNew) {
-            console.error("Form or new config element not found");
+    if (!cfgForm || !cfgNew) {
+        throw "Form or new config element not found";
+    }
+
+    cfgForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const formdata = new FormData(cfgForm as HTMLFormElement);
+        const oldCfg = formdata.get("cfg-input");
+
+        const newCfg = migrateConfig(oldCfg as string);
+
+        if (!newCfg) {
+            alert("Your configuration seems to be invalid.");
             return;
         }
 
-        cfgForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-
-            const formdata = new FormData(cfgForm as HTMLFormElement);
-            const oldCfg = formdata.get("cfg-input");
-
-            const newCfg = migrateConfig(oldCfg as string);
-
-            if (!newCfg) {
-                alert("Your configuration seems to be invalid.");
-                return;
-            }
-
-            cfgNew.textContent = newCfg;
-            cfgNew.style.display = "block";
-        });
+        cfgNew.textContent = newCfg;
+        cfgNew.style.display = "block";
     });
 </script>
 

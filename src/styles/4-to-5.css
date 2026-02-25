@@ -55,7 +55,7 @@
     line-height: 1.25rem;
     font-weight: 600;
     color: var(--sl-color-text);
-    transition-property: border-color;
+    transition-property: border-color, color;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 100ms;
     transition-delay: 50ms;
@@ -63,11 +63,11 @@
     border: 1px solid var(--sl-color-gray-5);
 }
 
-.cfg-submit:hover {
-    border: 1px solid var(--sl-color-gray-2);
-}
-
-.cfg-submit:focus {
-    border: 1px solid var(--sl-color-gray-2);
-    outline: none;
+.cfg-submit {
+    &:is(:hover, :focus-visible) {
+        cursor: pointer;
+        border: 1px solid var(--sl-color-gray-2);
+        color: var(--sl-color-text-accent);
+        outline: none;
+    }
 }

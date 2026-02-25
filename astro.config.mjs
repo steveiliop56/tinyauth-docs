@@ -25,10 +25,14 @@ export default defineConfig({
         "./src/styles/4-to-5.css",
       ],
       title: "Tinyauth",
+      credits: true,
       logo: {
         src: "./public/tinyauth.png",
       },
       favicon: "/favicon.ico",
+      editLink: {
+        baseUrl: "https://github.com/steveiliop56/tinyauth-docs/edit/main/",
+      },
       social: [
         {
           icon: "github",

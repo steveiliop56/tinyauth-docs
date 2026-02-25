@@ -1,5 +1,6 @@
-/* hack i know */
 main:has(.home-container) {
+    --sl-content-gap-y: 0;
+
     &:has(.sl-banner) .content-panel:nth-child(2) {
         display: none;
     }
@@ -8,13 +9,17 @@ main:has(.home-container) {
         display: none;
     }
 
-    .sl-banner {
-        margin-bottom: 0.5rem;
-    }
-}
+    footer {
+        margin-top: 1rem;
 
-main:has(.home-container) {
-    --sl-content-gap-y: 0;
+        .meta {
+            display: none;
+        }
+
+        .kudos {
+            margin: 1rem auto;
+        }
+    }
 }
 
 .home-container {
@@ -101,12 +106,6 @@ main:has(.home-container) {
     border-color: var(--sl-color-gray-5);
 }
 
-@media (min-width: 768px) {
-    .hero-image {
-        max-width: 42rem;
-    }
-}
-
 .feature-card {
     display: grid;
     grid-auto-flow: row;
@@ -114,15 +113,19 @@ main:has(.home-container) {
     gap: 1rem;
 }
 
-@media (min-width: 768px) {
-    .feature-card {
-        grid-auto-flow: column;
-    }
-}
-
 .community-card-body {
     display: flex;
     flex-direction: column;
     align-items: start;
     gap: 0.75rem;
+}
+
+@media (min-width: 768px) {
+    .hero-image {
+        max-width: 42rem;
+    }
+
+    .feature-card {
+        grid-auto-flow: column;
+    }
 }

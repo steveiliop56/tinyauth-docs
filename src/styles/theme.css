@@ -24,3 +24,18 @@ td,
 th {
     padding-left: 0.5rem;
 }
+
+.sl-banner {
+    background-color: var(--sl-color-blue-low);
+    border: 1px solid var(--sl-color-blue);
+    color: var(--sl-color-blue-high);
+
+    a {
+        color: var(--sl-color-blue-accent);
+        text-underline-offset: 0.25em;
+
+        &:is(:hover, :focus-visible) {
+            color: var(--sl-color-blue-accent-invert);
+        }
+    }
+}
