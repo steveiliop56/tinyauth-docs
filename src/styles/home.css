@@ -20,6 +20,10 @@ main:has(.home-container) {
             margin: 1rem auto;
         }
     }
+
+    .sl-banner {
+        margin-bottom: 0.5rem;
+    }
 }
 
 .home-container {
