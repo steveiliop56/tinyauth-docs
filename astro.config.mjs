@@ -29,7 +29,7 @@ export default defineConfig({
       logo: {
         src: "./public/tinyauth.png",
       },
-      favicon: "/favicon.ico",
+      favicon: "/favicon.svg",
       editLink: {
         baseUrl: "https://github.com/steveiliop56/tinyauth-docs/edit/main/",
       },

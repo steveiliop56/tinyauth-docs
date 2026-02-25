@@ -82,9 +82,11 @@ main:has(.home-container) {
     color: var(--sl-color-bg);
     transition-property: transform, opacity;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 300ms;
-    transition-delay: 100ms;
+    transition-duration: 200ms;
+    transition-delay: 50ms;
     text-decoration: none;
+    /* Prevent text from "jumping" */
+    will-change: transform, opacity;
 }
 
 .link-button:hover {
