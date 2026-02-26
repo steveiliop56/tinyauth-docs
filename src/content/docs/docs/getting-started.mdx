@@ -3,6 +3,8 @@ title: Getting Started
 description: Learn how to set up and configure Tinyauth.
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 :::note
   By default, Tinyauth integrates with the Traefik reverse proxy. For
   alternative proxies, detailed guides are available for [Nginx Proxy
@@ -40,9 +42,18 @@ flowchart BR
 
 The following CLI command facilitates user creation:
 
-```sh
-docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v5 user create --interactive
-```
+<Tabs>
+  <TabItem label="Docker">
+    ```sh
+    docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v5 user create --interactive
+    ```
+  </TabItem>
+  <TabItem label="Binary">
+      ```sh
+      ./tinyauth user create --interactive
+      ```
+  </TabItem>
+</Tabs>
 
 This command prompts for a username and password, generating the required user configuration. Additional details are available in the CLI [reference](/docs/reference/cli#create-user-command).
 
