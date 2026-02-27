@@ -7,7 +7,7 @@ _Contributors: [@kdwils](https://github.com/kdwils), [@pushpinderbal](https://gi
 
 ## Use Case
 
-Kubernetes hosted applications are commonly exposed externally using [Ingress Controllers](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) or the newer [Gateway API](https://kubernetes.io/docs/concepts/services-networking/gateway/). These can act as a gateway to enforce authentication and authorization policies before traffic reaches your self-hosted applications. This is useful for protecting internal tools, admin interfaces, or services exposed to the internet - without needing to modify the applications themselves, especially those that do not have built-in authentication mechanisms.
+Kubernetes-hosted applications are commonly exposed externally using [Ingress Controllers](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) or the newer [Gateway API](https://kubernetes.io/docs/concepts/services-networking/gateway/). These can act as a gateway to enforce authentication and authorization policies before traffic reaches your self-hosted applications. This is useful for protecting internal tools, admin interfaces, or services exposed to the internet - without needing to modify the applications themselves, especially those that do not have built-in authentication mechanisms.
 
 Popular reverse proxies like Nginx, Traefik, and Envoy provide Ingress controller and Gateway API implementations for Kubernetes that can be integrated with Tinyauth.
 
@@ -204,7 +204,7 @@ apiVersion: security.istio.io/v1
 kind: AuthorizationPolicy
 metadata:
   name: tinyauth-policy
-  namespace: my-namespace
+  namespace: ingress
 spec:
   targetRefs:
     - kind: Gateway

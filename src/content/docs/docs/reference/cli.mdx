@@ -37,7 +37,7 @@ The health check command verifies if Tinyauth is running correctly:
 <Tabs>
   <TabItem label="Docker">
     ```sh
-    docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v5 healthcheck
+    docker compose exec tinyauth healthcheck
     ```
   </TabItem>
   <TabItem label="Binary">
@@ -52,7 +52,7 @@ By default, it will use `http://127.0.0.1:3000` to check the health endpoint. Th
 <Tabs>
   <TabItem label="Docker">
     ```sh
-    docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v5 healthcheck http://tinyauth.example.com
+    docker compose exec tinyauth healthcheck http://tinyauth.example.com
     ```
   </TabItem>
   <TabItem label="Binary">

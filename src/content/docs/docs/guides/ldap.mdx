@@ -65,7 +65,7 @@ After restarting, logging in to Tinyauth with the second user created in LLDAP s
 
 ## Using LDAP Groups for access controls
 
-Tinyauth supports extracting the group information from the LDAP provider. This allows you to configure application groups straight from the LDAP server. Groups are extracted using the `"(&(objectclass=groupOfUniqueNames)(uniquemember=%s))` filter where `%s` is replaced by the username of the user attempting to log in. This filter should work with most LDAP servers.
+Tinyauth supports extracting the group information from the LDAP provider. This allows you to configure application groups straight from the LDAP server. Groups are extracted using the `(&(objectclass=groupOfUniqueNames)(uniquemember=%s))` filter where `%s` is replaced by the username of the user attempting to log in. This filter should work with most LDAP servers.
 
 :::warning
   LDAP groups are not refreshed on every request for performance reasons. Instead, they are cached for a short period of time to minimize the number of requests to the LDAP server. The cache duration can be configured using the `TINYAUTH_LDAP_GROUPCACHETTL` environment variable. The default cache duration is 900 seconds (15 minutes).

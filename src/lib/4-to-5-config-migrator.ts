@@ -65,7 +65,11 @@ function buildEnvMap(env: string): Record<string, string> {
   let res: Record<string, string> = {};
 
   for (const line of lines) {
-    if (line.trim() == "" || line.startsWith("#") || line.startsWith("--")) {
+    if (line.trim() == "") {
+      continue;
+    }
+    const lineTrimmed = line.trim();
+    if (lineTrimmed.startsWith("#") || lineTrimmed.startsWith("--")) {
       continue;
     }
     const lineSplit = line.trim().split("=");
@@ -90,13 +94,6 @@ function buildCliMap(cli: string): Record<string, string> {
       continue;
     }
     const flag = flagTrimmed[1];
-    if (flag.includes(" ")) {
-      const flagSplit = flag.split(" ");
-      const key = flagSplit[0];
-      const value = flagSplit.slice(1).join(" ");
-      res[key] = value;
-      continue;
-    }
     const flagSplit = flag.split("=");
     const key = flagSplit[0];
     const value = flagSplit.slice(1).join("=");

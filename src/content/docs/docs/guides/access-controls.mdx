@@ -41,7 +41,7 @@ services:
   tinyauth:
     labels:
         socket-proxy.allow.get: /v1\..*/(version|containers/.*|events.*)|/_ping
-        socket-proxy.allow.head: /_ping'
+        socket-proxy.allow.head: /_ping
 ```
 
 *Thank you [@dombyte](https://github.com/dombyte) for the suggestion.*
@@ -65,7 +65,7 @@ Where `[app]` is the name of the app to protect. This app ID must be unique for 
 
 ## Access Controls Discovery
 
-Tinyauth uses the app ID in labels (or environment variables) and the request subdomain to match the configuration with the app. For example, a request to `app1.example.com` triggers Tinyauth to search for containers with the `tinyauth.apps.app1.foo: bar` label or the `TINYAUTH_APPS_APP1_FOO=bar` environment. To use the domain instead, add the following label:
+Tinyauth uses the app ID in labels (or environment variables) and the request subdomain to match the configuration with the app. For example, a request to `app1.example.com` triggers Tinyauth to search for containers with the `tinyauth.apps.app1.foo: bar` label or the `TINYAUTH_APPS_APP1_FOO=bar` environment variable. To use the domain instead, add the following label:
 
 ```yaml
 tinyauth.apps.myapp.config.domain: myapp.example.com
