@@ -3,6 +3,7 @@ import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 import starlightThemeRapide from "starlight-theme-rapide";
 import mermaid from "astro-mermaid";
+import umami from "@yeskunall/astro-umami";
 
 // https://astro.build/config
 export default defineConfig({
@@ -168,6 +169,11 @@ export default defineConfig({
           },
         },
       ],
+    }),
+    umami({
+      hostUrl: "https://analytics.doesmycode.work",
+      endpointUrl: "https://analytics.doesmycode.work",
+      id: "ed560a2b-b321-4745-b2f8-d7de846aeb7f",
     }),
   ],
 });
