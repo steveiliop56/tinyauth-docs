@@ -61,12 +61,90 @@ export default defineConfig({
         },
         {
           label: "Guides",
-          autogenerate: { directory: "docs/guides" },
+          items: [
+            {
+              label: "Github OAuth",
+              slug: "docs/guides/github-oauth",
+            },
+            {
+              label: "GitHub OAuth Apps",
+              slug: "docs/guides/github-app-oauth",
+            },
+            {
+              label: "Google OAuth",
+              slug: "docs/guides/google-oauth",
+            },
+            {
+              label: "Pocket ID OAuth",
+              slug: "docs/guides/pocket-id",
+            },
+            {
+              label: "LDAP",
+              slug: "docs/guides/ldap",
+            },
+            {
+              label: "Two-Factor Authentication",
+              slug: "docs/guides/totp",
+            },
+            {
+              label: "Access Controls",
+              slug: "docs/guides/access-controls",
+            },
+            {
+              label: "OpenID Connect",
+              slug: "docs/guides/oidc",
+            },
+            {
+              label: "Nginx Proxy Manager",
+              slug: "docs/guides/nginx-proxy-manager",
+            },
+            {
+              label: "Runtipi",
+              slug: "docs/guides/runtipi",
+            },
+            {
+              label: "Using the Binary",
+              slug: "docs/guides/using-the-binary",
+            },
+            {
+              label: "Advanced Configurations",
+              slug: "docs/guides/advanced",
+            },
+          ],
         },
         {
           label: "Reference",
           collapsed: true,
-          autogenerate: { directory: "docs/reference" },
+          items: [
+            {
+              label: "Configuration",
+              slug: "docs/reference/configuration",
+            },
+            {
+              label: "Labels",
+              slug: "docs/reference/labels",
+            },
+            {
+              label: "CLI",
+              slug: "docs/reference/cli",
+            },
+            {
+              label: "Headers",
+              slug: "docs/reference/headers",
+            },
+            {
+              label: "Telemetry",
+              slug: "docs/reference/telemetry",
+            },
+            {
+              label: "Flow",
+              slug: "docs/reference/flow",
+            },
+            {
+              label: "Changelog",
+              slug: "docs/reference/changelog",
+            },
+          ],
         },
         {
           label: "Community",
