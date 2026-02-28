@@ -86,14 +86,11 @@ function buildCliMap(cli: string): Record<string, string> {
   let res: Record<string, string> = {};
 
   for (const line of lines) {
-    if (line.trim() == "") {
+    const trimmed = line.trim();
+    if (trimmed == "" || !trimmed.startsWith("--")) {
       continue;
     }
-    const flagTrimmed = line.trim().split("--");
-    if (flagTrimmed.length < 2) {
-      continue;
-    }
-    const flag = flagTrimmed[1];
+    const flag = trimmed.substring(2);
     const flagSplit = flag.split("=");
     const key = flagSplit[0];
     const value = flagSplit.slice(1).join("=");
