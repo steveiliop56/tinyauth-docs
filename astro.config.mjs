@@ -8,10 +8,15 @@ import umami from "@yeskunall/astro-umami";
 // https://astro.build/config
 export default defineConfig({
   site: "https://tinyauth.app",
-  server: {
-    host: "0.0.0.0",
-    port: 3000,
-    allowedHosts: true,
+  server: (command) => {
+    if (command.command === "preview") {
+      return {
+        host: "0.0.0.0",
+        port: 3000,
+        allowedHosts: true,
+      };
+    }
+    return {};
   },
   integrations: [
     mermaid({
@@ -64,7 +69,7 @@ export default defineConfig({
           label: "Guides",
           items: [
             {
-              label: "Github OAuth",
+              label: "GitHub OAuth",
               slug: "docs/guides/github-oauth",
             },
             {
