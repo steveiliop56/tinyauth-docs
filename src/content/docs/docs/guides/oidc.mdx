@@ -68,7 +68,7 @@ services:
       - ./data:/data
 ```
 
-If you are using the binary, you can specify the database directory using the `TINYAUTH_DATABASEPATH` environment variable or the `--databasepath` CLI flag.
+If you are using the binary, you can specify the database directory using the `TINYAUTH_DATABASE_PATH` environment variable or the `--database.path` CLI flag.
 
 You also need to specify the paths where the public and private keys are stored. This can be done with `TINYAUTH_OIDC_PRIVATEKEYPATH` (`--oidc.privatekeypath`) and `TINYAUTH_OIDC_PUBLICKEYPATH` (`--oidc.publickeypath`) respectively.
 

@@ -16,10 +16,25 @@ Tinyauth can be configured using environment variables or CLI flags. The table b
 | Environment | Flag | Description | Default |
 | - | - | - | - |
 | `TINYAUTH_APPURL` | `--appurl` | The base URL where the app is hosted. | `` |
-| `TINYAUTH_RESOURCESDIR` | `--resourcesdir` | The directory where resources are stored. | `./resources` |
-| `TINYAUTH_DATABASEPATH` | `--databasepath` | The path to the database file. | `./tinyauth.db` |
-| `TINYAUTH_DISABLEANALYTICS` | `--disableanalytics` | Disable analytics. | `false` |
-| `TINYAUTH_DISABLERESOURCES` | `--disableresources` | Disable resources server. | `false` |
+
+## Database Configuration
+
+| Environment | Flag | Description | Default |
+| - | - | - | - |
+| `TINYAUTH_DATABASE_PATH` | `--database.path` | The path to the database, including file name. | `./tinyauth.db` |
+
+## Analytics Configuration
+
+| Environment | Flag | Description | Default |
+| - | - | - | - |
+| `TINYAUTH_ANALYTICS_ENABLED` | `--analytics.enabled` | Enable periodic version information collection. | `true` |
+
+## Resources Configuration
+
+| Environment | Flag | Description | Default |
+| - | - | - | - |
+| `TINYAUTH_RESOURCES_ENABLED` | `--resources.enabled` | Enable the resources server. | `true` |
+| `TINYAUTH_RESOURCES_PATH` | `--resources.path` | The directory where resources are stored. | `./resources` |
 
 ## Server Configuration
 
@@ -29,7 +44,7 @@ Tinyauth can be configured using environment variables or CLI flags. The table b
 | `TINYAUTH_SERVER_ADDRESS` | `--server.address` | The address on which the server listens. | `0.0.0.0` |
 | `TINYAUTH_SERVER_SOCKETPATH` | `--server.socketpath` | The path to the Unix socket. | `` |
 
-## Auth Configuration
+## Authentication Configuration
 
 | Environment | Flag | Description | Default |
 | - | - | - | - |
@@ -44,7 +59,7 @@ Tinyauth can be configured using environment variables or CLI flags. The table b
 | `TINYAUTH_AUTH_LOGINMAXRETRIES` | `--auth.loginmaxretries` | Maximum login retries. | `3` |
 | `TINYAUTH_AUTH_TRUSTEDPROXIES` | `--auth.trustedproxies` | Comma-separated list of trusted proxy addresses. | `` |
 
-## Apps Configuration (ACLs)
+## ACLs Configuration
 
 | Environment | Flag | Description | Default |
 | - | - | - | - |
@@ -91,8 +106,8 @@ Tinyauth can be configured using environment variables or CLI flags. The table b
 
 | Environment | Flag | Description | Default |
 | - | - | - | - |
-| `TINYAUTH_OIDC_PRIVATEKEYPATH` | `--oidc.privatekeypath` | Path to the private key file. | `./tinyauth_oidc_key` |
-| `TINYAUTH_OIDC_PUBLICKEYPATH` | `--oidc.publickeypath` | Path to the public key file. | `./tinyauth_oidc_key.pub` |
+| `TINYAUTH_OIDC_PRIVATEKEYPATH` | `--oidc.privatekeypath` | Path to the private key file, including file name. | `./tinyauth_oidc_key` |
+| `TINYAUTH_OIDC_PUBLICKEYPATH` | `--oidc.publickeypath` | Path to the public key file, including file name. | `./tinyauth_oidc_key.pub` |
 | `TINYAUTH_OIDC_CLIENTS_[NAME]_CLIENTID` | `--oidc.clients.[name].clientid` | OIDC client ID. | `` |
 | `TINYAUTH_OIDC_CLIENTS_[NAME]_CLIENTSECRET` | `--oidc.clients.[name].clientsecret` | OIDC client secret. | `` |
 | `TINYAUTH_OIDC_CLIENTS_[NAME]_CLIENTSECRETFILE` | `--oidc.clients.[name].clientsecretfile` | Path to the file containing the OIDC client secret. | `` |
@@ -106,7 +121,7 @@ Tinyauth can be configured using environment variables or CLI flags. The table b
 | `TINYAUTH_UI_TITLE` | `--ui.title` | The title of the UI. | `Tinyauth` |
 | `TINYAUTH_UI_FORGOTPASSWORDMESSAGE` | `--ui.forgotpasswordmessage` | Message displayed on the forgot password page. | `You can change your password by changing the configuration.` |
 | `TINYAUTH_UI_BACKGROUNDIMAGE` | `--ui.backgroundimage` | Path to the background image. | `/background.jpg` |
-| `TINYAUTH_UI_DISABLEWARNINGS` | `--ui.disablewarnings` | Disable UI warnings. | `false` |
+| `TINYAUTH_UI_WARNINGSENABLED` | `--ui.warningsenabled` | Enable UI warnings. | `true` |
 
 ## LDAP Configuration
 

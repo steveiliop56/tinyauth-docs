@@ -20,13 +20,13 @@ const CONFIG_ENV_KEYS_MAP: Record<string, string> = {
   LDAP_BASE_DN: "TINYAUTH_LDAP_BASEDN",
   LDAP_INSECURE: "TINYAUTH_LDAP_INSECURE",
   LDAP_SEARCH_FILTER: "TINYAUTH_LDAP_SEARCHFILTER",
-  RESOURCES_DIR: "TINYAUTH_RESOURCESDIR",
-  DATABASE_PATH: "TINYAUTH_DATABASEPATH",
+  RESOURCES_DIR: "TINYAUTH_RESOURCES_PATH",
+  DATABASE_PATH: "TINYAUTH_DATABASE_PATH",
   TRUSTED_PROXIES: "TINYAUTH_AUTH_TRUSTEDPROXIES",
-  DISABLE_ANALYTICS: "TINYAUTH_DISABLEANALYTICS",
-  DISABLE_RESOURCES: "TINYAUTH_DISABLERESOURCES",
+  DISABLE_ANALYTICS: "TINYAUTH_ANALYTICS_ENABLED",
+  DISABLE_RESOURCES: "TINYAUTH_RESOURCES_ENABLED",
   SOCKET_PATH: "TINYAUTH_SERVER_SOCKETPATH",
-  DISABLE_UI_WARNINGS: "TINYAUTH_UI_DISABLEWARNINGS",
+  DISABLE_UI_WARNINGS: "TINYAUTH_UI_WARNINGSENABLED",
 };
 
 const CONFIG_CLI_KEYS_MAP: Record<string, string> = {
@@ -51,14 +51,25 @@ const CONFIG_CLI_KEYS_MAP: Record<string, string> = {
   "ldap-base-dn": "ldap.basedn",
   "ldap-insecure": "ldap.insecure",
   "ldap-search-filter": "ldap.searchfilter",
-  "resources-dir": "resourcesdir",
-  "database-path": "databasepath",
+  "resources-dir": "resources.path",
+  "database-path": "database.path",
   "trusted-proxies": "auth.trustedproxies",
-  "disable-analytics": "disableanalytics",
-  "disable-resources": "disableresources",
+  "disable-analytics": "analytics.enabled",
+  "disable-resources": "resources.enabled",
   "socket-path": "server.socketpath",
-  "disable-ui-warnings": "ui.disablewarnings",
+  "disable-ui-warnings": "ui.warningsenabled",
 };
+
+const FLIP_FLAGS = [
+  "disable-resources",
+  "disable-analytics",
+  "disable-ui-warnings",
+];
+const FLIP_ENV = [
+  "DISABLE_RESOURCES",
+  "DISABLE_ANALYTICS",
+  "DISABLE_UI_WARNINGS",
+];
 
 function buildEnvMap(env: string): Record<string, string> {
   const lines = env.split("\n");
@@ -74,7 +85,10 @@ function buildEnvMap(env: string): Record<string, string> {
     }
     const lineSplit = line.trim().split("=");
     const key = lineSplit[0];
-    const value = lineSplit.slice(1).join("=");
+    let value = lineSplit.slice(1).join("=");
+    if (FLIP_ENV.includes(key)) {
+      value = value === "true" ? "false" : "true";
+    }
     res[key] = value;
   }
 
@@ -93,7 +107,10 @@ function buildCliMap(cli: string): Record<string, string> {
     const flag = trimmed.substring(2);
     const flagSplit = flag.split("=");
     const key = flagSplit[0];
-    const value = flagSplit.slice(1).join("=");
+    let value = flagSplit.slice(1).join("=");
+    if (FLIP_FLAGS.includes(key)) {
+      value = value === "true" ? "false" : "true";
+    }
     res[key] = value;
     continue;
   }
