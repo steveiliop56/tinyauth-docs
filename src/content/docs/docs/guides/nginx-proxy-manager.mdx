@@ -1,0 +1,136 @@
+---
+title: Nginx Proxy Manager
+description: Use Tinyauth with the Nginx Proxy Manager reverse proxy.
+---
+
+Nginx Proxy Manager is a popular tool in the homelab community for managing reverse proxies. While it differs from Traefik and Caddy due to Nginx's lack of native 302 redirect support in the `auth_request` module, Tinyauth provides API paths specifically designed to work with it.
+
+:::note
+  This guide assumes familiarity with Nginx Proxy Manager.
+:::
+
+## Example Docker Compose File
+
+The following Docker Compose file demonstrates how to set up Nginx Proxy Manager, Whoami, and Tinyauth:
+
+```yaml title="docker-compose.yml"
+services:
+  npm:
+    image: jc21/nginx-proxy-manager:2
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+      - 81:81
+    volumes:
+      - npm-data:/data
+      - npm-letsencrypt:/etc/letsencrypt
+
+  whoami:
+    image: traefik/whoami:latest
+    restart: unless-stopped
+
+  tinyauth:
+    image: ghcr.io/steveiliop56/tinyauth:v5
+    restart: unless-stopped
+    environment:
+      - TINYAUTH_APPURL=http://tinyauth.example.com
+      - TINYAUTH_AUTH_USERS=user:$$2a$$10$$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u # user:password
+
+volumes:
+  npm-data:
+  npm-letsencrypt:
+```
+
+OAuth and access controls can be configured using Docker labels and environment variables. All other configuration is managed through the Nginx Proxy Manager UI.
+
+## Configuring Nginx Proxy Manager
+
+### Creating the Tinyauth Host
+
+Create a host for Tinyauth in Nginx Proxy Manager. Configure it as any other host:
+
+![Create Tinyauth Host](/screenshots/npm/tinyauth-host.png)
+
+SSL can be set up if certificates are available.
+
+:::caution
+  Ensure the "Block Common Exploits" option is disabled. If enabled, Nginx will
+  block URLs in query parameters, which are required for Tinyauth to function.
+:::
+
+### Configuring Protected Hosts
+
+For protected hosts, such as Whoami, configure the Details tab similarly to the Tinyauth host:
+
+![Create Whoami Host](/screenshots/npm/whoami-host.png)
+
+SSL can be configured as needed.
+
+:::note
+  The "Block Common Exploits" option can remain enabled for protected hosts.
+:::
+
+### Advanced Configuration
+
+Add the following configuration in the Advanced tab to enable Tinyauth authentication:
+
+```sh
+# Root location
+location / {
+  # Pass the request to the app
+  proxy_pass          $forward_scheme://$server:$port;
+
+  # Add other app-specific config here
+
+  # Tinyauth auth request
+  auth_request /tinyauth;
+  error_page 401 = @tinyauth_login;
+}
+
+# Tinyauth auth request
+location /tinyauth {
+  # Pass request to Tinyauth
+  proxy_pass http://tinyauth:3000/api/auth/nginx;
+
+  # Pass the request headers
+  proxy_set_header x-forwarded-proto $scheme;
+  proxy_set_header x-forwarded-host $http_host;
+  proxy_set_header x-forwarded-uri $request_uri;
+}
+
+# Tinyauth login redirect
+location @tinyauth_login {
+  return 302 http://tinyauth.example.com/login?redirect_uri=$scheme://$http_host$request_uri; # Replace with your app URL
+}
+```
+
+It should look like this:
+
+![Whoami Host Advanced](/screenshots/npm/whoami-advanced.png)
+
+:::note
+  The `/tinyauth` path can be renamed for convenience.
+:::
+
+:::note
+  Additional configuration may be required under the `/` location for
+  technologies like WebSockets.
+:::
+
+:::note
+  Due to the way Nginx handles forward auth, Tinyauth cannot automatically redirect to the unauthorized page. Thus, users may be redirected to a blank 403 Forbidden page in case of a failed authentication. This can be somehow mitigated by configuring a custom error page for the 403 status code:
+
+  ```sh
+  location / {
+    # Rest of your configuration
+    error_page 403 = @tinyauth_unauthorized;
+  }
+
+  location @tinyauth_unauthorized {
+    return 302 http://tinyauth.example.com/unauthorized?username=unavailable; # Replace with your app URL
+  }
+  ```
+:::
+
+Save the host configuration. Accessing the protected host will redirect to the Tinyauth login page if not already logged in. Repeat this process for each host to be protected by Tinyauth.

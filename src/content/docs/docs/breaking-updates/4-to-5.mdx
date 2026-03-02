@@ -1,0 +1,50 @@
+---
+title: Updating from v4 to v5
+description: A guide to help migrate from Tinyauth v4 to v5.
+---
+
+import ConfigMigrator from "./4-to-5-migrator.astro";
+
+:::note
+In order to follow this migration guide, you need to have Tinyauth v4 running. In case you are coming from Tinyauth v3, you need to migrate to v4 first. For migrating from Tinyauth v3, please refer to the [migration guide](/docs/breaking-updates/3-to-4).
+:::
+
+Tinyauth v5 introduces only configuration changes.
+
+## Configuration Changes
+
+In Tinyauth v4, the configuration was a mess - some options were not doing what they were supposed to do, they were hard to keep track of and generally not very intuitive. In Tinyauth v5, we've simplified the configuration format into one unified scheme across all configuration mediums.
+
+### Environment Variables
+
+Environment variables, now, follow the following format:
+
+```
+TINYAUTH_<SECTION>_<KEY>=<VALUE>
+```
+
+The `TINYAUTH_` prefix is used to distinguish Tinyauth configuration from other environment variables. All environment variables that are prefixed with `TINYAUTH_` are considered configuration options and in case of a mis-configuration, unlike previous versions, Tinyauth will refuse to start.
+
+### CLI Flags
+
+CLI flags follow the following format:
+
+```
+--section.key=value
+```
+
+This format may seem unintuitive at first, but it's actually quite powerful and better than the previous delimiter-based format. It allows you to specify configuration options in a way that's easy to remember and easy to type.
+
+### Configuration Migrator
+
+Since the entire configuration format has changed, you will need to update your entire configuration. To make this process easier, we've provided a configuration migrator that can help you migrate your CLI flags and environment variables to the new format.
+
+<ConfigMigrator />
+
+:::caution
+Dynamic configuration is not supported by this migrator. You will need to manually update your configuration files and environment variables to use the new format. For more information, see the [configuration](/docs/reference/configuration) reference.
+:::
+
+:::note
+For the migrator to work correctly, please specify one environment variable or CLI flag per line (separated by the equal sign **not** space). Even though the migrator supports comments and blank lines, it's recommended to keep the input clean and easy to read. Additionally, you should ideally not mix CLI flags and environment variables in one go (even though the migrator supports it).
+:::

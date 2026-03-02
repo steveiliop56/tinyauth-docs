@@ -1,0 +1,69 @@
+---
+title: GitHub Apps OAuth
+description: Use the GitHub Apps OAuth screen for authenticating to Tinyauth.
+---
+
+Tinyauth supports GitHub Apps for authentication instead of OAuth Apps. GitHub Apps allow for more control over permissions and are slightly more complex to set up. For simpler setups, [OAuth Apps](/docs/guides/github-oauth) are recommended.
+
+## Requirements
+
+GitHub requires the following to set up an app:
+
+- A domain name (non-gTLDs are supported)
+- A GitHub account
+
+## Creating the GitHub App
+
+Open the [GitHub Apps](https://github.com/settings/apps) site and click **New GitHub App**.
+
+Then, fill in the following information:
+
+| Name            | Value                                                                                                                          |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| GitHub App Name | The name for the app, e.g., `Tinyauth`.                                                                                        |
+| Homepage URL    | Any URL, e.g., `https://tinyauth.app`.                                                                                         |
+| Callback URL    | The Tinyauth app URL followed by `/api/oauth/callback/github`, e.g., `https://tinyauth.example.com/api/oauth/callback/github`. |
+
+![GitHub New App Screen](/screenshots/github/app-new.png)
+
+Under webhook, ensure the **Active** checkbox is unchecked since webhooks are not required.
+
+In the **Permissions** section, click **Account permissions** and set the **Email Addresses** option to **Read-only**:
+
+![GitHub Emails Section](/screenshots/github/app-email.png)
+
+Finally, create the app. The following screen will appear:
+
+![GitHub App Home](/screenshots/github/app-home.png)
+
+Note the client ID. To generate the client secret, click **Generate new client secret**. After authentication, the secret will appear:
+
+![GitHub Client Secret](/screenshots/github/app-secret.png)
+
+Note down the client ID and secret as they will be required for Tinyauth.
+
+## Configuring Tinyauth
+
+Add the following environment variables to the Tinyauth Docker container:
+
+```yaml
+services:
+  tinyauth:
+    environment:
+      - TINYAUTH_OAUTH_PROVIDERS_GITHUB_CLIENTID=your-github-client-id
+      - TINYAUTH_OAUTH_PROVIDERS_GITHUB_CLIENTSECRET=your-github-secret
+```
+
+:::caution
+  OAuth alone does not guarantee security. By default, any GitHub account can
+  log in as a normal user. To restrict access, use the `TINYAUTH_OAUTH_WHITELIST`
+  environment variable to allow specific email addresses. Refer to the
+  [configuration](/docs/reference/configuration) page for details.
+:::
+
+:::note
+  With OAuth enabled, the `TINYAUTH_AUTH_USERS` or `TINYAUTH_AUTH_USERSFILE` environment variable can be
+  removed to allow login exclusively through the OAuth provider.
+:::
+
+Restart Tinyauth. Upon visiting the login screen, an additional option to log in with GitHub will appear.
