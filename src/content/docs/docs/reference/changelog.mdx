@@ -3,6 +3,22 @@ title: Changelog
 description: Overview of changes and updates in Tinyauth versions.
 ---
 
+## v5.0.1
+
+### Fixes
+
+- Ensure `kid` is present in the JWKS response
+- Handle empty client name in authorize page
+- Use correct environment variable and flag for config loading
+- Ensure nonce is being acknowledged in the ID token response
+- Ensure `email_verified` is present as a claim in the ID token and user info response
+- Ensure cache control headers are set on the token endpoint
+
+### Technical
+
+- Bump dependencies
+- Update translations
+
 ## v5.0.0
 
 :::caution
