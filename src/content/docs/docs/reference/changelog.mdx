@@ -3,6 +3,22 @@ title: Changelog
 description: Overview of changes and updates in Tinyauth versions.
 ---
 
+## v5.0.3
+
+> [!WARNING]
+> This release contains security fixes, please update as soon as possible.
+
+### Fixes
+
+- Don't continue authentication on empty `X-Forwarded-*` headers.
+- Ensure user is logged in and not in the 2FA flow in the authorize endpoint
+- Ensure client ID matches the code entry before issuing a token
+
+### Technical
+
+- Update dependencies
+- Update translations
+
 ## v5.0.2
 
 ### Improvements
