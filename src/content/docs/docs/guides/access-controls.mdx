@@ -5,6 +5,12 @@ description: Tinyauth has support for docker label-based access controls.
 
 Tinyauth supports basic access controls with either Docker labels or environment variables. These labels (or environment variables) can restrict or allow access to applications.
 
+:::caution[Proxy configuration matters]
+Tinyauth relies on the `X-Forwarded-Host` header (set by your reverse proxy) to determine which app's access controls apply to a given request. If your proxy doesn't overwrite this header, or if tinyauth is directly reachable on the network without going through the proxy, a user could send a request with a spoofed host that doesn't match any configured app. When no app matches, tinyauth treats the request as having no restrictions and allows any authenticated user through.
+
+To avoid this, make sure your reverse proxy always sets `X-Forwarded-Host` itself and doesn't pass through client-supplied values. Traefik and Caddy do this by default. For nginx, use `proxy_set_header X-Forwarded-Host $host;` in your location block. You should also make sure tinyauth is not directly accessible from the network — only your reverse proxy should be able to reach it.
+:::
+
 ## Modifying the Tinyauth Container
 
 :::note
