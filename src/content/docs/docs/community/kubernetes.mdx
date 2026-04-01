@@ -157,7 +157,7 @@ extensionProviders:
     service: "tinyauth.tinyauth.svc.cluster.local"
     port: "3000"
     pathPrefix: "/api/auth/envoy?path="
-    includeRequestHeadersInCheck: ["cookie", "x-forwarded-for", "x-forwarded-proto", "x-forwarded-host", "accept"]
+    includeRequestHeadersInCheck: ["cookie", "x-forwarded-for", "x-forwarded-proto", "x-forwarded-host", "accept", "user-agent"]
     includeAdditionalHeadersInCheck:
       "x-forwarded-proto": "%REQ(:SCHEME)%"
       "x-forwarded-host": "%REQ(:AUTHORITY)%"

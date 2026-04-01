@@ -3,6 +3,36 @@ title: Changelog
 description: Overview of changes and updates in Tinyauth versions.
 ---
 
+## v5.0.5
+
+:::caution
+This release contains a security fix, please update as soon as possible.
+:::
+
+:::note
+For Envoy/Istio users, you may need to include `user-agent` in your `includeRequestHeadersInCheck` config to get browser detection working.
+:::
+
+### Improvements
+
+- OAuth now supports multiple simultaneous login attempts
+- Improved browser detection based on the `User-Agent` header
+- Improved proxy support with new proxy-specific modules
+- Automatically rate-limit entire instance on multiple login attempts
+- Allow root-level domains as app URL for testing purposes
+- Attempt to extract context only on routes that need it
+
+### Fixes
+
+- Fix proxy controller not extracting request information from Nginx deployments
+
+### Technical
+
+- Update dependencies
+- Update translations
+- Fix wrong tag being used for metadata in release workflow @jacekkow
+- Rework controller tests for much more thorough, robust and extensible testing
+
 ## v5.0.4
 
 ### Improvements
