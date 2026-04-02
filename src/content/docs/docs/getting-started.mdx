@@ -66,7 +66,7 @@ Multiple users can be created by repeating this process and separating entries w
 
 ## Domain Configuration
 
-Tinyauth sets a cookie for the parent domain of the application URL. For example, if the application URL is `http://tinyauth.example.com`, the cookie is set for `.example.com`, enabling authentication across all subdomains. Below is an example of an ideal domain structure:
+Tinyauth sets a cookie for the parent domain of the application URL, unless `TINYAUTH_AUTH_STANDALONE=true` is set. For example, if the application URL is `http://tinyauth.example.com`, the cookie is set for `.example.com`, enabling authentication across all subdomains. Below is an example of an ideal domain structure:
 
 ```mermaid
 flowchart BR
@@ -77,9 +77,10 @@ flowchart BR
 
 :::caution
   Direct usage with DDNS services (e.g., `tinyauth562.duckdns.org`) is not
-  supported due to browser cookie restrictions. Subdomains (e.g.,
-  `tinyauth.mylab562.duckdns.org`) must be used for both Tinyauth and
-  applications.
+  supported due to browser cookie restrictions unless
+  `TINYAUTH_AUTH_STANDALONE=true` is set. Subdomains (e.g.,
+  `tinyauth.mylab562.duckdns.org`) should be used if securing
+  both Tinyauth and applications is required.
 :::
 
 ## Deployment
