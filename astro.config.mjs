@@ -119,6 +119,16 @@ export default defineConfig({
           ],
         },
         {
+          label: "Integrations",
+          collapsed: true,
+          items: [
+            {
+              label: "Zerobyte",
+              slug: "docs/integrations/zerobyte",
+            },
+          ],
+        },
+        {
           label: "Reference",
           collapsed: true,
           items: [
