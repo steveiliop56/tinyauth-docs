@@ -30,6 +30,9 @@ export default defineConfig({
         "./src/styles/home.css",
         "./src/styles/4-to-5.css",
       ],
+      components: {
+        Footer: "./src/components/Footer.astro",
+      },
       title: "Tinyauth",
       credits: true,
       logo: {

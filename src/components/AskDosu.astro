@@ -1,0 +1,38 @@
+---
+
+---
+
+<a
+    href="https://app.dosu.dev/6caa529c-9746-4936-af7c-260caadb8a1f/ask"
+    class="sl-flex print:hidden"
+>
+    <img alt="Dosu Logo" class="dosu dosu-light" src="/vendor/dosu-light.png" />
+    <img alt="Dosu Logo" class="dosu dosu-dark" src="/vendor/dosu-dark.png" />
+    Ask Dosu
+</a>
+
+<style>
+    @layer starlight.core {
+        a {
+            gap: 0.5rem;
+            align-items: center;
+            text-decoration: none;
+            color: var(--sl-color-gray-3);
+        }
+        a:hover {
+            color: var(--sl-color-white);
+        }
+    }
+    @layer startlight.components {
+        .dosu {
+            width: 1.25em;
+            height: 1.25em;
+        }
+        html[data-theme="dark"] .dosu-light {
+            display: none;
+        }
+        html:not([data-theme="dark"]) .dosu-dark {
+            display: none;
+        }
+    }
+</style>
