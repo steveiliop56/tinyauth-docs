@@ -149,7 +149,7 @@ After everything is set up, start Tinyauth and access your application. After yo
 ![Tinyauth Authorize Screen](/screenshots/oidc/authorize.png)
 
 :::note
-For local and LDAP accounts, Tinyauth will preserve the OIDC request while logging in. For OAuth logins, you must first log in to Tinyauth in another window or tab and then authorize the application. This will be improved in the future.
+Tinyauth will preserve the OIDC request while logging in. Users authenticating via OAuth providers will be automatically redirected to the authorization page after successful authentication.
 :::
 
 Tinyauth will pass user information from the OIDC or LDAP provider to the application while acting as a proxy. Enjoy!
