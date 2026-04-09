@@ -50,7 +50,7 @@ Tinyauth can be configured using environment variables or CLI flags. The table b
 | - | - | - | - |
 | `TINYAUTH_AUTH_IP_ALLOW` | `--auth.ip.allow` | List of allowed IPs or CIDR ranges. | `` |
 | `TINYAUTH_AUTH_IP_BLOCK` | `--auth.ip.block` | List of blocked IPs or CIDR ranges. | `` |
-| `TINYAUTH_AUTH_USERS` | `--auth.users` | Comma-separated list of users (username:hashed_password). | `` |
+| `TINYAUTH_AUTH_USERS` | `--auth.users` | Map of users with structured configuration (see below). | `` |
 | `TINYAUTH_AUTH_USERSFILE` | `--auth.usersfile` | Path to the users file. | `` |
 | `TINYAUTH_AUTH_SECURECOOKIE` | `--auth.securecookie` | Enable secure cookies. | `false` |
 | `TINYAUTH_AUTH_SESSIONEXPIRY` | `--auth.sessionexpiry` | Session expiry time in seconds. | `86400` |
@@ -58,6 +58,48 @@ Tinyauth can be configured using environment variables or CLI flags. The table b
 | `TINYAUTH_AUTH_LOGINTIMEOUT` | `--auth.logintimeout` | Login timeout in seconds. | `300` |
 | `TINYAUTH_AUTH_LOGINMAXRETRIES` | `--auth.loginmaxretries` | Maximum login retries. | `3` |
 | `TINYAUTH_AUTH_TRUSTEDPROXIES` | `--auth.trustedproxies` | Comma-separated list of trusted proxy addresses. | `` |
+
+### User Configuration Format
+
+The `auth.users` configuration uses a structured YAML map format where each key is a username and the value contains the user's password, optional TOTP secret, and optional attributes:
+
+```yaml
+auth:
+  users:
+    username:
+      password: "bcrypt_hashed_password"
+      totpSecret: "optional_totp_secret"
+      attributes:
+        name: "Full Name"
+        givenName: "First"
+        familyName: "Last"
+        middleName: "Middle"
+        nickname: "Nick"
+        profile: "https://example.com/profile"
+        picture: "https://example.com/avatar.jpg"
+        website: "https://example.com"
+        email: "user@example.com"
+        gender: "gender"
+        birthdate: "YYYY-MM-DD"
+        zoneinfo: "Europe/Athens"
+        locale: "en-US"
+        phoneNumber: "+1234567890"
+        phoneNumberVerified: true
+        address:
+          formatted: "Full address"
+          streetAddress: "123 Main St"
+          locality: "City"
+          region: "State"
+          postalCode: "12345"
+          country: "Country"
+```
+
+Fields:
+- `password` (required): The bcrypt hashed password.
+- `totpSecret` (optional): The TOTP secret for two-factor authentication.
+- `attributes` (optional): User attributes returned as OIDC claims when Tinyauth acts as an OIDC provider. All attribute fields are optional and will be included in the appropriate OIDC scopes (profile, email, phone, address).
+
+The `auth.usersfile` option supports a legacy line-based format (`username:hashed_password` or `username:hashed_password:totp_secret`), which remains supported for backwards compatibility.
 
 ## ACLs Configuration
 
