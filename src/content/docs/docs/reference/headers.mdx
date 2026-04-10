@@ -100,3 +100,20 @@ Additional headers can be added by repeating the steps. For example:
 auth_request_set $my_header $upstream_http_my_header;
 proxy_set_header my-header $my_header;
 ```
+
+#### x-tinyauth-location
+
+For API requests (non-browser requests), Tinyauth sets the `x-tinyauth-location` header in error responses. This header contains the URL where Tinyauth wants the user to be redirected, such as `/login`, `/unauthorized`, or `/error` endpoints with appropriate query parameters.
+
+This header is particularly useful for Nginx configurations where the error page handler can read this header and redirect accordingly, instead of hardcoding redirect URLs in the Nginx configuration. For example:
+
+```shell
+error_page 401 = @tinyauth_error;
+error_page 403 = @tinyauth_error;
+error_page 500 = @tinyauth_error;
+
+location @tinyauth_error {
+    auth_request_set $redirect_url $upstream_http_x_tinyauth_location;
+    return 307 $redirect_url;
+}
+```
