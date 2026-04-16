@@ -80,7 +80,3 @@ This can be done by navigating to the *Invite-only access* section, entering the
 Finally, you can test the integration by logging out of your Zerobyte instance and then clicking on the *Login with Tinyauth* button on the login page. You should be redirected to the Tinyauth login page, where you can enter your credentials to authenticate. After successful authentication, you should be redirected back to Zerobyte and logged in to your account.
 
 ![Zerobyte Login Preview](/screenshots/zerobyte/login.png)
-
-:::caution
-As of Tinyauth v5.0.6, Tinyauth does not support automatically preserving the OpenID Connect parameters while trying to authenticate with an OAuth provider. This means that you will firstly need to Tinyauth to authenticate with your OAuth provider in another window, and then go back to the original window to authenticate with Tinyauth. This is a known issue that will be fixed in a future release.
-:::
