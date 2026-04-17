@@ -3,6 +3,30 @@ title: Changelog
 description: Overview of changes and updates in Tinyauth versions.
 ---
 
+## v5.0.7
+
+### Improvements
+
+- The OpenID Connect server now supports PKCE
+- The OpenID Connect user information endpoint now supports POST requests @scottmckendry
+- The OpenID Connect user information endpoint now supports the access token in the POST request body @scottmckendry
+- The OAuth flow now supports the OpenID Connect parameters and stores CSRF states server-side for anti-tampering
+- Add `X-Tinyauth-Location` header for Nginx instances to support redirect to login and unauthorized pages automatically
+- Support unsigned OpenID Connect request objects @scottmckendry
+- Accessibility improvements
+
+### Fixes
+
+- Use 307 redirects for Envoy proxy
+- Fix TOTP field auto-fill not working in some password managers @scottmckendr
+
+### Technical
+
+- Update dependencies
+- Update translations
+- Use own fork of the [paerser](https://github.com/tinyauthapp/paerser) library for better flexibility in configuration parsing
+- Fail app early when the app URL is missing
+
 ## v5.0.6
 
 ### Fixes
