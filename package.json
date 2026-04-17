@@ -10,9 +10,9 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/starlight": "0.38.2",
-    "@yeskunall/astro-umami": "^0.0.7",
-    "astro": "6.1.2",
+    "@astrojs/starlight": "0.38.3",
+    "@yeskunall/astro-umami": "^0.0.8",
+    "astro": "6.1.6",
     "astro-mermaid": "^2.0.1",
     "countup.js": "^2.10.0",
     "mermaid": "^11.14.0",
