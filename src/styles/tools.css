@@ -62,7 +62,7 @@
     font-size: var(--sl-text-code);
     font-family: var(--sl-font-mono);
     background-color: var(--sl-color-black);
-    color: var(--sl-color-white);
+    color: var(--sl-color-text);
     line-height: var(--sl-line-height);
 }
 

@@ -33,7 +33,7 @@
             return;
         }
 
-        output.textContent = `Updated user:\n${result.updatedUser}\n\nTOTP Secret: ${result.secret}\n\nAdd the secret to your authenticator app then use the verify command to confirm everything is working correctly.`;
+        output.textContent = `Updated user: ${result.updatedUser}\n\nTOTP Secret: ${result.secret}\n\nAdd the secret to your authenticator app then use the verify command to confirm everything is working correctly.`;
         output.style.display = "block";
 
         try {
