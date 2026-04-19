@@ -35,17 +35,35 @@ Supported scopes:
 - `openid`
 - `profile`
 - `email`
+- `phone` - Returns phone_number and phone_number_verified claims
+- `address` - Returns address claim (formatted, street_address, locality, region, postal_code, country)
 - `groups`
 
 Supported claims:
 
 - `sub`
 - `name`
+- `given_name` - Given (first) name of the user
+- `family_name` - Family (last) name of the user
+- `middle_name` - Middle name of the user
+- `nickname` - Nickname of the user
+- `profile` - URL of the user's profile page
+- `picture` - URL of the user's profile picture
+- `website` - URL of the user's website
+- `gender` - Gender of the user
+- `birthdate` - Birthdate of the user (YYYY-MM-DD format)
+- `zoneinfo` - Time zone of the user (e.g. Europe/Athens)
+- `locale` - Locale of the user (e.g. en-US)
 - `email`
 - `preferred_username`
+- `email_verified`
+- `phone_number` - Phone number of the user
+- `phone_number_verified` - Whether the phone number has been verified (boolean)
+- `address` - Address object with fields: formatted, street_address, locality, region, postal_code, country
 - `groups`
 - `updated_at`
-- `email_verified`
+
+These claims align with the OpenID Connect Core 1.0 specification's standard claims.
 
 Supported token endpoint authentication methods:
 
