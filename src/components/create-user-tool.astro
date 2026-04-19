@@ -1,0 +1,51 @@
+---
+
+---
+
+<script>
+    import { createUser } from "../lib/create-user";
+
+    const form = document.querySelector("#create-user-form");
+    const output = document.querySelector("#create-user-output") as HTMLElement;
+
+    if (!form || !output) {
+        throw "Form or output element not found";
+    }
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const formdata = new FormData(form as HTMLFormElement);
+        const username = formdata.get("username") as string;
+        const password = formdata.get("password") as string;
+        const docker = formdata.get("docker") === "on";
+
+        if (!username || !password) {
+            alert("Username and password cannot be empty.");
+            return;
+        }
+
+        const result = await createUser(username, password, docker);
+        output.textContent = result;
+        output.style.display = "block";
+    });
+</script>
+
+<form id="create-user-form" class="tool-form">
+    <div class="tool-fields">
+        <label class="tool-label">
+            Username
+            <input name="username" type="text" class="tool-input" placeholder="admin" spellcheck="false" />
+        </label>
+        <label class="tool-label">
+            Password
+            <input name="password" type="password" class="tool-input" placeholder="supersecret" />
+        </label>
+        <label class="tool-checkbox-label">
+            <input name="docker" type="checkbox" class="tool-checkbox" />
+            Format for Docker
+        </label>
+    </div>
+    <button type="submit" class="tool-submit">Create User</button>
+    <pre id="create-user-output" class="tool-output" style="display:none"></pre>
+</form>

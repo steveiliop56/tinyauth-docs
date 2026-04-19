@@ -1,0 +1,97 @@
+.tool-form {
+    margin-top: 1rem;
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.tool-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.tool-label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: var(--sl-text-sm);
+    font-weight: 600;
+    color: var(--sl-color-text);
+}
+
+.tool-input {
+    margin: 0;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.5rem;
+    padding: 0.625rem 1rem;
+    font-size: var(--sl-text-code);
+    background-color: var(--sl-color-bg);
+    color: var(--sl-color-text);
+    font-family: var(--sl-font-mono);
+}
+
+.tool-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--sl-color-accent);
+}
+
+.tool-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-text);
+}
+
+.tool-checkbox {
+    width: 1rem;
+    height: 1rem;
+    accent-color: var(--sl-color-accent);
+}
+
+.tool-output {
+    margin: 0;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    font-size: var(--sl-text-code);
+    font-family: var(--sl-font-mono);
+    background-color: var(--sl-color-black);
+    color: var(--sl-color-text);
+    line-height: var(--sl-line-height);
+}
+
+.tool-submit {
+    margin: 0;
+    align-self: flex-start;
+    background-color: var(--sl-color-bg);
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 600;
+    color: var(--sl-color-text);
+    transition-property: border-color, color;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 100ms;
+    transition-delay: 50ms;
+    text-decoration: none;
+    border: 1px solid var(--sl-color-gray-5);
+}
+
+.tool-submit:is(:hover, :focus-visible) {
+    cursor: pointer;
+    color: var(--sl-color-text-accent);
+    outline: none;
+    box-shadow: 0 0 0 2px var(--sl-color-accent);
+    border-color: transparent;
+}
+
