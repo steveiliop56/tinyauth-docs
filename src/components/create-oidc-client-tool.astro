@@ -1,0 +1,46 @@
+---
+
+---
+
+<script>
+    import { createOidcClient } from "../lib/create-oidc-client";
+
+    const form = document.querySelector("#create-oidc-form");
+    const output = document.querySelector("#create-oidc-output") as HTMLElement;
+
+    if (!form || !output) {
+        throw "Form or output element not found";
+    }
+
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const formdata = new FormData(form as HTMLFormElement);
+        const clientName = (formdata.get("client-name") as string).trim();
+
+        if (!clientName) {
+            alert("Client name cannot be empty.");
+            return;
+        }
+
+        if (!/^[a-zA-Z0-9-]*$/.test(clientName)) {
+            alert("Client name can only contain alphanumeric characters and hyphens.");
+            return;
+        }
+
+        const result = createOidcClient(clientName);
+        output.textContent = result;
+        output.style.display = "block";
+    });
+</script>
+
+<form id="create-oidc-form" class="tool-form">
+    <div class="tool-fields">
+        <label class="tool-label">
+            Client Name
+            <input name="client-name" type="text" class="tool-input" placeholder="my-app" spellcheck="false" />
+        </label>
+    </div>
+    <button type="submit" class="tool-submit">Create OIDC Client</button>
+    <pre id="create-oidc-output" class="tool-output" style="display:none"></pre>
+</form>

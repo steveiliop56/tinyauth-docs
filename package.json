@@ -11,11 +11,14 @@
   },
   "dependencies": {
     "@astrojs/starlight": "0.38.3",
+    "@types/bcryptjs": "^2.4.6",
     "@yeskunall/astro-umami": "^0.0.8",
     "astro": "6.1.6",
     "astro-mermaid": "^2.0.1",
+    "bcryptjs": "^3.0.3",
     "countup.js": "^2.10.0",
     "mermaid": "^11.14.0",
+    "otpauth": "^9.5.0",
     "sharp": "^0.34.2",
     "starlight-theme-rapide": "^0.5.2"
   },

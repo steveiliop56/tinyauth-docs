@@ -1,0 +1,56 @@
+---
+
+---
+
+<script>
+    import { generateTotp } from "../lib/generate-totp";
+
+    const form = document.querySelector("#generate-totp-form");
+    const output = document.querySelector("#generate-totp-output") as HTMLElement;
+    const qrContainer = document.querySelector("#generate-totp-qr") as HTMLElement;
+
+    if (!form || !output || !qrContainer) {
+        throw "Form or output element not found";
+    }
+
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const formdata = new FormData(form as HTMLFormElement);
+        const user = (formdata.get("user") as string).trim();
+
+        if (!user) {
+            alert("User cannot be empty.");
+            return;
+        }
+
+        let result;
+        try {
+            result = generateTotp(user);
+        } catch (err: unknown) {
+            alert(err instanceof Error ? err.message : String(err));
+            return;
+        }
+
+        output.textContent = `Updated user:\n${result.updatedUser}\n\nTOTP Secret: ${result.secret}\n\nScan the QR code or use the URL below with your authenticator app:\n${result.otpauthUrl}`;
+        output.style.display = "block";
+
+        const img = qrContainer.querySelector("img") as HTMLImageElement;
+        img.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(result.otpauthUrl)}`;
+        qrContainer.style.display = "block";
+    });
+</script>
+
+<form id="generate-totp-form" class="tool-form">
+    <div class="tool-fields">
+        <label class="tool-label">
+            Current user (e.g. admin:$2a$10$...)
+            <input name="user" type="text" class="tool-input" placeholder="admin:$2a$10$..." spellcheck="false" />
+        </label>
+    </div>
+    <button type="submit" class="tool-submit">Generate TOTP</button>
+    <pre id="generate-totp-output" class="tool-output" style="display:none"></pre>
+    <div id="generate-totp-qr" style="display:none; margin-top: 1rem;">
+        <img alt="TOTP QR Code" width="200" height="200" />
+    </div>
+</form>
