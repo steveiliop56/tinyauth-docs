@@ -16,8 +16,8 @@
         e.preventDefault();
 
         const formdata = new FormData(form as HTMLFormElement);
-        const username = (formdata.get("username") as string).trim();
-        const password = (formdata.get("password") as string).trim();
+        const username = formdata.get("username") as string;
+        const password = formdata.get("password") as string;
         const docker = formdata.get("docker") === "on";
 
         if (!username || !password) {
