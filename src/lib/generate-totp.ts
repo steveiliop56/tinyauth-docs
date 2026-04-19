@@ -15,6 +15,10 @@ export function generateTotp(userStr: string): GenerateTotpResult {
   const username = userStr.slice(0, colonIndex);
   const rest = userStr.slice(colonIndex + 1);
 
+  if (!username || !rest) {
+    throw new Error("Invalid user string, expected 'username:hash'");
+  }
+
   if (rest.includes(":")) {
     throw new Error("User already has a TOTP secret");
   }

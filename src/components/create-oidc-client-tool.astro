@@ -23,8 +23,8 @@
             return;
         }
 
-        if (!/^[a-zA-Z0-9-]*$/.test(clientName)) {
-            alert("Client name can only contain alphanumeric characters and hyphens.");
+        if (!/^[a-zA-Z0-9]*$/.test(clientName)) {
+            alert("Client name can only contain alphanumeric characters.")
             return;
         }
 
@@ -38,7 +38,7 @@
     <div class="tool-fields">
         <label class="tool-label">
             Client Name
-            <input name="client-name" type="text" class="tool-input" placeholder="my-app" spellcheck="false" />
+            <input name="client-name" type="text" class="tool-input" placeholder="myapp" spellcheck="false" />
         </label>
     </div>
     <button type="submit" class="tool-submit">Create OIDC Client</button>

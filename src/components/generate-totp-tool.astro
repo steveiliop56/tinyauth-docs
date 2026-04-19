@@ -36,14 +36,20 @@
         output.textContent = `Updated user:\n${result.updatedUser}\n\nTOTP Secret: ${result.secret}\n\nAdd the secret to your authenticator app then use the verify command to confirm everything is working correctly.`;
         output.style.display = "block";
 
-        const dataUrl = await QRCode.toDataURL(result.otpauthUrl, {
-            margin: 1,
-            width: 200,
-        });
-
-        const img = qrContainer.querySelector("img") as HTMLImageElement;
-        img.src = dataUrl;
-        qrContainer.style.display = "block";
+        try {
+            const dataUrl = await QRCode.toDataURL(result.otpauthUrl, {
+                margin: 1,
+                width: 200,
+            });
+            const img = qrContainer.querySelector("img") as HTMLImageElement;
+            img.src = dataUrl;
+            qrContainer.style.display = "block";
+        } catch (err: unknown) {
+            qrContainer.style.display = "none";
+            const img = qrContainer.querySelector("img") as HTMLImageElement;
+            img.src = "";
+            alert(err instanceof Error ? err.message : String(err));
+        }
     });
 </script>
 

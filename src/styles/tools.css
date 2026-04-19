@@ -33,7 +33,8 @@
 }
 
 .tool-input:focus {
-    outline: none;
+    outline: 2px solid var(--sl-color-accent);
+    outline-offset: 2px;
     border-color: var(--sl-color-gray-2);
 }
 
@@ -91,6 +92,7 @@
     cursor: pointer;
     border: 1px solid var(--sl-color-gray-2);
     color: var(--sl-color-text-accent);
-    outline: none;
+    outline: 2px solid var(--sl-color-accent);
+    outline-offset: 2px;
 }
 
