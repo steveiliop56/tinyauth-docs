@@ -4,6 +4,7 @@ description: Use Tinyauth's OIDC server to authenticate applications.
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
+import CreateOidcClientTool from "../../../../components/create-oidc-client-tool.astro";
 
 In Tinyauth v5, a major milestone was the introduction of the OIDC server, which allows Tinyauth not only to use other identity providers but also to act as an identity provider itself. This means that Tinyauth can serve as a central authentication gateway for multiple applications, providing a single sign-on experience for users.
 
@@ -84,21 +85,32 @@ To create an OIDC client, use the `oidc create` command. For example:
     ```sh
     docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v5 oidc create myapp
     ```
+
+    This will produce output similar to:
+
+    ```
+    Client Name: myapp
+    Client ID: client-id
+    Client Secret: ta-client-secret
+    ```
   </TabItem>
   <TabItem label="Binary">
-      ```sh
-      ./tinyauth oidc create myapp
-      ```
+    ```sh
+    ./tinyauth oidc create myapp
+    ```
+
+    This will produce output similar to:
+
+    ```
+    Client Name: myapp
+    Client ID: client-id
+    Client Secret: ta-client-secret
+    ```
+  </TabItem>
+  <TabItem label="Browser">
+    <CreateOidcClientTool />
   </TabItem>
 </Tabs>
-
-This will produce output similar to:
-
-```
-Client Name: myapp
-Client ID: client-id
-Client Secret: ta-client-secret
-```
 
 We will use these values for the rest of this guide so, make sure to keep them secure.
 
