@@ -141,6 +141,10 @@ export default defineConfig({
               slug: "docs/reference/configuration",
             },
             {
+              label: "Authentication",
+              slug: "docs/reference/authentication",
+            },
+            {
               label: "Labels",
               slug: "docs/reference/labels",
             },
