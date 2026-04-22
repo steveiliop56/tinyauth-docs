@@ -40,7 +40,7 @@ export default defineConfig({
       },
       favicon: "/favicon.svg",
       editLink: {
-        baseUrl: "https://github.com/steveiliop56/tinyauth-docs/edit/main/",
+        baseUrl: "https://github.com/tinyauthapp/docs/edit/main/",
       },
       social: [
         {
