@@ -3,7 +3,7 @@ title: OIDC Server
 description: Use Tinyauth's OIDC server to authenticate applications.
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import { Tabs, TabItem } from "@astrojs/starlight/components";
 import CreateOidcClientTool from "../../../../components/create-oidc-client-tool.astro";
 
 In Tinyauth v5, a major milestone was the introduction of the OIDC server, which allows Tinyauth not only to use other identity providers but also to act as an identity provider itself. This means that Tinyauth can serve as a central authentication gateway for multiple applications, providing a single sign-on experience for users.
@@ -37,23 +37,39 @@ Supported scopes:
 - `profile`
 - `email`
 - `groups`
+- `phone`
+- `address`
 
 Supported claims:
 
 - `sub`
 - `name`
-- `email`
 - `preferred_username`
+- `email`
+- `email_verified`
 - `groups`
 - `updated_at`
-- `email_verified`
+- `given_name`
+- `family_name`
+- `middle_name`
+- `nickname`
+- `profile`
+- `picture`
+- `website`
+- `gender`
+- `birthdate`
+- `zoneinfo`
+- `locale`
+- `phone_number`
+- `phone_number_verified`
+- `address`
 
 Supported token endpoint authentication methods:
 
 - `client_secret_basic`
 - `client_secret_post`
 
-Due to the *mostly* stateless nature of Tinyauth, the user `sub` is based on the client ID and the username. This means that if the username or client ID changes, the `sub` will also change. This can cause issues with some OIDC clients that rely on the `sub` claim to identify the user consistently.
+Due to the _mostly_ stateless nature of Tinyauth, the user `sub` is based on the client ID and the username. This means that if the username or client ID changes, the `sub` will also change. This can cause issues with some OIDC clients that rely on the `sub` claim to identify the user consistently.
 
 :::note
 While no promises can be made, if you feel a required OpenID Connect feature is missing, please open an issue on [GitHub](https://github.com/steveiliop56/tinyauth/issues).
@@ -93,6 +109,7 @@ To create an OIDC client, use the `oidc create` command. For example:
     Client ID: client-id
     Client Secret: ta-client-secret
     ```
+
   </TabItem>
   <TabItem label="Binary">
     ```sh
@@ -106,6 +123,7 @@ To create an OIDC client, use the `oidc create` command. For example:
     Client ID: client-id
     Client Secret: ta-client-secret
     ```
+
   </TabItem>
   <TabItem label="Browser">
     <CreateOidcClientTool />
@@ -148,11 +166,11 @@ If you prefer, you can use `TINYAUTH_OIDC_CLIENTS_[NAME]_CLIENTSECRETFILE` (`--o
 
 Tinyauth exposes a well-known path at `/.well-known/openid-configuration` that apps can use to automatically discover the OIDC server configuration. If your app does not support discovery, you can configure it with the following endpoints:
 
-| Name                  | URL                                                  |
-| --------------------- | ---------------------------------------------------- |
-| Authorization Endpoint | `https://tinyauth.example.com/authorize`           |
-| Token Endpoint        | `https://tinyauth.example.com/api/oidc/token`       |
-| Userinfo Endpoint     | `https://tinyauth.example.com/api/oidc/userinfo`    |
+| Name                   | URL                                              |
+| ---------------------- | ------------------------------------------------ |
+| Authorization Endpoint | `https://tinyauth.example.com/authorize`         |
+| Token Endpoint         | `https://tinyauth.example.com/api/oidc/token`    |
+| Userinfo Endpoint      | `https://tinyauth.example.com/api/oidc/userinfo` |
 
 ## Usage
 
@@ -165,3 +183,44 @@ Tinyauth will preserve the OIDC request while logging in. Users authenticating v
 :::
 
 Tinyauth will pass user information from the OIDC or LDAP provider to the application while acting as a proxy. Enjoy!
+
+## User Attributes
+
+For local users, you can configure per-user OIDC attributes to populate profile, phone, and address claims. These are set via the `auth.userAttributes` config option, keyed by username.
+
+Example using environment variables:
+
+```sh
+TINYAUTH_AUTH_USERATTRIBUTES_ALICE_NAME=Alice Smith
+TINYAUTH_AUTH_USERATTRIBUTES_ALICE_EMAIL=alice@example.com
+TINYAUTH_AUTH_USERATTRIBUTES_ALICE_GIVENNAME=Alice
+TINYAUTH_AUTH_USERATTRIBUTES_ALICE_FAMILYNAME=Smith
+TINYAUTH_AUTH_USERATTRIBUTES_ALICE_PHONENUMBER=+1234567890
+TINYAUTH_AUTH_USERATTRIBUTES_ALICE_ZONEINFO=Europe/Athens
+TINYAUTH_AUTH_USERATTRIBUTES_ALICE_LOCALE=en-US
+```
+
+Or in YAML config:
+
+```yaml
+auth:
+  userAttributes:
+    alice:
+      name: Alice Smith
+      email: alice@example.com
+      givenName: Alice
+      familyName: Smith
+      phoneNumber: "+1234567890"
+      zoneinfo: Europe/Athens
+      locale: en-US
+      address:
+        streetAddress: 123 Main St
+        locality: Springfield
+        region: IL
+        postalCode: "62701"
+        country: US
+```
+
+When set, `name` and `email` attributes also override the display name and email used in the session cookie for that user.
+
+See the [Configuration Reference](/docs/reference/configuration) for the full list of available user attribute fields.
