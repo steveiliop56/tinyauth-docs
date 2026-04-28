@@ -3,7 +3,9 @@ title: Configuration
 description: Reference on Tinyauth's configuration.
 ---
 
-Tinyauth can be configured using environment variables or CLI flags. The table below provides a comprehensive list of configuration options.
+Tinyauth can be configured using environment variables, CLI flags, or (experimental) YAML config file. The table below provides a comprehensive list of configuration options.
+
+When the same option is passed in multiple ways, the order of precedence is `YAML > CLI > ENV`.
 
 :::note
   Configuration options with a `FILE_` equivalent (e.g., `TINYAUTH_AUTH_USERS`/`--auth.users` and
@@ -11,17 +13,74 @@ Tinyauth can be configured using environment variables or CLI flags. The table b
   an alternative.
 :::
 
+<Tabs syncKey="config">
+    <TabItem label="Environment">
+        All environment variables are in **UPPER CASE**, and are prefixed by `TINYAUTH_`. The parts are separated by undescores (`_`).
+    </TabItem>
+    <TabItem label="CLI">
+        All flags are in **lower case**. The parts are separated by dots (`.`).
+    </TabItem>
+    <TabItem label="YAML">
+        YAML configuration is **camelCase**. The parts are nested in standard YAML format.
+
+        You must pass the config file name with a CLI argument `--experimental.configfile=myconfig.yaml`
+    </TabItem>
+</Tabs>
+
+<Tabs syncKey="config">
+    <TabItem label="Environment">
+        | Environment | Description | Default |
+        | - | - | - |
+    </TabItem>
+    <TabItem label="CLI">
+        | Flag | Description | Default |
+        | - | - | - |
+    </TabItem>
+    <TabItem label="YAML">
+        | YAML | Description | Default |
+        | - | - | - |
+    </TabItem>
+</Tabs>
+
 ## General Configuration
 
-| Environment | Flag | Description | Default |
-| - | - | - | - |
-| `TINYAUTH_APPURL` | `--appurl` | The base URL where the app is hosted. | `` |
+<Tabs syncKey="config">
+    <TabItem label="Environment">
+        | Environment | Description | Default |
+        | - | - | - |
+        | `TINYAUTH_APPURL` | The base URL where the app is hosted. | `` |
+    </TabItem>
+    <TabItem label="CLI">
+        | Flag | Description | Default |
+        | - | - | - |
+        | `--appurl` | The base URL where the app is hosted. | `` |
+    </TabItem>
+    <TabItem label="YAML">
+        | YAML | Description | Default |
+        | - | - | - |
+        | `appUrl` | The base URL where the app is hosted. | `` |
+    </TabItem>
+</Tabs>
 
 ## Database Configuration
 
-| Environment | Flag | Description | Default |
-| - | - | - | - |
-| `TINYAUTH_DATABASE_PATH` | `--database.path` | The path to the database, including file name. | `./tinyauth.db` |
+<Tabs syncKey="config">
+    <TabItem label="Environment">
+        | Environment | Description | Default |
+        | - | - | - |
+        | `TINYAUTH_DATABASE_PATH` |The path to the database, including file name. | `./tinyauth.db` |
+    </TabItem>
+    <TabItem label="CLI">
+        | Flag | Description | Default |
+        | - | - | - |
+        |`--database.path` | The path to the database, including file name. | `./tinyauth.db` |
+    </TabItem>
+    <TabItem label="YAML">
+        | YAML | Description | Default |
+        | - | - | - |
+        | <code>database:<br/>    path</code> | The path to the database, including file name. | `./tinyauth.db` |
+    </TabItem>
+</Tabs>
 
 ## Analytics Configuration
 
