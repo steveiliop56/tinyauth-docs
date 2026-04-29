@@ -52,6 +52,7 @@ main:has(.home-container) {
 }
 
 .instances-count {
+    display: block;
     color: var(--sl-color-green-high);
     background-color: var(--sl-color-green-low);
     border: 1px solid var(--sl-color-green);
@@ -60,6 +61,15 @@ main:has(.home-container) {
     line-height: calc(1.25 / 0.875);
     font-weight: 500;
     padding: 0.25rem 0.75rem;
+    transition-property: opacity;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+    transition-delay: 50ms;
+    text-decoration: none;
+}
+
+.instances-count:hover {
+    opacity: 0.8;
 }
 
 .nav-buttons-container {
