@@ -90,7 +90,7 @@ export default defineConfig({
             },
             {
               label: "Other OAuth Providers",
-              slug: "docs/guides/generic-oauth",
+              slug: "docs/guides/other-oauth",
             },
             {
               label: "LDAP",
