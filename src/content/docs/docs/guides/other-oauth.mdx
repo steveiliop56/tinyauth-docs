@@ -29,13 +29,13 @@ These endpoints are also using placeholders in this guide.
 
 You also need the client ID and client secret. These use the `<client_id>` and `<client_secret>` placeholders respectively.
 
-You will need to pick a descriptive name for your OAuth provider. This will be needed in three formats. **UPPERCASE**, **lowercase**, and **non-formated**.
+You will need to pick a descriptive name for your OAuth provider. This will be needed in three formats. **UPPERCASE**, **lowercase**, and **non-formatted**.
 
 - The uppercase format will be used for the environment variable keys.
 - The lowercase format will be used for the callback/redirect URL
-- The unformatted descriptive name will be shown to users (it can only have alphanumeric characters).
+- The unformatted descriptive name will be shown to users in the UI.
 
-This descriptive name has the placeholders `<PROVIDERNAME>`, `<providername>`, and `<non-formatted provider name>`.
+The provider identifier (used in URLs and environment variable keys) must contain only alphanumeric characters and has the placeholders `<PROVIDERNAME>` and `<providername>`. The display name `<non-formatted provider name>` is shown to users and can contain spaces but cannot contain special characters.
 
 If you wanted your provider to be "My Provider" then `<PROVIDERNAME>` would be `MYPROVIDER`, `<providername>` would be `myprovider`, and `<non-formatted provider name>` would be `My Provider`.
 
@@ -76,7 +76,7 @@ services:
 :::
 
 :::note
-  Tinyauth supports using more than one OAuth proivder as long as the each have unique descriptive names.
+  Tinyauth supports using more than one OAuth provider as long as they each have unique descriptive names.
   To set this up just follow this guide again for each OAuth provider while keeping the existing OAuth provider's environment variables intact.
 :::
 
