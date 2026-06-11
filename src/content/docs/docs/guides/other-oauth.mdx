@@ -1,9 +1,9 @@
 ---
 title: Other OAuth Providers
-description: Use any OAuth provider that is not already listed in Tinyauth.
+description: Use any OAuth provider that is not already listed in the documentation.
 ---
 
-This guide will show you how to set up Tinyauth with any OAuth provider that is OpenID Connect compliant. This allows you to use providers that are not already listed in Tinyauth.
+This guide will show you how to set up Tinyauth with any OAuth provider that is OpenID Connect compliant. This allows you to use providers that are not already listed in the documentation.
 
 ## Requirements
 
@@ -29,9 +29,19 @@ These endpoints are also using placeholders in this guide.
 
 You also need the client ID and client secret. These use the `<client_id>` and `<client_secret>` placeholders respectively.
 
+You will need to pick a descriptive name for your OAuth provider. This will be needed in three formats. **UPPERCASE**, **lowercase**, and **non-formated**.
+
+- The uppercase format will be used for the environment variable keys.
+- The lowercase format will be used for the callback/redirect URL
+- The unformatted descriptive name will be shown to users (it can only have alphanumeric characters).
+
+This descriptive name has the placeholders `<PROVIDERNAME>`, `<providername>`, and `<non-formatted provider name>`.
+
+If you wanted your provider to be "My Provider" then `<PROVIDERNAME>` would be `MYPROVIDER`, `<providername>` would be `myprovider`, and `<non-formatted provider name>` would be `My Provider`.
+
 ## Configuring the OAuth provider
 
-Create a new client in your OAuth provider. This client will need a callback/redirect URL of `https://<tinyauth_url>/api/oauth/callback/myprovider`.
+Create a new client in your OAuth provider. This client will need a callback/redirect URL of `https://<tinyauth_url>/api/oauth/callback/<providername>`.
 You will need the client ID and client secret from your provider.
 
 ## Configuring Tinyauth
@@ -42,15 +52,15 @@ Add the following entries to your tinyauth service's environment section substit
 services:
   tinyauth:
     environment:
-      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_CLIENTID=<client_id>
-      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_CLIENTSECRET=<client_secret>
-      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_AUTHURL=<authorization_endpoint>
-      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_TOKENURL=<token_endpoint>
-      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_USERINFOURL=<userinfo_endpoint>
-      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_SCOPES=openid,email,profile
-      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_REDIRECTURL=https://<tinyauth_url>/api/oauth/callback/myprovider
-      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_NAME=<Any name you want. This will display as a button in Tinyauth for your provider>
-      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_INSECURE=false # Change to true if your provider is using self signed certificates
+      - TINYAUTH_OAUTH_PROVIDERS_<PROVIDERNAME>_CLIENTID=<client_id>
+      - TINYAUTH_OAUTH_PROVIDERS_<PROVIDERNAME>_CLIENTSECRET=<client_secret>
+      - TINYAUTH_OAUTH_PROVIDERS_<PROVIDERNAME>_AUTHURL=<authorization_endpoint>
+      - TINYAUTH_OAUTH_PROVIDERS_<PROVIDERNAME>_TOKENURL=<token_endpoint>
+      - TINYAUTH_OAUTH_PROVIDERS_<PROVIDERNAME>_USERINFOURL=<userinfo_endpoint>
+      - TINYAUTH_OAUTH_PROVIDERS_<PROVIDERNAME>_SCOPES=openid,email,profile
+      - TINYAUTH_OAUTH_PROVIDERS_<PROVIDERNAME>_REDIRECTURL=https://<tinyauth_url>/api/oauth/callback/<providername>
+      - TINYAUTH_OAUTH_PROVIDERS_<PROVIDERNAME>_NAME=<non-formatted provider name>
+      - TINYAUTH_OAUTH_PROVIDERS_<PROVIDERNAME>_INSECURE=false # Change to true if your provider is using self signed certificates
 ```
 
 :::caution
@@ -63,6 +73,11 @@ services:
 :::note
   With OAuth enabled, the `TINYAUTH_AUTH_USERS` or `TINYAUTH_AUTH_USERSFILE` environment variable can be
   removed to allow login exclusively through the OAuth provider.
+:::
+
+:::note
+  Tinyauth supports using more than one OAuth proivder as long as the each have unique descriptive names.
+  To set this up just follow this guide again for each OAuth provider while keeping the existing OAuth provider's environment variables intact.
 :::
 
 Restart Tinyauth to apply the changes. The login screen will now include an option to log in with your OAuth provider.
