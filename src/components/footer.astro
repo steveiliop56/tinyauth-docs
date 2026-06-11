@@ -4,23 +4,33 @@ import LastUpdated from "@astrojs/starlight/components/LastUpdated.astro";
 import Pagination from "starlight-theme-rapide/overrides/Pagination.astro";
 import { Icon } from "@astrojs/starlight/components";
 import config from "virtual:starlight/user-config";
-import AskDosu from "./AskDosu.astro";
+import AskDosu from "./ask-dosu.astro";
+
+const status = Astro.response.status;
+const showFooterComponents = status === 200;
 ---
 
 <footer class="sl-flex">
-    <div class="meta sl-flex">
-        <AskDosu />
-        <EditLink />
-        <LastUpdated />
-    </div>
-    <Pagination />
-
     {
-        config.credits && (
-            <a class="kudos sl-flex" href="https://starlight.astro.build">
-                <Icon name={"starlight"} />{" "}
-                {Astro.locals.t("builtWithStarlight.label")}
-            </a>
+        showFooterComponents && (
+            <>
+                <div class="meta sl-flex">
+                    <AskDosu />
+                    <EditLink />
+                    <LastUpdated />
+                </div>
+                <Pagination />
+
+                {config.credits && (
+                    <a
+                        class="kudos sl-flex"
+                        href="https://starlight.astro.build"
+                    >
+                        <Icon name={"starlight"} />{" "}
+                        {Astro.locals.t("builtWithStarlight.label")}
+                    </a>
+                )}
+            </>
         )
     }
 </footer>

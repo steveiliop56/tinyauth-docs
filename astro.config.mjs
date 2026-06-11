@@ -32,7 +32,7 @@ export default defineConfig({
         "./src/styles/tools.css",
       ],
       components: {
-        Footer: "./src/components/Footer.astro",
+        Footer: "./src/components/footer.astro",
       },
       title: "Tinyauth",
       credits: true,
