@@ -1,0 +1,74 @@
+---
+title: Other OAuth Providers
+description: Use any OAuth provider with Tinyauth.
+---
+
+Tinyauth supports any OAuth/OpenID Connect provider that follows the specification (specifically around the claims). This means you can use any self-hosted or third-party provider that implements the OAuth 2.0 and/or the OpenID Connect protocols.
+
+## Requirements
+
+For this guide, you will need:
+
+- A Tinyauth instance set up and running.
+- An OAuth/OpenID Connect provider that you want to integrate with Tinyauth. This could be a self-hosted provider like Keycloak, or a third-party provider like Auth0, Okta, or any other that supports OAuth 2.0/OpenID Connect.
+
+## Get your client credentials
+
+To integrate your OAuth provider with Tinyauth, you will need to create a client/application in your OAuth provider's dashboard. This process varies depending on the provider you are using, but generally involves the following steps:
+
+1. Log in to your OAuth provider's dashboard.
+2. Navigate to the section where you can create a new client/application.
+3. Fill in the required information, such as the name of your application and the redirect URI. The redirect URI should be in the format `https://your-tinyauth-instance.com/api/oauth/callback/your-provider`, where `your-provider` is a unique identifier for your OAuth provider (e.g., `keycloak`, `auth0`, etc.).
+4. Save the client/application and note down the client ID and client secret, as you will need these to configure Tinyauth.
+
+You will also need to get the authorization, token, and user info endpoint URLs from your OAuth provider. These are typically available in the provider's documentation, dashboard or through their OpenID Connect discovery endpoint (usually found at `https://your-provider/.well-known/openid-configuration`).
+
+## Configure Tinyauth
+
+Once you have your client credentials and endpoint URLs, you can configure Tinyauth to use your OAuth provider. This involves adding a new provider configuration to your instance. You can do this by appending the following environment variables to your Tinyauth configuration:
+
+```yaml
+services:
+  tinyauth:
+    environment:
+      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_CLIENTID=your-provider-client-id
+      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_CLIENTSECRET=your-provider-client-secret
+      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_AUTHURL=your-provider-authorization-endpoint
+      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_TOKENURL=your-provider-token-endpoint
+      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_USERINFOURL=your-provider-userinfo-endpoint
+      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_REDIRECTURL=https://your-tinyauth-instance.com/api/oauth/callback/myprovider # This is usually not needed as Tinyauth can auto-generate it, but you can specify it if your provider requires a specific redirect URL.
+      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_SCOPES="openid email profile groups" # Ensure you include the necessary scopes for your provider.
+      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_NAME="My Provider" # This is the name that will be displayed on the login page for this provider.
+      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_INSECURE=false # Only set this to true if your provider uses self-signed certificates
+```
+
+Make sure to replace `MYPROVIDER` with a unique identifier for your provider, and fill in the correct values for the client ID, client secret, and endpoint URLs.
+
+:::caution
+The provider identifier (e.g., `MYPROVIDER`) must be unique and should only contain alphanumeric characters. This identifier is used in the redirect URI and environment variable names, so choose it wisely.
+:::
+
+You can add multiple providers by repeating the above configuration with different identifiers (e.g., `KEYCLOAK`, `AUTH0`, etc.).
+
+## Tips and warnings
+
+:::note
+  Set the `TINYAUTH_OAUTH_AUTOREDIRECT` environment variable to your provider ID (e.g. `myprovider`) to enable
+  automatic redirection to your OAuth provider for Tinyauth-protected apps.
+:::
+
+:::caution
+  OAuth alone does not guarantee security. By default, any account in the OAuth Provider can
+  log in as a normal user. To restrict access, use the `TINYAUTH_OAUTH_WHITELIST`
+  environment variable to allow specific email addresses. Refer to the
+  [configuration](/docs/reference/configuration) page for details.
+:::
+
+:::note
+  With OAuth enabled, the `TINYAUTH_AUTH_USERS` or `TINYAUTH_AUTH_USERSFILE` environment variable can be
+  removed to allow login exclusively through the OAuth provider.
+:::
+
+## Trying it out
+
+After configuring Tinyauth, restart your instance to apply the changes. You should now see an option to log in with your OAuth provider on the login page. Click on it, and you should be redirected to your OAuth provider to authenticate. After authentication, you will be redirected back to Tinyauth and should be logged in successfully.

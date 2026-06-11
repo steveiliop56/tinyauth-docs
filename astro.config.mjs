@@ -89,6 +89,10 @@ export default defineConfig({
               slug: "docs/guides/pocket-id",
             },
             {
+              label: "Other OAuth Providers",
+              slug: "docs/guides/other-oauth",
+            },
+            {
               label: "LDAP",
               slug: "docs/guides/ldap",
             },
