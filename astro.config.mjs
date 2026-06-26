@@ -197,10 +197,5 @@ export default defineConfig({
         },
       ],
     }),
-    umami({
-      hostUrl: "https://analytics.doesmycode.work",
-      endpointUrl: "https://analytics.doesmycode.work",
-      id: "ed560a2b-b321-4745-b2f8-d7de846aeb7f",
-    }),
   ],
 });
