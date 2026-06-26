@@ -1,0 +1,155 @@
+---
+title: "Configuration"
+description: "Référence sur la configuration de Tinyauth."
+---
+
+Tinyauth peut être configuré à l'aide de variables d'environnement ou de paramètres CLI. Le tableau ci‑dessous fournit une liste complète des options de configuration.
+
+:::note
+  Les options de configuration avec un équivalent `FILE_` (par ex., `TINYAUTH_AUTH_USERS`/`--auth.users` et
+  `TINYAUTH_AUTH_USERSFILE`/`--auth.usersfile`) permettent d'utiliser la variable d'environnement ou le paramètre CLI `FILE_` comme alternative.
+:::
+
+## Configuration générale
+
+| Environnement | Indicateur | Description | Valeur par défaut |
+| - | - | - | - |
+| `TINYAUTH_APPURL` | `--appurl` | L'URL de base où l'application est hébergée. | `` |
+
+## Configuration de la base de données
+
+| Environnement | Indicateur | Description | Valeur par défaut |
+| - | - | - | - |
+| `TINYAUTH_DATABASE_PATH` | `--database.path` | Le chemin vers la base de données, y compris le nom du fichier. | `./tinyauth.db` |
+
+## Configuration des analyses
+
+| Environnement | Indicateur | Description | Valeur par défaut |
+| - | - | - | - |
+| `TINYAUTH_ANALYTICS_ENABLED` | `--analytics.enabled` | Activer la collecte périodique d'informations sur la version. | `true` |
+
+## Configuration des ressources
+
+| Environnement | Indicateur | Description | Valeur par défaut |
+| - | - | - | - |
+| `TINYAUTH_RESOURCES_ENABLED` | `--resources.enabled` | Activer le serveur de ressources. | `true` |
+| `TINYAUTH_RESOURCES_PATH` | `--resources.path` | Le répertoire où les ressources sont stockées. | `./resources` |
+
+## Configuration du serveur
+
+| Environnement | Indicateur | Description | Valeur par défaut |
+| - | - | - | - |
+| `TINYAUTH_SERVER_PORT` | `--server.port` | Le port sur lequel le serveur écoute. | `3000` |
+| `TINYAUTH_SERVER_ADDRESS` | `--server.address` | L'adresse sur laquelle le serveur écoute. | `0.0.0.0` |
+| `TINYAUTH_SERVER_SOCKETPATH` | `--server.socketpath` | Le chemin vers le socket Unix. | `` |
+
+## Configuration d'authentification
+
+| Environnement | Indicateur | Description | Valeur par défaut |
+| - | - | - | - |
+| `TINYAUTH_AUTH_IP_ALLOW` | `--auth.ip.allow` | Liste des adresses IP ou plages CIDR autorisées. | `` |
+| `TINYAUTH_AUTH_IP_BLOCK` | `--auth.ip.block` | Liste des adresses IP ou plages CIDR bloquées. | `` |
+| `TINYAUTH_AUTH_USERS` | `--auth.users` | Liste séparée par des virgules d'utilisateurs (nom_d'utilisateur:mot_de_passe_hashé). | `` |
+| `TINYAUTH_AUTH_USERSFILE` | `--auth.usersfile` | Chemin vers le fichier des utilisateurs. | `` |
+| `TINYAUTH_AUTH_SECURECOOKIE` | `--auth.securecookie` | Activer les cookies sécurisés. | `false` |
+| `TINYAUTH_AUTH_SESSIONEXPIRY` | `--auth.sessionexpiry` | Temps d'expiration de la session en secondes. | `86400` |
+| `TINYAUTH_AUTH_SESSIONMAXLIFETIME` | `--auth.sessionmaxlifetime` | Durée maximale de vie de la session en secondes. | `0` |
+| `TINYAUTH_AUTH_LOGINTIMEOUT` | `--auth.logintimeout` | Délai d'expiration du login en secondes. | `300` |
+| `TINYAUTH_AUTH_LOGINMAXRETRIES` | `--auth.loginmaxretries` | Nombre maximal de tentatives de connexion. | `3` |
+| `TINYAUTH_AUTH_TRUSTEDPROXIES` | `--auth.trustedproxies` | Liste séparée par des virgules d'adresses de proxys de confiance. | `` |
+
+## Configuration des ACL
+
+| Environnement | Indicateur | Description | Valeur par défaut |
+| - | - | - | - |
+| `TINYAUTH_APPS_[NAME]_CONFIG_DOMAIN` | `--apps.[name].config.domain` | Le domaine de l'application. | `` |
+| `TINYAUTH_APPS_[NAME]_USERS_ALLOW` | `--apps.[name].users.allow` | Liste séparée par des virgules d'utilisateurs autorisés. | `` |
+| `TINYAUTH_APPS_[NAME]_USERS_BLOCK` | `--apps.[name].users.block` | Liste séparée par des virgules d'utilisateurs bloqués. | `` |
+| `TINYAUTH_APPS_[NAME]_OAUTH_WHITELIST` | `--apps.[name].oauth.whitelist` | Liste séparée par des virgules de groupes OAuth autorisés. | `` |
+| `TINYAUTH_APPS_[NAME]_OAUTH_GROUPS` | `--apps.[name].oauth.groups` | Liste séparée par des virgules de groupes OAuth requis. | `` |
+| `TINYAUTH_APPS_[NAME]_IP_ALLOW` | `--apps.[name].ip.allow` | Liste des adresses IP ou plages CIDR autorisées. | `` |
+| `TINYAUTH_APPS_[NAME]_IP_BLOCK` | `--apps.[name].ip.block` | Liste des adresses IP ou plages CIDR bloquées. | `` |
+| `TINYAUTH_APPS_[NAME]_IP_BYPASS` | `--apps.[name].ip.bypass` | Liste des adresses IP ou plages CIDR qui contournent l'authentification. | `` |
+| `TINYAUTH_APPS_[NAME]_RESPONSE_HEADERS` | `--apps.[name].response.headers` | En-têtes personnalisés à ajouter à la réponse. | `` |
+| `TINYAUTH_APPS_[NAME]_RESPONSE_BASICAUTH_USERNAME` | `--apps.[name].response.basicauth.username` | Nom d'utilisateur pour l'authentification basique. | `` |
+| `TINYAUTH_APPS_[NAME]_RESPONSE_BASICAUTH_PASSWORD` | `--apps.[name].response.basicauth.password` | Mot de passe pour l'authentification basique. | `` |
+| `TINYAUTH_APPS_[NAME]_RESPONSE_BASICAUTH_PASSWORDFILE` | `--apps.[name].response.basicauth.passwordfile` | Chemin vers le fichier contenant le mot de passe d'authentification basique. | `` |
+| `TINYAUTH_APPS_[NAME]_PATH_ALLOW` | `--apps.[name].path.allow` | Liste séparée par des virgules de chemins autorisés. | `` |
+| `TINYAUTH_APPS_[NAME]_PATH_BLOCK` | `--apps.[name].path.block` | Liste séparée par des virgules de chemins bloqués. | `` |
+| `TINYAUTH_APPS_[NAME]_LDAP_GROUPS` | `--apps.[name].ldap.groups` | Liste séparée par des virgules de groupes LDAP requis. | `` |
+
+## Configuration OAuth
+
+| Environnement | Indicateur | Description | Valeur par défaut |
+| - | - | - | - |
+| `TINYAUTH_OAUTH_WHITELIST` | `--oauth.whitelist` | Liste séparée par des virgules de domaines OAuth autorisés. | `` |
+| `TINYAUTH_OAUTH_AUTOREDIRECT` | `--oauth.autoredirect` | Le fournisseur OAuth à utiliser pour la redirection automatique. | `` |
+| `TINYAUTH_OAUTH_PROVIDERS_[NAME]_CLIENTID` | `--oauth.providers.[name].clientid` | Identifiant du client OAuth. | `` |
+| `TINYAUTH_OAUTH_PROVIDERS_[NAME]_CLIENTSECRET` | `--oauth.providers.[name].clientsecret` | Secret du client OAuth. | `` |
+| `TINYAUTH_OAUTH_PROVIDERS_[NAME]_CLIENTSECRETFILE` | `--oauth.providers.[name].clientsecretfile` | Chemin vers le fichier contenant le secret du client OAuth. | `` |
+| `TINYAUTH_OAUTH_PROVIDERS_[NAME]_SCOPES` | `--oauth.providers.[name].scopes` | Portées OAuth. | `` |
+| `TINYAUTH_OAUTH_PROVIDERS_[NAME]_REDIRECTURL` | `--oauth.providers.[name].redirecturl` | URL de redirection OAuth. | `` |
+| `TINYAUTH_OAUTH_PROVIDERS_[NAME]_TOKENURL` | `--oauth.providers.[name].tokenurl` | URL du jeton OAuth. | `` |
+| `TINYAUTH_OAUTH_PROVIDERS_[NAME]_USERINFOURL` | `--oauth.providers.[name].userinfourl` | URL d'information utilisateur OAuth. | `` |
+| `TINYAUTH_OAUTH_PROVIDERS_[NAME]_INSECURE` | `--oauth.providers.[name].insecure` | Autoriser les connexions OAuth non sécurisées. | `false` |
+| `TINYAUTH_OAUTH_PROVIDERS_[NAME]_NAME` | `--oauth.providers.[name].name` | Nom du fournisseur dans l'interface utilisateur. | `` |
+
+:::note
+  L'utilisation de `google` ou `github` comme identifiants de fournisseur déclenche le remplissage automatique des informations requises (par ex., URL d'authentification, portées). Vous n'aurez à fournir que l'identifiant du client et son secret.
+:::
+
+## Configuration OIDC
+
+| Environnement | Indicateur | Description | Valeur par défaut |
+| - | - | - | - |
+| `TINYAUTH_OIDC_PRIVATEKEYPATH` | `--oidc.privatekeypath` | Chemin vers le fichier de clé privée, y compris le nom du fichier. | `./tinyauth_oidc_key` |
+| `TINYAUTH_OIDC_PUBLICKEYPATH` | `--oidc.publickeypath` | Chemin vers le fichier de clé publique, y compris le nom du fichier. | `./tinyauth_oidc_key.pub` |
+| `TINYAUTH_OIDC_CLIENTS_[NAME]_CLIENTID` | `--oidc.clients.[name].clientid` | Identifiant du client OIDC. | `` |
+| `TINYAUTH_OIDC_CLIENTS_[NAME]_CLIENTSECRET` | `--oidc.clients.[name].clientsecret` | Secret du client OIDC. | `` |
+| `TINYAUTH_OIDC_CLIENTS_[NAME]_CLIENTSECRETFILE` | `--oidc.clients.[name].clientsecretfile` | Chemin vers le fichier contenant le secret du client OIDC. | `` |
+| `TINYAUTH_OIDC_CLIENTS_[NAME]_TRUSTEDREDIRECTURIS` | `--oidc.clients.[name].trustedredirecturis` | Liste des URI de redirection approuvées. | `` |
+| `TINYAUTH_OIDC_CLIENTS_[NAME]_NAME` | `--oidc.clients.[name].name` | Nom du client dans l'interface utilisateur. | `` |
+
+## Configuration de l'UI
+
+| Environnement | Indicateur | Description | Valeur par défaut |
+| - | - | - | - |
+| `TINYAUTH_UI_TITLE` | `--ui.title` | Le titre de l'interface utilisateur. | `Tinyauth` |
+| `TINYAUTH_UI_FORGOTPASSWORDMESSAGE` | `--ui.forgotpasswordmessage` | Message affiché sur la page de réinitialisation du mot de passe. | `Vous pouvez changer votre mot de passe en modifiant la configuration.` |
+| `TINYAUTH_UI_BACKGROUNDIMAGE` | `--ui.backgroundimage` | Chemin vers l'image d'arrière-plan. | `/background.jpg` |
+| `TINYAUTH_UI_WARNINGSENABLED` | `--ui.warningsenabled` | Activer les avertissements de l'interface utilisateur. | `true` |
+
+## Configuration LDAP
+
+| Environnement | Indicateur | Description | Valeur par défaut |
+| - | - | - | - |
+| `TINYAUTH_LDAP_ADDRESS` | `--ldap.address` | Adresse du serveur LDAP. | `` |
+| `TINYAUTH_LDAP_BINDDN` | `--ldap.binddn` | DN de liaison pour l'authentification LDAP. | `` |
+| `TINYAUTH_LDAP_BINDPASSWORD` | `--ldap.bindpassword` | Mot de passe de liaison pour l'authentification LDAP. | `` |
+| `TINYAUTH_LDAP_BASEDN` | `--ldap.basedn` | DN de base pour les recherches LDAP. | `` |
+| `TINYAUTH_LDAP_INSECURE` | `--ldap.insecure` | Autoriser les connexions LDAP non sécurisées. | `false` |
+| `TINYAUTH_LDAP_SEARCHFILTER` | `--ldap.searchfilter` | Filtre de recherche LDAP. | `(uid=%s)` |
+| `TINYAUTH_LDAP_AUTHCERT` | `--ldap.authcert` | Certificat pour l'authentification mTLS. | `` |
+| `TINYAUTH_LDAP_AUTHKEY` | `--ldap.authkey` | Clé du certificat pour l'authentification mTLS. | `` |
+| `TINYAUTH_LDAP_GROUPCACHETTL` | `--ldap.groupcachettl` | Durée de mise en cache de la participation aux groupes LDAP, en secondes. | `900` |
+
+:::note
+  Pour le LDAP sous Windows, utilisez le filtre de recherche suivant : `(&(sAMAccountName=%s))`.
+:::
+
+## Configuration du journal
+
+| Environnement | Indicateur | Description | Valeur par défaut |
+| - | - | - | - |
+| `TINYAUTH_LOG_LEVEL` | `--log.level` | Niveau de journalisation (trace, debug, info, warn, error). | `info` |
+| `TINYAUTH_LOG_JSON` | `--log.json` | Activer les journaux formatés en JSON. | `false` |
+| `TINYAUTH_LOG_STREAMS_HTTP_ENABLED` | `--log.streams.http.enabled` | Activer ce flux de journalisation. | `true` |
+| `TINYAUTH_LOG_STREAMS_HTTP_LEVEL` | `--log.streams.http.level` | Niveau de journalisation pour ce flux. Utiliser le niveau global si vide. | `` |
+| `TINYAUTH_LOG_STREAMS_APP_ENABLED` | `--log.streams.app.enabled` | Activer ce flux de journalisation. | `true` |
+| `TINYAUTH_LOG_STREAMS_APP_LEVEL` | `--log.streams.app.level` | Niveau de journalisation pour ce flux. Utiliser le niveau global si vide. | `` |
+| `TINYAUTH_LOG_STREAMS_AUDIT_ENABLED` | `--log.streams.audit.enabled` | Activer ce flux de journalisation. | `false` |
+| `TINYAUTH_LOG_STREAMS_AUDIT_LEVEL` | `--log.streams.audit.level` | Niveau de journalisation pour ce flux. Utiliser le niveau global si vide. | `` |
+
+:::caution
+  Le niveau de journalisation `trace` enregistrera des informations sensibles telles que les noms d'utilisateur, les e-mails et les contrôles d'accès.
+:::

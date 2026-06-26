@@ -1,0 +1,109 @@
+---
+title: "Utilisation du binaire"
+description: "Utilisez le binaire Tinyauth au lieu de l'image Docker pour des configurations plus avancées."
+---
+
+Pour les configurations qui ne nécessitent pas Docker, le binaire Tinyauth offre une alternative légère. Cette approche est idéale pour les conteneurs LXC ou les machines où Docker n'est pas nécessaire mais où Tinyauth reste requis pour protéger les services.
+
+## Téléchargement du binaire
+
+Le binaire peut être téléchargé depuis la [dernière version GitHub](https://github.com/steveiliop56/tinyauth/releases/latest). Des builds sont disponibles pour les machines Linux `arm64` et `amd64`. Renommer le binaire en `tinyauth` est recommandé pour assurer une cohérence tout au long de ce guide. Assurez-vous que le binaire est exécutable :
+
+```sh
+chmod +x tinyauth
+```
+
+## Configuration
+
+La configuration peut être réalisée en utilisant soit des drapeaux CLI, soit des variables d'environnement (recommandé). Pour utiliser les variables d'environnement, téléchargez le fichier exemple `.env` depuis GitHub :
+
+```sh
+curl -o .env https://raw.githubusercontent.com/steveiliop56/tinyauth/refs/heads/main/.env.example
+```
+
+:::note
+Il est recommandé d'utiliser une balise lors du téléchargement du fichier exemple `.env` afin de vous assurer que vous utilisez la dernière version stable et non une version de développement. Par exemple :
+
+```sh
+curl -o .env https://raw.githubusercontent.com/steveiliop56/tinyauth/refs/tags/v5.0.0/.env.example
+```
+
+Téléchargera le fichier exemple `.env` pour la balise `v5.0.0`.
+:::
+
+Modifiez le fichier `.env` pour remplacer les valeurs modèles par des valeurs réelles ou supprimez celles qui ne sont pas nécessaires. Alternativement, vous pouvez utiliser des drapeaux CLI pour la configuration, bien que cette méthode soit moins recommandée en raison de la complexité potentielle et des problèmes d'analyse du shell. Utilisez toujours des guillemets (`'`) afin de garantir que les valeurs soient transmises correctement.
+
+Une liste complète des variables d'environnement et des drapeaux CLI est disponible sur la page [configuration](/docs/reference/configuration).
+
+## Exécution
+
+Une fois configuré, démarrez Tinyauth. Pour les configurations basées sur des variables d'environnement, exportez les variables dans le shell :
+
+```sh
+export $(grep -v '^#' .env | xargs -d '\n')
+```
+
+:::note
+  Pour désactiver les variables d'environnement à des fins de sécurité, utilisez : `unset $(grep
+  -v '^#' .env | sed -E 's/(.*)=.*/\1/' | xargs)`.
+:::
+
+Démarrez le serveur Tinyauth :
+
+```sh
+./tinyauth
+```
+
+Pour les configurations basées sur des drapeaux CLI, passez directement les drapeaux :
+
+```sh
+./tinyauth --appurl=https://tinyauth.example.com
+```
+
+## Exécution en tant que service systemd
+
+Pour activer le démarrage automatique de Tinyauth au démarrage, créez un service systemd. Tout d'abord, créez le fichier de service :
+
+```ini title="/etc/systemd/system/tinyauth.service"
+[Unit]
+Description=Tinyauth service
+After=network.target
+
+[Service]
+EnvironmentFile=/some/path/.env
+ExecStart=/some/path/tinyauth
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+```
+
+:::note
+  Remplacez les chemins dans le fichier de service par les emplacements réels des fichiers d'environnement
+  et du binaire.
+:::
+
+:::note
+  Pour les configurations basées sur des drapeaux CLI, supprimez la ligne `EnvironmentFile` et ajoutez les drapeaux à la ligne `ExecStart`, par exemple : `ExecStart=/some/path/tinyauth
+  --appurl=https://tinyauth.example.com`.
+:::
+
+Rechargez le démon systemd :
+
+```sh
+sudo systemctl daemon-reload
+```
+
+Activez et démarrez le service :
+
+```sh
+sudo systemctl enable --now tinyauth
+```
+
+Les journaux peuvent être consultés avec :
+
+```sh
+sudo journalctl -efu tinyauth
+```
+
+Tinyauth démarrera désormais automatiquement au démarrage.

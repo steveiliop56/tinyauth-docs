@@ -1,0 +1,91 @@
+---
+title: "OAuth Pocket ID"
+description: "Utilisez Pocket ID comme fournisseur OAuth dans Tinyauth."
+---
+
+[Pocket ID](https://pocket-id.org) est un serveur OIDC populaire qui permet la connexion aux applications avec des passkeys. La plupart des proxys ne prennent pas en charge les serveurs OIDC/OAuth pour l'authentification, ce qui signifie que Pocket ID ne peut pas être utilisé avec eux. Avec Tinyauth, Pocket ID peut être intégré aux proxys pour sécuriser les applications.
+
+## Requirements
+
+Une installation fonctionnelle de Pocket ID est requise. Reportez‑vous à la [documentation](https://pocket-id.org/docs/setup/installation) de Pocket ID pour les instructions d'installation.
+
+## Configuring Pocket ID
+
+Commencez par accéder au tableau de bord d'administration de Pocket ID :
+
+![Page d’administration Pocket ID](/screenshots/pocketid/home.png)
+
+Naviguez vers l’onglet **Clients OIDC** (sous **Administration**) et cliquez sur **Ajouter un client OIDC**. Fournissez les informations suivantes :
+
+| Nom | Valeur |
+| ------------- | ------------------------------------------------------------------- |
+| Nom | Attribuez un nom au client, par ex. `Tinyauth`. |
+| URLs de rappel | Entrez l’URL de l’application Tinyauth suivie de `/api/oauth/callback/pocketid`. Par exemple : `https://tinyauth.example.com/api/oauth/callback/pocketid`. |
+
+![Création d’un client Pocket ID](/screenshots/pocketid/new-client.png)
+
+Vous pouvez également télécharger un logo pour le client OIDC. Le logo de Tinyauth est disponible sur [GitHub](https://github.com/steveiliop56/tinyauth/blob/main/assets/logo.png).
+
+Cliquez sur **Enregistrer**. Une nouvelle page affichera les informations d’identification OIDC :
+
+![Page client Pocket ID](/screenshots/pocketid/client-page.png)
+
+Notez l’ID client et le secret pour une utilisation ultérieure.
+
+## Configuring Tinyauth
+
+Pour intégrer Tinyauth à Pocket ID, ajoutez les variables d’environnement suivantes au conteneur Docker de Tinyauth :
+
+```yaml
+services:
+  tinyauth:
+    environment:
+      - TINYAUTH_OAUTH_PROVIDERS_POCKETID_CLIENTID=your-pocket-id-client-id
+      - TINYAUTH_OAUTH_PROVIDERS_POCKETID_CLIENTSECRET=your-pocket-id-client-secret
+      - TINYAUTH_OAUTH_PROVIDERS_POCKETID_AUTHURL=https://pocket-id.example.com/authorize
+      - TINYAUTH_OAUTH_PROVIDERS_POCKETID_TOKENURL=https://pocket-id.example.com/api/oidc/token
+      - TINYAUTH_OAUTH_PROVIDERS_POCKETID_USERINFOURL=https://pocket-id.example.com/api/oidc/userinfo
+      - TINYAUTH_OAUTH_PROVIDERS_POCKETID_REDIRECTURL=https://tinyauth.example.com/api/oauth/callback/pocketid
+      - TINYAUTH_OAUTH_PROVIDERS_POCKETID_SCOPES=openid email profile groups
+      - TINYAUTH_OAUTH_PROVIDERS_POCKETID_NAME=Pocket ID
+```
+
+:::note
+Pocket ID doit être accessible via HTTPS et un certificat de confiance. Si ce n’est pas possible (par ex. certificats auto‑signés), vous devrez utiliser `TINYAUTH_OAUTH_PROVIDERS_POCKETID_INSECURE=true` afin que Tinyauth ignore la vérification du certificat.
+:::
+
+:::note
+Définissez la variable d’environnement `TINYAUTH_OAUTH_AUTOREDIRECT` sur `pocketid` pour activer la redirection automatique vers Pocket ID pour les applications protégées par Tinyauth.
+:::
+
+:::caution
+OAuth seul ne garantit pas la sécurité. Par défaut, tout compte Pocket ID peut se connecter en tant qu’utilisateur normal. Pour restreindre l’accès, utilisez la variable d’environnement `TINYAUTH_OAUTH_WHITELIST` pour autoriser des adresses e‑mail spécifiques. Reportez‑vous à la page [configuration](/docs/reference/configuration) pour plus de détails.
+:::
+
+:::note
+Avec OAuth activé, les variables d’environnement `TINYAUTH_AUTH_USERS` ou `TINYAUTH_AUTH_USERSFILE` peuvent être supprimées pour autoriser uniquement la connexion via le fournisseur OAuth.
+:::
+
+Redémarrez Tinyauth pour appliquer les modifications. L’écran de connexion inclura désormais une option pour se connecter avec Pocket ID.
+
+## Access Controls with Pocket ID Groups
+
+Pocket ID prend en charge les groupes d’utilisateurs, ce qui peut simplifier la gestion du contrôle d’accès. Pour utiliser des groupes, créez‑en un en naviguant vers l’onglet **Groupes d’utilisateurs** et en cliquant sur **Ajouter un groupe**. Attribuez un nom et enregistrez le groupe :
+
+![Nouveau groupe Pocket ID](/screenshots/pocketid/new-group.png)
+
+Sélectionnez les utilisateurs à inclure dans le groupe :
+
+![Page d’accueil du groupe Pocket ID](/screenshots/pocketid/group-home.png)
+
+Configurez les applications protégées par Tinyauth pour exiger des groupes OAuth en ajoutant l’étiquette `oauth.groups` :
+
+```yaml
+tinyauth.apps.myapp.oauth.groups: admins
+```
+
+Dans cet exemple, seuls les utilisateurs Pocket ID du groupe `admins` peuvent accéder à l’application. Les utilisateurs hors du groupe seront redirigés vers une page non autorisée.
+
+:::caution
+Par défaut, Tinyauth utilise le nom de sous‑domaine de la requête pour trouver un conteneur correspondant aux étiquettes. Par exemple, une requête vers `myapp.example.com` vérifie les étiquettes dans le conteneur nommé `myapp`. Ce comportement peut être modifié en utilisant le label `tinyauth.apps.[app].config.domain`. Reportez‑vous au guide [contrôles d’accès](/docs/guides/access-controls#access-controls-discovery) pour plus d’informations.
+:::

@@ -1,0 +1,133 @@
+---
+title: "Caddy"
+description: "Apprenez à configurer Tinyauth avec le proxy inverse Caddy."
+---
+
+_Contributeur : [@erwinkramer](https://github.com/erwinkramer)_
+
+Une configuration Caddy pour Docker Compose, basée sur [caddy-docker-proxy](https://github.com/lucaslorentz/caddy-docker-proxy), qui fonctionne avec Tinyauth pour permettre une configuration entièrement étiquetée.
+
+## Authentication Snippet
+
+Ajoutez les étiquettes suivantes n'importe où dans le fichier Compose sous un service. Cela crée un [fragment](https://caddyserver.com/docs/caddyfile/concepts#snippets) réutilisable, appelé `tinyauth_forwarder`, pour transférer l'authentification :
+
+```yaml
+caddy: (tinyauth_forwarder)
+caddy.forward_auth: tinyauth:3000
+caddy.forward_auth.uri: /api/auth/caddy
+```
+
+Cela donne le fragment suivant :
+
+```typescript
+(tinyauth_forwarder) {
+  forward_auth tinyauth:3000 {
+    uri /api/auth/caddy
+  }
+}
+```
+
+## Caddy Configuration
+
+Le service `caddy-docker-proxy` pourrait ressembler à ceci si les étiquettes sont ajoutées :
+
+```yaml
+services:
+  caddy:
+    image: lucaslorentz/caddy-docker-proxy:2.10.0
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - caddy-data:/data
+    labels:
+      caddy: (tinyauth_forwarder)
+      caddy.forward_auth: tinyauth:3000
+      caddy.forward_auth.uri: /api/auth/caddy
+
+volumes:
+  caddy-data:
+```
+
+## Tinyauth Configuration
+
+Ajoutez Tinyauth et placez-le derrière Caddy avec les étiquettes `caddy` et `caddy.reverse_proxy` :
+
+```yaml
+services:
+  tinyauth:
+    image: ghcr.io/steveiliop56/tinyauth:v5
+    restart: unless-stopped
+    environment:
+      - TINYAUTH_APPURL=http://auth.example.com
+      - TINYAUTH_AUTH_USERS=your-username-password-hash
+    labels:
+      caddy: http://auth.example.com
+      caddy.reverse_proxy: "{{upstreams 3000}}"
+```
+
+## Securing a Service
+
+Placez n'importe quel service derrière Tinyauth. La seule addition requise pour sécuriser un service est le fragment réutilisable, `tinyauth_forwarder`, créé précédemment :
+
+```yaml
+caddy.import: tinyauth_forwarder *
+```
+
+En utilisant Whoami comme exemple, cela pourrait ressembler à ceci :
+
+```yaml
+services:
+  whoami:
+    image: traefik/whoami:latest
+    restart: unless-stopped
+    labels:
+      caddy: http://whoami.example.com
+      caddy.reverse_proxy: "{{upstreams 80}}"
+      caddy.import: tinyauth_forwarder *
+```
+
+## Complete Example
+
+Voici un exemple complet avec tous les services réunis :
+
+```yaml
+services:
+  caddy:
+    image: lucaslorentz/caddy-docker-proxy:2.10.0
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - caddy-data:/data
+    labels:
+      caddy: (tinyauth_forwarder)
+      caddy.forward_auth: tinyauth:3000
+      caddy.forward_auth.uri: /api/auth/caddy
+      caddy.forward_auth.copy_headers: Remote-User Remote-Name Remote-Email Remote-Groups # optional when you want to make headers available to your service
+
+  tinyauth:
+    image: ghcr.io/steveiliop56/tinyauth:v5
+    restart: unless-stopped
+    environment:
+      - TINYAUTH_APPURL=http://auth.example.com
+      - TINYAUTH_AUTH_USERS=your-username-password-hash
+    labels:
+      caddy: http://auth.example.com
+      caddy.reverse_proxy: "{{upstreams 3000}}"
+
+  whoami:
+    image: traefik/whoami:latest
+    restart: unless-stopped
+    labels:
+      caddy: http://whoami.example.com
+      caddy.reverse_proxy: "{{upstreams 80}}"
+      caddy.import: tinyauth_forwarder *
+
+volumes:
+  caddy-data:
+```

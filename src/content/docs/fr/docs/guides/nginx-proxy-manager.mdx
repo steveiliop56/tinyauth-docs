@@ -1,0 +1,115 @@
+---
+title: "Gestionnaire de proxy Nginx"
+description: "Utilisez Tinyauth avec le proxy inverse Nginx Proxy Manager."
+---
+
+Nginx Proxy Manager est un outil populaire dans la communauté homelab pour gérer les proxys inverses. Bien qu'il diffère de Traefik et Caddy en raison du manque de prise en charge native des redirections 302 dans le module `auth_request` d'Nginx, Tinyauth fournit des chemins API spécifiquement conçus pour fonctionner avec celui-ci.
+
+:::note
+  Ce guide suppose une familiarité avec Nginx Proxy Manager.
+:::
+
+## Exemple de fichier Docker Compose
+
+Le fichier Docker Compose suivant démontre comment configurer Nginx Proxy Manager, Whoami et Tinyauth :
+
+```yaml title="docker-compose.yml"
+services:
+  npm:
+    image: jc21/nginx-proxy-manager:2
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+      - 81:81
+    volumes:
+      - npm-data:/data
+      - npm-letsencrypt:/etc/letsencrypt
+
+  # Whoami is not required, but serves as a simple example app to demonstrate Tinyauth integration. You can replace it with any app of your choice.
+  whoami:
+    image: traefik/whoami:latest
+    restart: unless-stopped
+
+  tinyauth:
+    image: ghcr.io/steveiliop56/tinyauth:v5
+    restart: unless-stopped
+    environment:
+      - TINYAUTH_APPURL=http://tinyauth.example.com
+      - TINYAUTH_AUTH_USERS=user:$$2a$$10$$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u # user:password
+
+volumes:
+  npm-data:
+  npm-letsencrypt:
+```
+
+Les contrôles d'accès OAuth peuvent être configurés à l'aide des étiquettes Docker et des variables d'environnement. Toutes les autres configurations sont gérées via l'interface utilisateur du Gestionnaire de proxy Nginx.
+
+## Configuration du Gestionnaire de proxy Nginx
+
+### Création de l'hôte Tinyauth
+
+Créez un hôte pour Tinyauth dans le Gestionnaire de proxy Nginx. Configurez-le comme tout autre hôte :
+
+![Créer l'hôte Tinyauth](/screenshots/npm/tinyauth-host.png)
+
+SSL peut être configuré si des certificats sont disponibles.
+
+:::caution
+  Assurez-vous que l'option "Block Common Exploits" est désactivée. Si activé, Nginx bloquera les URL dans les paramètres de requête, ce qui est requis pour le fonctionnement de Tinyauth.
+:::
+
+### Configurer les hôtes protégés
+
+Pour les hôtes protégés, tels que Whoami, configurez l'onglet Détails de la même manière que pour l'hôte Tinyauth :
+
+![Créer l'hôte Whoami](/screenshots/npm/whoami-host.png)
+
+SSL peut être configuré selon les besoins.
+
+:::note
+  L'option "Block Common Exploits" peut rester activée pour les hôtes protégés.
+:::
+
+### Configuration avancée
+
+Ajoutez la configuration suivante dans l'onglet Avancé pour activer l'authentification Tinyauth :
+
+```sh
+# Root location
+location / {
+  # Pass the request to the app
+  proxy_pass          http://whoami:80; # Replace with your app URL, e.g. http://10.10.10.25:80
+
+  # Add other app-specific config here
+
+  # Tinyauth auth request
+  auth_request /tinyauth;
+  auth_request_set $redirection_url $upstream_http_x_tinyauth_location;
+  error_page 401 403 =302 $redirection_url;
+}
+
+# Tinyauth auth request
+location /tinyauth {
+  # Mark the location as internal to prevent direct access
+  internal;
+
+  # Pass request to Tinyauth, do not use the Tinyauth domain here, use the internal Docker network name and port or the IP and port of the Tinyauth instance
+  proxy_pass http://tinyauth:3000/api/auth/nginx;
+
+  # Pass the request headers
+  proxy_set_header x-forwarded-proto $scheme;
+  proxy_set_header x-forwarded-host $http_host;
+  proxy_set_header x-forwarded-uri $request_uri;
+}
+```
+
+:::note
+  Le chemin `/tinyauth` peut être renommé pour plus de commodité.
+:::
+
+:::note
+  Une configuration supplémentaire peut être requise sous l'emplacement `/` pour les technologies comme WebSockets.
+:::
+
+Enregistrez la configuration de l'hôte. Accéder à l'hôte protégé redirigera vers la page de connexion Tinyauth si vous n'êtes pas déjà connecté. Répétez ce processus pour chaque hôte à protéger par Tinyauth.

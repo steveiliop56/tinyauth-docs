@@ -1,0 +1,67 @@
+---
+title: "Autres fournisseurs OAuth"
+description: "Utilisez n'importe quel fournisseur OAuth avec Tinyauth."
+---
+
+Tinyauth prend en charge tout fournisseur OAuth/OpenID Connect qui respecte la spécification (en particulier concernant les revendications). Cela signifie que vous pouvez utiliser n'importe quel fournisseur auto-hébergé ou tiers qui implémente les protocoles OAuth 2.0 et/ou OpenID Connect.
+
+## Exigences
+
+- Une instance Tinyauth configurée et en cours d'exécution.
+- Un fournisseur OAuth/OpenID Connect que vous souhaitez intégrer à Tinyauth. Il peut s'agir d'un fournisseur auto-hébergé comme Keycloak ou d'un fournisseur tiers tel qu'Auth0, Okta, ou tout autre qui prend en charge OAuth 2.0/OpenID Connect.
+
+## Obtenez vos identifiants client
+
+Pour intégrer votre fournisseur OAuth à Tinyauth, vous devrez créer un client/application dans le tableau de bord de votre fournisseur OAuth. Ce processus varie selon le fournisseur que vous utilisez, mais implique généralement les étapes suivantes :
+
+1. Connectez-vous au tableau de bord de votre fournisseur OAuth.
+2. Accédez à la section où vous pouvez créer un nouveau client/application.
+3. Remplissez les informations requises, telles que le nom de votre application et l'URI de redirection. L'URI de redirection doit être au format `https://your-tinyauth-instance.com/api/oauth/callback/your-provider`, où `your-provider` est un identifiant unique pour votre fournisseur OAuth (par ex., `keycloak`, `auth0`, etc.).
+4. Enregistrez le client/l'application et notez l'ID client ainsi que le secret client, car vous en aurez besoin pour configurer Tinyauth.
+
+Vous devrez également obtenir les URL des points de terminaison d'autorisation, de jeton et d'information utilisateur auprès de votre fournisseur OAuth. Ces URLs sont généralement disponibles dans la documentation du fournisseur, le tableau de bord ou via leur point de découverte OpenID Connect (généralement trouvé à `https://your-provider/.well-known/openid-configuration`).
+
+## Configurer Tinyauth
+
+Une fois que vous avez vos identifiants client et les URL des points de terminaison, vous pouvez configurer Tinyauth pour utiliser votre fournisseur OAuth. Cela implique d'ajouter une nouvelle configuration de fournisseur à votre instance. Vous pouvez le faire en ajoutant les variables d'environnement suivantes à votre configuration Tinyauth :
+
+```yaml
+services:
+  tinyauth:
+    environment:
+      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_CLIENTID=your-provider-client-id
+      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_CLIENTSECRET=your-provider-client-secret
+      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_AUTHURL=your-provider-authorization-endpoint
+      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_TOKENURL=your-provider-token-endpoint
+      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_USERINFOURL=your-provider-userinfo-endpoint
+      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_REDIRECTURL=https://your-tinyauth-instance.com/api/oauth/callback/myprovider # This is usually not needed as Tinyauth can auto-generate it, but you can specify it if your provider requires a specific redirect URL.
+      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_SCOPES="openid email profile groups" # Ensure you include the necessary scopes for your provider.
+      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_NAME="My Provider" # This is the name that will be displayed on the login page for this provider.
+      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_INSECURE=false # Only set this to true if your provider uses self-signed certificates
+```
+
+Assurez-vous de remplacer `MYPROVIDER` par un identifiant unique pour votre fournisseur et d'entrer les valeurs correctes pour l'ID client, le secret client et les URL des points de terminaison.
+
+:::caution
+L'identifiant du fournisseur (par ex., `MYPROVIDER`) doit être unique et ne contenir que des caractères alphanumériques. Cet identifiant est utilisé dans l'URI de redirection et les noms de variables d'environnement, choisissez donc judicieusement.
+:::
+
+Vous pouvez ajouter plusieurs fournisseurs en répétant la configuration ci-dessus avec différents identifiants (par ex., `KEYCLOAK`, `AUTH0`, etc.).
+
+## Astuces et avertissements
+
+:::note
+  Définissez la variable d'environnement `TINYAUTH_OAUTH_AUTOREDIRECT` sur l'ID de votre fournisseur (par ex., `myprovider`) pour activer le redirection automatique vers votre fournisseur OAuth pour les applications protégées par Tinyauth.
+:::
+
+:::caution
+  OAuth seul ne garantit pas la sécurité. Par défaut, tout compte dans le fournisseur OAuth peut se connecter en tant qu'utilisateur normal. Pour restreindre l'accès, utilisez la variable d'environnement `TINYAUTH_OAUTH_WHITELIST` pour autoriser des adresses e-mail spécifiques. Reportez-vous à la page [configuration](/docs/reference/configuration) pour plus de détails.
+:::
+
+:::note
+  Avec OAuth activé, la variable d'environnement `TINYAUTH_AUTH_USERS` ou `TINYAUTH_AUTH_USERSFILE` peut être supprimée pour autoriser uniquement la connexion via le fournisseur OAuth.
+:::
+
+## Essayez-le
+
+Après avoir configuré Tinyauth, redémarrez votre instance pour appliquer les modifications. Vous devriez maintenant voir une option de connexion avec votre fournisseur OAuth sur la page d'accueil. Cliquez dessus et vous serez redirigé vers votre fournisseur OAuth pour vous authentifier. Après l'authentification, vous serez redirigé à nouveau vers Tinyauth et devriez être connecté avec succès.

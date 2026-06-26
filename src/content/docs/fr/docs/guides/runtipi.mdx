@@ -1,0 +1,51 @@
+---
+title: "Runtipi"
+description: "Utilisez Tinyauth avec la plateforme de gestion du serveur domestique Runtipi."
+---
+
+Runtipi est un assistant de serveur domestique personnel open-source conçu pour gérer et exécuter plusieurs services sur un seul serveur. Pour plus de détails, visitez le [site officiel](https://runtipi.io). Grâce à ses fonctionnalités proxy robustes, Runtipi s'intègre parfaitement avec Tinyauth pour offrir une expérience d'authentification fluide.
+
+## Création d'utilisateurs et de clients OAuth
+
+Les utilisateurs peuvent être créés en utilisant le [CLI](/docs/reference/cli#create-user-command) de Tinyauth. Assurez-vous que l'option format for docker est sélectionnée pour permettre à Tinyauth d'analyser correctement l'utilisateur.
+
+L'application Runtipi inclut des champs pour GitHub et Google OAuth. Pour utiliser OAuth, reportez-vous aux guides OAuth et prenez note des identifiants clients et des secrets.
+
+## Modification du middleware d'authentification directe
+
+Par défaut, Runtipi utilise son propre écran de connexion pour l'authentification. Pour le remplacer par Tinyauth, activez les paramètres avancés :
+
+![Activer les paramètres avancés](/screenshots/runtipi/advanced-settings-enable.png)
+
+Définissez l'URL d'authentification directe à :
+
+```
+http://tinyauth:3000/api/auth/traefik
+```
+
+![Définir l'URL d'authentification directe](/screenshots/runtipi/forward-auth-url.png)
+
+Enregistrez les paramètres et redémarrez Runtipi.
+
+:::note
+  Depuis la version v4 de Runtipi, le support de plusieurs magasins d'applications a été ajouté. Cela peut modifier le nom du conteneur. Si la redirection vers l'écran de connexion Tinyauth échoue, utilisez :
+  `http://tinyauth_migrated-tinyauth-1:3000/api/auth/traefik` comme URL d'authentification directe (en supposant que vous installez Tinyauth depuis le magasin officiel).
+:::
+
+## Installation de Tinyauth
+
+Accédez à l'onglet Appstore, sélectionnez l'application Tinyauth et remplissez les champs utilisateurs, les identifiants OAuth et les autres informations requises. Avant l'installation, activez soit le commutateur de domaine local, soit celui d'exposition pour garantir que Tinyauth est accessible via un domaine. Cela est nécessaire pour une gestion correcte des cookies. En fonction de la configuration, utilisez soit le domaine local, soit le domaine exposé comme URL de l'application (assurez-vous d'utiliser HTTPS). Enfin, complétez le processus d'installation.
+
+:::note
+  Des options de personnalisation supplémentaires, telles que l'ajout de plus de fournisseurs OAuth, sont disponibles via le [user-config](https://runtipi.io/docs/guides/customize-app-config) de Runtipi.
+:::
+
+## Activation de l'authentification pour les applications
+
+L'authentification peut être activée pour toute application en ouvrant ses paramètres et en basculant le commutateur d'activation de l'authentification :
+
+![Activer l'authentification pour l'application](/screenshots/runtipi/app-auth-enable.png)
+
+:::caution
+  Pour que l'authentification fonctionne correctement, assurez-vous que le domaine local ou exposé partage le même domaine de niveau racine que Tinyauth. Par exemple, `tinyauth.example.com` et `nginx.example.com` fonctionneront, mais `tinyauth.domain1.com` et `nginx.domain2.com` ne fonctionneront pas.
+:::

@@ -1,0 +1,50 @@
+---
+title: "Mise à jour de la version 4 vers la version 5"
+description: "Un guide pour aider à migrer depuis Tinyauth v4 vers v5."
+---
+
+import ConfigMigrator from "./4-to-5-migrator.astro";
+
+:::note
+Pour suivre ce guide de migration, vous devez avoir Tinyauth v4 en cours d'exécution. Si vous venez de Tinyauth v3, vous devez d'abord migrer vers la version 4. Pour migrer depuis Tinyauth v3, veuillez consulter le [guide de migration](/docs/breaking-updates/3-to-4).
+:::
+
+Tinyauth v5 introduit uniquement des changements de configuration.
+
+## Changements de configuration
+
+Dans Tinyauth v4, la configuration était un désordre – certaines options ne fonctionnaient pas comme prévu, il était difficile de les suivre et elles étaient généralement peu intuitives. Dans Tinyauth v5, nous avons simplifié le format de configuration en un schéma unique à travers tous les moyens de configuration.
+
+### Variables d'environnement
+
+Les variables d'environnement suivent désormais le format suivant :
+
+```
+TINYAUTH_<SECTION>_<KEY>=<VALUE>
+```
+
+Le préfixe `TINYAUTH_` est utilisé pour distinguer la configuration de Tinyauth des autres variables d'environnement. Toutes les variables d'environnement préfixées par `TINYAUTH_` sont considérées comme des options de configuration et, en cas de mauvaise configuration, contrairement aux versions précédentes, Tinyauth refusera de démarrer.
+
+### Options CLI
+
+Les options CLI suivent le format suivant :
+
+```
+--section.key=value
+```
+
+Ce format peut sembler peu intuitif au premier abord, mais il est en réalité très puissant et meilleur que le format précédent basé sur des délimiteurs. Il vous permet de spécifier les options de configuration d'une manière facile à retenir et à taper.
+
+### Migrateur de configuration
+
+Étant donné que le format complet de la configuration a changé, vous devrez mettre à jour l'ensemble de votre configuration. Pour faciliter ce processus, nous avons fourni un migrateur de configuration qui peut vous aider à migrer vos options CLI et variables d'environnement vers le nouveau format.
+
+<ConfigMigrator />
+
+:::caution
+La configuration dynamique n'est pas prise en charge par ce migrateur. Vous devrez mettre à jour manuellement vos fichiers de configuration et variables d'environnement pour utiliser le nouveau format. Pour plus d'informations, consultez la référence [configuration](/docs/reference/configuration).
+:::
+
+:::note
+Pour que le migrateur fonctionne correctement, veuillez spécifier une variable d'environnement ou une option CLI par ligne (séparée par le signe égal **et non** l'espace). Bien que le migrateur prenne en charge les commentaires et les lignes vides, il est recommandé de garder l'entrée propre et facile à lire. De plus, vous devriez idéalement ne pas mélanger options CLI et variables d'environnement en une seule fois (même si le migrateur les prend en charge).
+:::
