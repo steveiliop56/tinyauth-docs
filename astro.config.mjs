@@ -35,6 +35,11 @@ export default defineConfig({
         Footer: "./src/components/footer.astro",
       },
       title: "Tinyauth",
+      defaultLocale: 'root',
+      locales: {
+        root: { label: 'English', lang: 'en' },
+        fr: { label: 'Français', lang: 'fr' },
+      },
       credits: true,
       logo: {
         src: "./public/tinyauth.png",
