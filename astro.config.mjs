@@ -7,7 +7,11 @@ import umami from "@yeskunall/astro-umami";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://tinyauth.app",
+  site: "https://docs.local/",
+  base: '/',
+
+  // Ne fonctionne pas entre 2 disques
+  //  outDir: '/home/fred/dev/web/docs/dist/www/docs/tinyauth',
   server: (command) => {
     if (command.command === "preview") {
       return {
