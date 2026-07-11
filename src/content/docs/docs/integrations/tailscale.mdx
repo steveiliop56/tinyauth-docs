@@ -1,0 +1,95 @@
+---
+title: Tailscale
+description: Use the Tinyauth OpenID Connect provider to authenticate in Tailscale.
+---
+
+import { Steps } from '@astrojs/starlight/components';
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import CreateOIDCClientTool from "../../../../components/create-oidc-client-tool.astro";
+
+Tinyauth meets all of the criteria to be used as an OpenID Connect provider for Tailscale. This includes
+support for all of the required OpenID Connect scopes, claims and endpoints. Tinyauth also includes support
+for WebFinger which is required for Tailscale to discover the OpenID Connect provider.
+
+## Requirements
+
+- A Tailscale account
+- A Tinyauth instance
+- A domain name
+
+:::caution
+You will need to run Tinyauth with HTTPS to use it as an OpenID Connect provider.
+:::
+
+:::caution
+Tinyauth will need to be accessible from the internet for Tailscale to be able to reach it.
+This means that you will need to have a public domain name and a valid SSL certificate for
+your Tinyauth instance.
+:::
+
+
+## Tinyauth Configuration
+
+To begin with, we need to generate a client ID and secret in Tinyauth for Tailscale. This can be done by running the following command:
+
+<Tabs>
+  <TabItem label="Docker">
+    ```sh
+    docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v5 oidc create tailscale
+    ```
+  </TabItem>
+  <TabItem label="Binary">
+    ```sh
+    ./tinyauth oidc create tailscale
+    ```
+  </TabItem>
+  <TabItem label="Browser">
+    <CreateOIDCClientTool />
+  </TabItem>
+</Tabs>
+
+From the output, make sure to note down the client ID and secret as we will need them later for the Tinyauth configuration.
+
+Now, we can pass our configuration to Tinyauth using environment variables:
+
+```sh
+TINYAUTH_OIDC_PRIVATEKEYPATH=/path/to/private/key.pem
+TINYAUTH_OIDC_PUBLICKEYPATH=/path/to/public/key.pem
+TINYAUTH_OIDC_CLIENTS_TAILSCALE_CLIENTID=client-id
+TINYAUTH_OIDC_CLIENTS_TAILSCALE_CLIENTSECRET=ta-client-secret
+TINYAUTH_OIDC_CLIENTS_TAILSCALE_TRUSTEDREDIRECTURIS=https://login.tailscale.com/a/oauth_response
+TINYAUTH_OIDC_CLIENTS_TAILSCALE_NAME=Tailscale
+```
+
+## Sign-up in Tailscale
+
+:::note
+These steps are quoted from the [Tailscale documentation](https://tailscale.com/docs/integrations/identity/custom-oidc#tailscale-setup).
+:::
+
+<Steps>
+
+1. Go to the [Sign up with OIDC](https://login.tailscale.com/start/oidc) page of the admin console or
+    when signing-up for a new account, select the **Sign up with OIDC** option.
+
+    <img alt="Tailscale Sign-up with OIDC" width="256"
+        src="https://tailscale.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fsign-up-oidc.b699a417.png&w=1080&q=75" />
+
+2. In the Email address field, enter the administrator's full email address.
+    The domain in the email address must match the domain where the WebFinger endpoint is served, and the domain you will use for Tailscale.
+
+3. Select **Get OIDC** Issuer. If Tailscale is able to retrieve the issuer from Tinyauth, it will be displayed in the Issuer field.
+
+4. In the Client ID field, enter the client ID we generated previously.
+
+5. Likewise, in the Client Secret, enter the Client Secret.
+
+6. If you like, you can skip the consent screen of Tinyauth by selecting the `none` prompt.
+
+7. Select **Sign up with OIDC**. You will be redirected to Tinyauth for authentication.
+
+8. Log in to your provider using the email you entered in step 2. Upon authentication, you will be redirected to the Tailscale admin console.
+
+</Steps>
+
+The user that configures OIDC for Tailscale becomes the first user in the tailnet and Owner of the tailnet.

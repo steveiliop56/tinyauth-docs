@@ -134,6 +134,10 @@ export default defineConfig({
               label: "Zerobyte",
               slug: "docs/integrations/zerobyte",
             },
+            {
+              label: "Tailscale",
+              slug: "docs/integrations/tailscale",
+            },
           ],
         },
         {
