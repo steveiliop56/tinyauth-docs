@@ -3,6 +3,71 @@ title: Changelog
 description: Overview of changes and updates in Tinyauth versions.
 ---
 
+## v5.1.0
+
+> [!NOTE]
+> Tinyauth has moved! All repositories now live under the new [Tinyauth](https://github.com/tinyauthapp) organization. Pull the new image from `ghcr.io/tinyauthapp/tinyauth`. The old image under my personal account **will no longer be updated**, so switch over when you can.
+
+> [!NOTE]
+> The config file is now a **stable** feature. Please switch your configuration file flag to `--configfile` (or `TINYAUTH_CONFIGFILE` for environment variables).
+
+> [!WARNING]
+> This release contains **security fixes**. Please update as soon as possible.
+
+## New Features
+
+**Authentication & Access Controls**
+
+- Support for authentication through Tailscale
+- Deny-by-default access controls
+- Annotation-based access controls in Kubernetes @contre95
+- Global bypass by IP @scottmckendry
+- Provider-specific OAuth whitelists @puneetdixit200
+- OAuth whitelist file support @djedditt
+
+**OpenID Connect**
+
+- Expose all OpenID Connect claims through user attributes @scottmckendry
+- Run Tinyauth on a top-level domain to use it as a standalone OIDC provider @jacekkow
+- `POST` request support on the OIDC authorize endpoint
+- WebFinger support
+- Support for `prompt` parameter in OIDC
+- Support for `max_age` in OIDC
+
+**Database & Config**
+
+- PostgreSQL as a database backend @scottmckendry
+- LDAP bind password file support @Rycochet
+- Config file loading is now stable, you will need to rename your CLI flag from `--experimental.configfile` to `--configfile`
+- Option to disable lockdown mode
+- Attempt to reconnect to LDAP server on start-up
+- Support for anonymous LDAP bind @nv6
+
+**Frontend**
+
+- Merge language and theme selector in new quick actions menu
+
+## Improvements
+
+- Preserve login parameters throughout the frontend
+- Graceful shutdown on `SIGTERM`
+- Pass through the LDAP mail attribute instead of crafting one when it's available
+- Lockdown mode dynamically scales required failed attempt amount based on configured users
+- Rework CLI commands for simpler and more intuitive output
+
+## Fixes
+
+- Fix open redirect vulnerability in the OpenID Connect server @Dredsen
+- Use the loaded public key in the OpenID Connect server when available @Dredsen
+
+## Technical
+
+- Rework dependency injection with Dig
+- Rework the user context middleware
+- Rework frontend user/app context API paths (changes in `/api/context/app` and `/api/context/user`)
+- Switch package manager from Bun to PNPM
+- Update dependencies and translations
+
 ## v5.0.7
 
 ### Improvements
