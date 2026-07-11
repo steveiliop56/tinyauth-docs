@@ -17,7 +17,7 @@
     flex-direction: column;
     gap: 0.25rem;
     font-size: var(--sl-text-sm);
-    font-weight: 600;
+    font-weight: 500;
     color: var(--sl-color-text);
 }
 
@@ -77,9 +77,9 @@
     border-radius: 0.5rem;
     font-size: 0.875rem;
     line-height: 1.25rem;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--sl-color-text);
-    transition-property: border-color, color;
+    transition-property: border, color;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 100ms;
     transition-delay: 50ms;
@@ -90,8 +90,5 @@
 .tool-submit:is(:hover, :focus-visible) {
     cursor: pointer;
     color: var(--sl-color-text-accent);
-    outline: none;
-    box-shadow: 0 0 0 2px var(--sl-color-accent);
-    border-color: transparent;
+    border: 1px solid var(--sl-color-accent);
 }
-
