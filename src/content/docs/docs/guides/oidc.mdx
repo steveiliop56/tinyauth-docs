@@ -6,7 +6,11 @@ description: Use Tinyauth's OIDC server to authenticate applications.
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import CreateOidcClientTool from "../../../../components/create-oidc-client-tool.astro";
 
-In Tinyauth v5, a major milestone was the introduction of the OIDC server, which allows Tinyauth not only to use other identity providers but also to act as an identity provider itself. This means that Tinyauth can serve as a central authentication gateway for multiple applications, providing a single sign-on experience for users.
+From v5.1.0 and going forward, Tinyauth is an OpenID Connect™ Certified server. This means that Tinyauth has been tested and verified to comply with the OpenID Connect Core 1.0 specification, ensuring that it meets the standards for secure authentication and identity management.
+
+You can use the OpenID Connect server of Tinyauth to authenticate applications and provide a seamless login experience for users using a centralized authentication system. This allows for better security, easier user management, and a more streamlined user experience across multiple applications.
+
+<img alt="OpenID Certified" width="200" src="https://openid.net/wordpress-content/uploads/2016/05/oid-l-certification-mark-l-cmyk-150dpi-90mm.jpg" />
 
 ## What is OpenID Connect?
 
@@ -79,7 +83,7 @@ While no promises can be made, if you feel a required OpenID Connect feature is 
 
 ## Important Considerations
 
-Tinyauth’s core idea is to be a stateless application, but OIDC requires persistence for session and key storage. Everything is stored in the `/data` directory so, if you are using Docker, add the corresponding volume to your `docker-compose.yml` file:
+Tinyauth’s core idea is to be a stateless application however, OpenID Connect requires persistence for sessions and keys. Everything is stored in the `/data` directory so, if you are using Docker, add the corresponding volume to your `docker-compose.yml` file:
 
 ```yaml
 services:
