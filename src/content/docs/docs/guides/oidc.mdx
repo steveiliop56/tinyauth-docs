@@ -98,6 +98,12 @@ You also need to specify the paths where the public and private keys are stored.
 
 Lastly, for the OIDC server to work, HTTPS is **required** on the app URL, which will become the issuer URL. You can use a self‑signed certificate or a certificate from a trusted CA.
 
+:::tip
+In case you are planning to use Tinyauth as a standalone OpenID Connect provider, you can use
+`TINYAUTH_AUTH_SUBDOMAINSENABLED=false` to disable support for wildcard cookies and increase
+security. By disabling wildcard cookies, the forward-auth middleware will ***not*** work.
+:::
+
 ## Creating OIDC Clients
 
 To create an OIDC client, use the `oidc create` command. For example:
