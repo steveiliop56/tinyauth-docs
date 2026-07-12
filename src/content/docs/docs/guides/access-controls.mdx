@@ -98,7 +98,7 @@ Labels are dynamic and can be updated at runtime, environment variables are not 
 ## Access Control Policy
 
 Tinyauth supports both an allow-by-default and a deny-by-default approach in access controls. The policy can be defined
-using the `TINYAUTH_AUTH_ACLS_POLICY` (`--auth.acls.policy` CLI flag) environment variable. The configuration opiton
+using the `TINYAUTH_AUTH_ACLS_POLICY` environment variable or the `--auth.acls.policy` CLI flag. The configuration option
 supports either `deny` or `allow`. The default policy is `allow`.
 
 In both examples we have the following ACLs defined as Docker labels.
