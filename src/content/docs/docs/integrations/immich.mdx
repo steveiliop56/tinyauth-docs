@@ -1,0 +1,86 @@
+---
+title: Immich
+description: Use the Tinyauth OpenID Connect provider to authenticate users with Immich.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import CreateOidcClientTool from "../../../../components/create-oidc-client-tool.astro";
+
+[Immich](https://immich.app/) is a self-hosted photo and video backup solution. By integrating Tinyauth as an OpenID Connect provider, you can centralize authentication and offer single sign-on (SSO) for your Immich users.
+
+## Requirements
+
+- A running instance of Immich
+- A Tinyauth instance
+- HTTPS configured for both services
+
+:::caution
+You will need to run Tinyauth with HTTPS to use it as an OpenID Connect provider.
+:::
+
+## Tinyauth Configuration
+
+First, generate an OIDC client for Immich in Tinyauth:
+
+<Tabs>
+  <TabItem label="Docker">
+    ```sh
+    docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v5 oidc create immich
+    ```
+  </TabItem>
+  <TabItem label="Binary">
+    ```sh
+    ./tinyauth oidc create immich
+    ```
+  </TabItem>
+  <TabItem label="Browser">
+    <CreateOidcClientTool />
+  </TabItem>
+</Tabs>
+
+From the output, keep the generated client ID and client secret.
+
+Now, configure Tinyauth using environment variables:
+
+```sh
+TINYAUTH_OIDC_PRIVATEKEYPATH=/path/to/private/key.pem
+TINYAUTH_OIDC_PUBLICKEYPATH=/path/to/public/key.pem
+TINYAUTH_OIDC_CLIENTS_IMMICH_CLIENTID=client-id
+TINYAUTH_OIDC_CLIENTS_IMMICH_CLIENTSECRET=ta-client-secret
+TINYAUTH_OIDC_CLIENTS_IMMICH_TRUSTEDREDIRECTURIS=https://immich.example.com/auth/login,https://immich.example.com/user-settings,https://immich.example.com/api/oauth/mobile-redirect,app.immich:///oauth-callback
+TINYAUTH_OIDC_CLIENTS_IMMICH_NAME=Immich
+```
+
+:::note
+Immich uses multiple redirect URIs depending on your clients:
+- Web login: `https://immich.example.com/auth/login`
+- Account linking in web UI: `https://immich.example.com/user-settings` - Mobile redirect endpoint: `https://immich.example.com/api/oauth/mobile-redirect` (useful if a custom scheme redirect is rejected)
+- Mobile app: `app.immich:///oauth-callback`
+:::
+
+Restart your Tinyauth instance after applying the configuration.
+
+## Immich Configuration
+
+In Immich, go to *Administration* -> *Settings* -> *Authentication Settings* and enable OAuth. Use the following values:
+
+| Field | Value |
+| - | - |
+| Enabled | `true` |
+| Issuer URL | Your Tinyauth URL, for example `https://tinyauth.example.com` |
+| Client ID | The client ID generated in the previous step |
+| Client Secret | The client secret generated in the previous step |
+| Scope | `openid email profile` |
+| Button Text | Optional, e.g. `Login with Tinyauth` |
+| Auto Register | Optional, usually `true` for first login provisioning |
+| Auto Launch | Optional, enable only if you want to skip the default Immich login page |
+
+:::note
+Immich performs OIDC discovery from the issuer URL. You can provide either:
+- `https://tinyauth.example.com`
+- `https://tinyauth.example.com/.well-known/openid-configuration`
+:::
+
+Save the settings, then open the Immich login page and use the OAuth button to test the flow.
+
+If authentication is successful, users are redirected to Tinyauth to sign in, then are returned to Immich as authenticated users.
