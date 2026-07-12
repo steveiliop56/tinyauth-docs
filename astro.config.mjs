@@ -117,6 +117,10 @@ export default defineConfig({
               slug: "docs/guides/runtipi",
             },
             {
+              label: "Tailscale",
+              slug: "docs/guides/tailscale",
+            },
+            {
               label: "Using the Binary",
               slug: "docs/guides/using-the-binary",
             },

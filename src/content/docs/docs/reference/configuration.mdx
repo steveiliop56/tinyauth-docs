@@ -14,6 +14,7 @@ Tinyauth can be configured using environment variables or CLI flags. The table b
 | Environment | Flag | Description | Default |
 | - | - | - | - |
 | `TINYAUTH_APPURL` | `--appurl` | The base URL where the app is hosted. | `` |
+| `TINYAUTH_LABELPROVIDER` | `--labelprovider` | Label provider to use for ACLs (auto, docker, kubernetes or none to disable). auto detects the environment. | `auto` |
 
 ## Database
 
@@ -177,7 +178,6 @@ Tinyauth can be configured using environment variables or CLI flags. The table b
 | `TINYAUTH_TAILSCALE_APITOKENFILE` | `--tailscale.apitokenfile` | Path to the file containing the Tailscale API token. | `` |
 | `TINYAUTH_TAILSCALE_TAILNET` | `--tailscale.tailnet` | Tailnet name. | `` |
 | `TINYAUTH_TAILSCALE_CACHEDURATION` | `--tailscale.cacheduration` | Cache duration for Tailscale device and user lists in seconds. | `300` |
-| `TINYAUTH_LABELPROVIDER` | `--labelprovider` | Label provider to use for ACLs (auto, docker, kubernetes or none to disable). auto detects the environment. | `auto` |
 
 ## Logging
 
