@@ -139,6 +139,10 @@ export default defineConfig({
               slug: "docs/integrations/zerobyte",
             },
             {
+              label: "Tailscale",
+              slug: "docs/integrations/tailscale",
+            },
+            {
               label: "Immich",
               slug: "docs/integrations/immich",
             },
