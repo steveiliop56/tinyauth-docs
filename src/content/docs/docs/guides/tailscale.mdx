@@ -57,7 +57,7 @@ Before configuring Tinyauth, you need to obtain your Tailnet ID and an API token
 done by visiting the Tailscale [admin console](https://login.tailscale.com/admin/settings/general). The Tailnet
 ID is the first thing you see in the page.
 
-![Tailscale Settings](/public/screenshots/tailscale/tailscale_settings.png)
+![Tailscale Settings](/screenshots/tailscale/tailscale_settings.png)
 
 :::note
 While you can use the Legacy Tailnet ID, it is recommended to use the new random one.
@@ -65,12 +65,12 @@ While you can use the Legacy Tailnet ID, it is recommended to use the new random
 
 Then, you can generate an API token in the [keys](https://login.tailscale.com/admin/settings/keys) page.
 
-![Tailscale keys page](/public/screenshots/tailscale/tailscale_keys.png)
+![Tailscale keys page](/screenshots/tailscale/tailscale_keys.png)
 
 There click the **Generate access token** button, give it a name and click **Generate access token** again.
 You should then be greeted by the following page.
 
-![Tailscale API tokens](/public/screenshots/tailscale/tailscale_api_token.png)
+![Tailscale API tokens](/screenshots/tailscale/tailscale_api_token.png)
 
 Make sure to note down your Tailnet ID and the new API token as we will need them in the next part.
 
@@ -103,6 +103,6 @@ Make sure to restart Tinyauth after updating the configuration.
 After restarting and assuming Tinyauth can get your client IP, you should see the following screen
 when visiting Tinyauth to login:
 
-![Tinyauth Tailscale Login](/public/screenshots/tailscale/tailscale_login.png)
+![Tinyauth Tailscale Login](/screenshots/tailscale/tailscale_login.png)
 
 After clicking **Continue with Tailscale**, authentication should proceed as normal.
