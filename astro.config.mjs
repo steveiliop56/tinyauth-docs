@@ -146,6 +146,10 @@ export default defineConfig({
               label: "Immich",
               slug: "docs/integrations/immich",
             },
+            {
+              label: "Beszel",
+              slug: "docs/integrations/beszel",
+            },
           ],
         },
         {
