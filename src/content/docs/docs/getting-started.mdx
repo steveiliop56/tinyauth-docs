@@ -111,6 +111,10 @@ tinyauth:
 It is recommended  (and required for IP address ACLs) that you set the `TINYAUTH_AUTH_TRUSTEDPROXIES` environment variable (`--auth.trustedproxies` for CLI flags and `auth.trustedProxies` for YAML) to the IP address of your Traefik instance so Tinyauth can trust the `X-Real-IP` and `X-Forwarded-For`headers and get the correct client IP. For a Docker-based deployment,
 `172.17.0.0/16` should work.
 
+:::caution
+For Traefik setups in Docker (like this one), you will need to ensure that Traefik detects the correct IP address. Because Docker uses NAT for containers, you will probably need to run Traefik in `network_mode: host`.
+:::
+
 To protect additional applications, include the following label in their configuration:
 
 ```yaml
