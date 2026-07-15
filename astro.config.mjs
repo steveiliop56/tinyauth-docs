@@ -117,6 +117,10 @@ export default defineConfig({
               slug: "docs/guides/runtipi",
             },
             {
+              label: "Tailscale",
+              slug: "docs/guides/tailscale",
+            },
+            {
               label: "Using the Binary",
               slug: "docs/guides/using-the-binary",
             },
@@ -135,8 +139,16 @@ export default defineConfig({
               slug: "docs/integrations/zerobyte",
             },
             {
+              label: "Tailscale",
+              slug: "docs/integrations/tailscale",
+            },
+            {
               label: "Immich",
               slug: "docs/integrations/immich",
+            },
+            {
+              label: "Beszel",
+              slug: "docs/integrations/beszel",
             },
           ],
         },

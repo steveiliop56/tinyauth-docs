@@ -4,6 +4,7 @@ description: Use the Tinyauth OpenID Connect provider to authenticate users with
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
+import CreateOIDCClientTool from "../../../../components/create-oidc-client-tool.astro";
 
 [Zerobyte](https://github.com/nicotsx/zerobyte) is a popular self-hosted backup automation solution based on restic. It allows users to easily manage and automate their backup tasks through a user-friendly web interface. By integrating Tinyauth as an OpenID Connect provider, you can enhance the security of your Zerobyte instance by enabling single sign-on (SSO) and centralized authentication.
 
@@ -31,6 +32,9 @@ To begin with, we need to generate a client ID and secret in Tinyauth for Zeroby
     ```sh
     ./tinyauth oidc create zerobyte
     ```
+  </TabItem>
+  <TabItem label="Browser">
+    <CreateOIDCClientTool />
   </TabItem>
 </Tabs>
 

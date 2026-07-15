@@ -5,6 +5,19 @@ description: Guides and tips for advanced setups.
 
 Below, you can find some guides for advanced setups.
 
+## Tinyauth API
+
+Tinyauth exposes its API under `/api`. Documentation for the API is not available so you will have to consult
+the controller [sources](https://github.com/tinyauthapp/tinyauth/tree/main/internal/controller). The API endpoint
+is designed to be consumed only by the frontend and **no guarantees** can be made that it will remain stable
+throughout updates. In case you are building an application that utilizes the Tinyauth API, please make sure
+to consult the release notes of each Tinyauth release to ensure that no changes have been made.
+
+:::note
+Even though the API endpoints are not guaranteed to remain stable, user-facing endpoints like the forward-auth,
+OAuth and OpenID Connect endpoints **are guaranteed** to remain stable.
+:::
+
 ## Authenticating to Apps with Basic Auth
 
 Some apps already offer authentication methods like basic auth (e.g. browser pop-ups). This can be inconvenient as it requires logging in to both Tinyauth and the protected app. Tinyauth supports authenticating to apps automatically by adding basic auth labels to the protected app.

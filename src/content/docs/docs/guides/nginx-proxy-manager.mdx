@@ -99,11 +99,19 @@ location /tinyauth {
   proxy_pass http://tinyauth:3000/api/auth/nginx;
 
   # Pass the request headers
+  proxy_set_header x-forwarded-for $remote_addr;
+  proxy_set_header x-real-ip $remote_addr;
   proxy_set_header x-forwarded-proto $scheme;
   proxy_set_header x-forwarded-host $http_host;
   proxy_set_header x-forwarded-uri $request_uri;
 }
 ```
+
+It is recommended  (and required for IP address ACLs) that you set the `TINYAUTH_AUTH_TRUSTEDPROXIES` environment variable (`--auth.trustedproxies` for CLI flags and `auth.trustedProxies` for YAML) to the IP address of your Nginx instance so Tinyauth can trust the `X-Real-IP` and `X-Forwarded-For`headers and get the correct client IP.
+
+:::caution
+For Nginx setups in Docker (like this one), you will need to ensure that Nginx detects the correct IP address. Because Docker uses NAT for containers, you will probably need to run Nginx in `network_mode: host`.
+:::
 
 :::note
   The `/tinyauth` path can be renamed for convenience.

@@ -1,0 +1,114 @@
+---
+title: Beszel
+description: Use the Tinyauth OpenID Connect provider to authenticate users in Beszel.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import CreateOIDCClientTool from "../../../../components/create-oidc-client-tool.astro";
+
+[Beszel](https://github.com/henrygd/beszel) is a lightweight server monitoring platform that includes Docker statistics, historical data, and alert functions. It uses PocketBase under the hood making it easy to add Tinyauth as an OpenID connect provider.
+
+## Requirements
+
+- A running instance of Beszel
+- A Tinyauth instance
+
+:::caution
+You will need to run Tinyauth with HTTPS to use it as an OpenID Connect provider.
+:::
+
+## Tinyauth Configuration
+
+To begin with, we need to generate a client ID and secret in Tinyauth for Beszel. This can be done by running the following command:
+
+<Tabs>
+    <TabItem label="Docker">
+        ```sh
+        docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v5 oidc create beszel
+        ```
+    </TabItem>
+    <TabItem label="Binary">
+        ```sh
+        ./tinyauth oidc create beszel
+        ```
+    </TabItem>
+    <TabItem label="Browser">
+        <CreateOIDCClientTool />
+    </TabItem>
+</Tabs>
+
+From the output, make sure to note down the client ID and secret as we will need them later for the Beszel configuration.
+
+Now, we can pass our configuration to Tinyauth using environment variables:
+
+```sh
+TINYAUTH_OIDC_PRIVATEKEYPATH=/path/to/private/key.pem
+TINYAUTH_OIDC_PUBLICKEYPATH=/path/to/public/key.pem
+TINYAUTH_OIDC_CLIENTS_BESZEL_CLIENTID=client-id
+TINYAUTH_OIDC_CLIENTS_BESZEL_CLIENTSECRET=ta-client-secret
+TINYAUTH_OIDC_CLIENTS_BESZEL_TRUSTEDREDIRECTURIS=https://your-beszel-instance.com/api/oauth2-redirect
+TINYAUTH_OIDC_CLIENTS_BESZEL_NAME=Beszel
+```
+
+Restart your Tinyauth instance to apply the new configuration.
+
+## Beszel Configuration
+
+Next, we need to add the OAuth provider to Beszel. First, toggle the
+**Hide collection create and edit controls** setting under `https://your-beszel-instance.com/_/#/settings`
+(you can log in to PocketBase with your Beszel credentials).
+
+![Beszel Collection Controls](/screenshots/beszel/beszel_collection_controls.png)
+
+Then, go to the **Collections** tab and click on the **users** collection. In the users collection, click
+the little gear icon, then **Options**, **OAuth2** (make sure it's enabled) and **Add provider**. In the provider
+selection, select OpenID Connect (1, 2, 3 doesn't matter).
+
+![Beszel Providers](/screenshots/beszel/beszel_providers.png)
+
+In the new window, fill in the following values.
+
+| Name | Value |
+| - | - |
+| Client ID | The client ID you generated from the previous step. |
+| Client Secret | The client secret you generated from the previous step. |
+| Display Name | Use whatever you like, for example, Tinyauth. |
+| Auth URL | `https://tinyauth.example.com/authorize` |
+| Token URL | `https://tinyauth.example.com/api/oidc/token` |
+| Fetch user info from | User info URL |
+| User info URL | `https://tinyauth.example.com/api/oidc/userinfo` |
+| Support PKCE | Yes, checked. |
+
+![Beszel Create Provider](/screenshots/beszel/beszel_create_provider.png)
+
+Finally, click **Set provider config**.
+
+:::caution
+If your provider email does not match the Beszel email, you will need to set
+`USER_CREATION=true` in the Beszel docker-compose so that it creates your user. After you
+log in with your provider, you will need to go to the `systems` collection and for each system,
+assign your new user account.
+
+![Beszel Assign User](/screenshots/beszel/beszel_system_users.png)
+:::
+
+## Try it out
+
+After configuring the PocketBase backend of Beszel, you should see a new Tinyauth option in the login screen.
+
+![Beszel Login Screen](/screenshots/beszel/beszel_login.png)
+
+Login and enjoy!
+
+:::note
+In case you are using multiple email addresses to log in to Tinyauth and thus Beszel, you may not be able
+to log in with your second email address. This is because PocketBase doesn't support multiple email addresses from
+one provider. If this issue occurs, you will need to go to the PocketBase admin and in the Collections tab, under
+System, delete everything from the `_externalAuths` collection (assuming you only have Tinyauth as an OpenID Connect
+provider), then try to log in again.
+
+![Beszel Admin External Auths](/screenshots/beszel/beszel_external_auths.png)
+:::
+
+
+

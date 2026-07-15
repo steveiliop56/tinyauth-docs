@@ -1,0 +1,108 @@
+---
+title: Tailscale Authentication
+description: Use your Tailscale connection to automatically log in to Tinyauth.
+---
+
+Tinyauth has support for detecting your Tailscale connection and automatically logging you in with
+your Tailscale identity. This is made possible using the Tailscale API.
+
+## Requirements
+
+- A Tailscale account
+- A Tinyauth instance
+
+:::warning
+You will need your proxy to correctly forward the client IP to Tinyauth for the Tailscale detection
+to work. This differs from proxy to proxy, but usually you will need your proxy container to run
+with `network_mode: host` in Docker.
+:::
+
+### K3S
+
+In case you are using K3S (and possibly other Kubernetes deployments that use Traefik+MetalLB) you can use
+the following Helm chart config for Traefik to forward the correct client IP to your applications (including
+Tinyauth):
+
+```yaml
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik-config
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    service:
+      spec:
+        externalTrafficPolicy: Local
+
+    entryPoints:
+      web:
+        address: ':80'
+        forwardedHeaders:
+          trustedIPs:
+            - 10.42.0.0/24
+      websecure:
+        address: ':443'
+        forwardedHeaders:
+          trustedIPs:
+            - 10.42.0.0/24
+```
+
+You can check if Tinyauth is receiving the correct client IP by visiting it and checking the
+`client_ip` section in the info logs.
+
+## Get the Tailscale API token
+
+Before configuring Tinyauth, you need to obtain your Tailnet ID and an API token from Tailscale. This can be
+done by visiting the Tailscale [admin console](https://login.tailscale.com/admin/settings/general). The Tailnet
+ID is the first thing you see in the page.
+
+![Tailscale Settings](/screenshots/tailscale/tailscale_settings.png)
+
+:::note
+While you can use the Legacy Tailnet ID, it is recommended to use the new random one.
+:::
+
+Then, you can generate an API token in the [keys](https://login.tailscale.com/admin/settings/keys) page.
+
+![Tailscale keys page](/screenshots/tailscale/tailscale_keys.png)
+
+There click the **Generate access token** button, give it a name and click **Generate access token** again.
+You should then be greeted by the following page.
+
+![Tailscale API tokens](/screenshots/tailscale/tailscale_api_token.png)
+
+Make sure to note down your Tailnet ID and the new API token as we will need them in the next part.
+
+## Configure Tinyauth
+
+With your Tailnet ID and API token you can configure Tinyauth in the following way:
+
+```yaml
+services:
+  tinyauth:
+    environment:
+      - TINYAUTH_TAILSCALE_ENABLED=true
+      - TINYAUTH_TAILSCALE_APITOKEN=your-api-token # TINYAUTH_TAILSCALE_APITOKENFILE also supported
+      - TINYAUTH_TAILSCALE_TAILNET=your-tailnet-id
+```
+
+Tinyauth by default caches the user and device list for 5 minutes, you can reduce the cache duration with
+`TINYAUTH_TAILSCALE_CACHEDURATION` (in seconds).
+
+:::note
+Tinyauth does ***not*** support serving on a Tailscale domain (like `tinyauth.funny-name.ts.net`). This is
+because we would need the `tsnet` library to serve on Tailscale which adds a lot of unnecessary weight to the
+binary (+20MB). Features requiring the `tsnet` library will ***not*** be added.
+:::
+
+Make sure to restart Tinyauth after updating the configuration.
+
+## Usage
+
+After restarting and assuming Tinyauth can get your client IP, you should see the following screen
+when visiting Tinyauth to login:
+
+![Tinyauth Tailscale Login](/screenshots/tailscale/tailscale_login.png)
+
+After clicking **Continue with Tailscale**, authentication should proceed as normal.

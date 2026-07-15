@@ -32,7 +32,7 @@ main:has(.home-container) {
     align-items: center;
     padding: 1rem;
     text-align: center;
-    gap: 1.25rem;
+    gap: 1.5rem;
 }
 
 .home-title {
