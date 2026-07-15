@@ -68,6 +68,8 @@ services:
       caddy.reverse_proxy: "{{upstreams 3000}}"
 ```
 
+It is recommended  (and required for IP address ACLs) that you set the `TINYAUTH_AUTH_TRUSTEDPROXIES` environment variable (`--auth.trustedproxies` for CLI flags and `auth.trustedProxies` for YAML) to the IP address of your Caddy instance so Tinyauth can trust the `X-Real-IP` and `X-Forwarded-For`headers and get the correct client IP.
+
 ## Securing a Service
 
 Place any service behind Tinyauth. The only addition required to secure a service is the reusable snippet, `tinyauth_forwarder`, created earlier:

@@ -108,6 +108,9 @@ tinyauth:
     traefik.http.middlewares.tinyauth.forwardauth.address: http://tinyauth:3000/api/auth/traefik
 ```
 
+It is recommended  (and required for IP address ACLs) that you set the `TINYAUTH_AUTH_TRUSTEDPROXIES` environment variable (`--auth.trustedproxies` for CLI flags and `auth.trustedProxies` for YAML) to the IP address of your Traefik instance so Tinyauth can trust the `X-Real-IP` and `X-Forwarded-For`headers and get the correct client IP. For a Docker-based deployment,
+`172.17.0.0/16` should work.
+
 To protect additional applications, include the following label in their configuration:
 
 ```yaml
@@ -145,6 +148,7 @@ services:
     environment:
       - TINYAUTH_APPURL=https://tinyauth.example.com
       - TINYAUTH_AUTH_USERS=user:$$2a$$10$$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u # user:password
+      - TINYAUTH_AUTH_TRUSTEDPROXIES=172.17.0.0/16
     labels:
       traefik.enable: true
       traefik.http.routers.tinyauth.rule: Host(`tinyauth.example.com`)

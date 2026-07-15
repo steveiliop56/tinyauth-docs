@@ -77,6 +77,8 @@ spec:
             periodSeconds: 10
 ```
 
+It is recommended  (and required for IP address ACLs) that you also set the `TINYAUTH_AUTH_TRUSTEDPROXIES` environment variable to the IP address of your Nginx/Istio instance so Tinyauth can trust the `X-Real-IP` and `X-Forwarded-For`headers and get the correct client IP.
+
 ## Create a Service
 
 Create the service:
@@ -159,6 +161,8 @@ extensionProviders:
     pathPrefix: "/api/auth/envoy?path="
     includeRequestHeadersInCheck: ["cookie", "x-forwarded-for", "x-forwarded-proto", "x-forwarded-host", "accept", "user-agent"]
     includeAdditionalHeadersInCheck:
+      "x-forwarded-for": "%DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT%"
+      "x-real-ip": "%DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT%"
       "x-forwarded-proto": "%REQ(:SCHEME)%"
       "x-forwarded-host": "%REQ(:AUTHORITY)%"
       "x-forwarded-uri": "%REQ(:PATH)%"

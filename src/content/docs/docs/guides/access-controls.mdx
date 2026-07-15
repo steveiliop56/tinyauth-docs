@@ -6,9 +6,11 @@ description: Tinyauth has support for docker label-based access controls.
 Tinyauth supports basic access controls with either Docker labels or environment variables. These labels (or environment variables) can restrict or allow access to applications.
 
 :::caution[Proxy configuration matters]
-Tinyauth relies on the `X-Forwarded-Host` header (set by your reverse proxy) to determine which app's access controls apply to a given request. If your proxy doesn't overwrite this header, or if tinyauth is directly reachable on the network without going through the proxy, a user could send a request with a spoofed host that doesn't match any configured app. When no app matches, tinyauth treats the request as having no restrictions and allows any authenticated user through.
+Tinyauth relies on the `X-Forwarded-Host` header (set by your reverse proxy) to determine which app's access controls apply to a given request. If your proxy doesn't overwrite this header, or if Tinyauth is directly reachable on the network without going through the proxy, a user could send a request with a spoofed host that doesn't match any configured app. When no app matches, Tinyauth treats the request as having no restrictions and allows any authenticated user through.
 
-To avoid this, make sure your reverse proxy always sets `X-Forwarded-Host` itself and doesn't pass through client-supplied values. Traefik and Caddy do this by default. For nginx, use `proxy_set_header X-Forwarded-Host $host;` in your location block. You should also make sure tinyauth is not directly accessible from the network — only your reverse proxy should be able to reach it.
+To avoid this, make sure your reverse proxy always sets `X-Forwarded-Host` itself and doesn't pass through client-supplied values. Traefik and Caddy do this by default. For Nginx, use `proxy_set_header X-Forwarded-Host $host;` in your location block. You should also make sure Tinyauth is not directly accessible from the network — only your reverse proxy should be able to reach it.
+
+It is also recommended (and required for IP address ACLs) that your proxy sets correctly the `X-Forwarded-For` and `X-Real-IP` headers so Tinyauth can get the correct client IP and perform ACLs. You will also need to configure the `TINYAUTH_AUTH_TRUSTEDPROXIES` environment variable (`--auth.trustedproxies` for CLI flags and `auth.trustedProxies` for YAML) to point to your proxy IP.
 :::
 
 ## Modifying the Tinyauth Container
