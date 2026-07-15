@@ -54,9 +54,9 @@ Restart your Tinyauth instance to apply the new configuration.
 
 ## Beszel Configuration
 
-Next, we need to add the OAuth provider to Beszel. Firstly you will need to toggle the
-**Hide collection create and edits controls** toggle under `https://your-beszel-instance.com/_/#/settings`
-(you can log in with your Beszel credentials to PocketBase).
+Next, we need to add the OAuth provider to Beszel. First, toggle the
+**Hide collection create and edit controls** setting under `https://your-beszel-instance.com/_/#/settings`
+(you can log in to PocketBase with your Beszel credentials).
 
 ![Beszel Collection Controls](/screenshots/beszel/beszel_collection_controls.png)
 
@@ -72,7 +72,7 @@ In the new window, fill in the following values.
 | - | - |
 | Client ID | The client ID you generated from the previous step. |
 | Client Secret | The client secret you generated from the previous step. |
-| Display Name | Use whatever you like for example, `Tinyauth`. |
+| Display Name | Use whatever you like, for example, Tinyauth. |
 | Auth URL | `https://tinyauth.example.com/authorize` |
 | Token URL | `https://tinyauth.example.com/api/oidc/token` |
 | Fetch user info from | User info URL |
@@ -84,10 +84,10 @@ In the new window, fill in the following values.
 Finally, click **Set provider config**.
 
 :::caution
-In case your provider email does not match the Beszel email, you will need to set
-`USER_CREATION=true` in the Beszel docker-compose so as it creates your user. After you
-log in with your provider, you will need to go to the `systems` collection and for each system
-also assign your new user account.
+If your provider email does not match the Beszel email, you will need to set
+`USER_CREATION=true` in the Beszel docker-compose so that it creates your user. After you
+log in with your provider, you will need to go to the `systems` collection and for each system,
+assign your new user account.
 
 ![Beszel Assign User](/screenshots/beszel/beszel_system_users.png)
 :::

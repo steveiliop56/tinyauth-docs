@@ -14,6 +14,9 @@ description: Overview of changes and updates in Tinyauth versions.
 > [!WARNING]
 > This release contains **security fixes**. Please update as soon as possible.
 
+> [!WARNING]
+> Tinyauth v5.1.0 includes some hardening in the trusted proxies. In case you are using any of the IP ACLs, you may need to specify your proxy IP in `TINYAUTH_AUTH_TRUSTEDPROXIES`.
+
 ### New Features
 
 **Authentication & Access Controls**
@@ -24,6 +27,7 @@ description: Overview of changes and updates in Tinyauth versions.
 - Global bypass by IP @scottmckendry
 - Provider-specific OAuth whitelists @puneetdixit200
 - OAuth whitelist file support @djedditt
+- Allow for `NO_PROXY`, `HTTP_PROXY` and `HTTPS_PROXY` for OAuth requests @florianilch
 
 **OpenID Connect**
 
@@ -52,13 +56,14 @@ description: Overview of changes and updates in Tinyauth versions.
 - Preserve login parameters throughout the frontend
 - Graceful shutdown on `SIGTERM`
 - Pass through the LDAP mail attribute instead of crafting one when it's available
-- Lockdown mode dynamically scales required failed attempt amount based on configured users
 - Rework CLI commands for simpler and more intuitive output
 
 ### Fixes
 
 - Fix open redirect vulnerability in the OpenID Connect server @Dredsen
 - Use the loaded public key in the OpenID Connect server when available @Dredsen
+- Fix lax trusted proxies configuration in IP ACLs
+- Remove lockdown mode and rework rate-limiting
 
 ### Technical
 
