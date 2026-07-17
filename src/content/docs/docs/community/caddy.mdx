@@ -58,7 +58,7 @@ Add Tinyauth and place it behind Caddy with the `caddy` and `caddy.reverse_proxy
 ```yaml
 services:
   tinyauth:
-    image: ghcr.io/steveiliop56/tinyauth:v5
+    image: ghcr.io/tinyauthapp/tinyauth:v5
     restart: unless-stopped
     environment:
       - TINYAUTH_APPURL=http://auth.example.com
@@ -117,7 +117,7 @@ services:
       caddy.forward_auth.copy_headers: Remote-User Remote-Name Remote-Email Remote-Groups # optional when you want to make headers available to your service
 
   tinyauth:
-    image: ghcr.io/steveiliop56/tinyauth:v5
+    image: ghcr.io/tinyauthapp/tinyauth:v5
     restart: unless-stopped
     environment:
       - TINYAUTH_APPURL=http://auth.example.com

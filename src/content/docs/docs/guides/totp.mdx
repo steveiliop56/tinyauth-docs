@@ -15,7 +15,7 @@ A TOTP secret must first be generated. This requires the current `username:hash`
 <Tabs>
   <TabItem label="Docker">
     ```sh
-    docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v5 totp generate --interactive
+    docker run -i -t --rm ghcr.io/tinyauthapp/tinyauth:v5 totp generate --interactive
     ```
 
     The command prompts for the user and generates a QR code to scan with an authenticator app. Once added, copy the newly generated user (displayed after the `user=` log message) and include it in the Tinyauth user list. Restart Tinyauth to apply changes.
@@ -49,7 +49,7 @@ If you want to ensure that the user is configured correctly, you can use the fol
 <Tabs>
   <TabItem label="Docker">
     ```sh
-    docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v5 user verify --interactive
+    docker run -i -t --rm ghcr.io/tinyauthapp/tinyauth:v5 user verify --interactive
     ```
   </TabItem>
   <TabItem label="Binary">
