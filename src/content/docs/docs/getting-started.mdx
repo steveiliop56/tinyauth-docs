@@ -46,7 +46,7 @@ The following CLI command facilitates user creation:
 <Tabs>
   <TabItem label="Docker">
     ```sh
-    docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v5 user create --interactive
+    docker run -i -t --rm ghcr.io/tinyauthapp/tinyauth:v5 user create --interactive
     ```
 
     This command prompts for a username and password, generating the required user configuration. Additional details are available in the CLI [reference](/docs/reference/cli#create-user-command).
@@ -97,7 +97,7 @@ The following `docker-compose.yml` configuration deploys Tinyauth:
 
 ```yaml title="docker-compose.yml"
 tinyauth:
-  image: ghcr.io/steveiliop56/tinyauth:v5
+  image: ghcr.io/tinyauthapp/tinyauth:v5
   restart: unless-stopped
   environment:
     - TINYAUTH_APPURL=https://tinyauth.example.com
@@ -147,7 +147,7 @@ services:
       traefik.http.routers.whoami.middlewares: tinyauth
 
   tinyauth:
-    image: ghcr.io/steveiliop56/tinyauth:v5
+    image: ghcr.io/tinyauthapp/tinyauth:v5
     restart: unless-stopped
     environment:
       - TINYAUTH_APPURL=https://tinyauth.example.com
