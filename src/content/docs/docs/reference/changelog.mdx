@@ -3,6 +3,26 @@ title: Changelog
 description: Overview of changes and updates in Tinyauth versions.
 ---
 
+## v5.1.2
+
+> [!WARNING]
+> This release contains security fixes, please update as soon as possible.
+
+### Improvements
+
+- Parent domain is now considered a trusted domain
+- Allow for OAuth auto-redirect in OIDC flow
+
+### Fixes
+
+- Make `login_for` parameter optional
+- Fix redirection issues in HTTPS to HTTP downgrade redirect
+- Fix ACLs normalization in Docker and Kubernetes ACL providers
+
+### Technical
+
+ - Update dependencies
+
 ## v5.1.1
 
 ### Fixes
