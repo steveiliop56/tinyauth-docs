@@ -121,6 +121,10 @@ export default defineConfig({
               slug: "docs/guides/tailscale",
             },
             {
+              label: "Kubernetes",
+              slug: "docs/guides/kubernetes",
+            },
+            {
               label: "Using the Binary",
               slug: "docs/guides/using-the-binary",
             },

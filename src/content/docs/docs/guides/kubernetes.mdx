@@ -1,0 +1,270 @@
+---
+title: Kubernetes
+description: Use Tinyauth in a Kubernetes environment.
+---
+
+Tinyauth supports Kubernetes based deployments making it easy to add an IdP or an authentication middleware
+to your Kubernetes cluster.
+
+## Requirements
+
+- A Kubernetes cluster
+
+We will use [k3s](https://k3s.io) and [Traefik](https://traefik.io) in this tutorial so, ingress
+instructions may differ for your setup.
+
+:::caution
+This guide assumes familiarity with Kubernetes. In-depth instructions will not be given, and it is
+expected that you understand how to use each manifest.
+:::
+
+## Installation
+
+Before installing Tinyauth, we need to give it access to the Kubernetes API in order to be
+able to discover ACLs from ingresses. To achieve this, we firstly need  to create the Tinyauth
+namespace:
+
+```yaml title="namespace.yaml"
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tinyauth
+  labels:
+    app: tinyauth
+```
+
+Then, we need a Cluster Role to give Tinyauth permissions to see the ingresses:
+
+```yaml title="cluster-role.yaml"
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: tinyauth-ingress
+rules:
+  - apiGroups: ["networking.k8s.io"]
+    resources: ["ingresses"]
+    verbs: ["get", "list", "watch"]
+```
+
+Finally, we need to create a Cluster Role Binding to give the Tinyauth service account
+access to the Cluster Role.
+
+```yaml title="cluster-role-binding.yaml"
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: tinyauth-ingress
+subjects:
+  - kind: ServiceAccount
+    name: tinyauth-sa
+    namespace: tinyauth
+roleRef:
+  kind: ClusterRole
+  name: tinyauth-ingress
+  apiGroup: rbac.authorization.k8s.io
+```
+
+Let's also create the Tinyauth service account while we are here:
+
+```yaml title="tinyauth-service-account.yaml"
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: tinyauth-sa
+  namespace: tinyauth
+```
+
+:::note
+In case you are planning to install Tinyauth with helm, you can skip the creation of the
+service account as the chart will do it for you.
+:::
+
+### helm
+
+To install Tinyauth with helm, firstly add the repository:
+
+```sh
+helm repo add tinyauth https://helm.tinyauth.app
+helm repo update
+```
+
+Create your `values.yaml` file, default file with all options can be found
+in the [repository](https://github.com/tinyauthapp/helm/blob/main/charts/tinyauth/values.yaml).
+Check the [configuration](/docs/reference/configuration) for the required values.
+
+It is recommended  (and required for IP address ACLs) that you also set the `tinyauth.auth.trustedProxies`
+environment variable to the IP address of your Traefik instance so Tinyauth can trust the
+`X-Real-IP` and `X-Forwarded-For`headers and get the correct client IP.
+
+Then install the Tinyauth chart:
+
+```sh
+helm install tinyauth tinyauth/tinyauth -f values.yaml -n tinyauth
+```
+
+If everything goes well, you should see the Tinyauth pod running in the `tinyauth` namespace.
+
+### manual
+
+To install Tinyauth manually, we firstly need a secret containing our configuration:
+
+```yaml title="tinyauth-secret.yaml"
+apiVersion: v1
+kind: Secret
+metadata:
+    name: tinyauth-secret
+    namespace: tinyauth
+type: Opaque
+stringData:
+    TINYAUTH_APPURL: http://tinyauth.example.com
+    TINYAUTH_AUTH_USERS: your-username-password-hash
+```
+
+It is recommended  (and required for IP address ACLs) that you also set the `TINYAUTH_AUTH_TRUSTEDPROXIES`
+environment variable to the IP address of your Traefik instance so Tinyauth can trust the
+`X-Real-IP` and `X-Forwarded-For`headers and get the correct client IP.
+
+Now, we can safely deploy Tinyauth:
+
+```yaml title="tinyauth-deployment.yaml"
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tinyauth-dp
+  namespace: tinyauth
+  labels:
+    app: tinyauth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tinyauth
+  template:
+    metadata:
+      labels:
+        app: tinyauth
+    spec:
+      serviceAccountName: tinyauth-sa
+      containers:
+        - name: tinyauth
+          image: ghcr.io/tinyauthapp/tinyauth:v5
+          ports:
+            - containerPort: 3000
+              name: web
+          envFrom:
+            - secretRef:
+                name: tinyauth-secret
+```
+
+:::note
+It's recommended you add a persistent volume for the `/data` path to preserve Tinyauth sessions and to use
+as storage for the OpenID Connect provider in case you are planning to utilize it.
+:::
+
+Then create a simple Cluster IP to expose Tinyauth:
+
+```yaml title="tinyauth-cluster-ip.yaml"
+apiVersion: v1
+kind: Service
+metadata:
+  name: tinyauth-svc-cip
+  namespace: tinyauth
+spec:
+  selector:
+    app: tinyauth
+  ports:
+    - name: web
+      protocol: TCP
+      port: 3000
+      targetPort: web
+  type: ClusterIP
+```
+
+And finally an ingress exposing Tinyauth:
+
+```yaml title="tinyauth-ingress.yaml"
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tinyauth-ingress
+  namespace: tinyauth
+spec:
+  rules:
+    - host: tinyauth.example.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: tinyauth-svc-cip
+                port:
+                  number: 3000
+```
+
+If everything deploys correctly, Tinyauth should start up with no errors and be accessible under
+`http://tinyauth.example.com`.
+
+## Using forward-auth
+
+Tinyauth officially supports only the Traefik proxy for forward-auth. However, it works with other proxies
+like Istio. Instructions on these proxies can be found in the [community guide](/docs/community/kubernetes.mdx).
+
+To use Tinyauth as a forward-auth middleware in Traefik, just create a middleware using Traefik's CRD:
+
+```yaml title="middleware.yaml"
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: tinyauth
+  namespace: tinyauth
+spec:
+  forwardAuth:
+    address: http://tinyauth-svc-cip.tinyauth.svc.cluster.local:3000/api/auth/traefik
+    authResponseHeaders:
+      - remote-user
+      - remote-name
+      - remote-email
+      - remote-groups
+      - remote-sub
+      - authorization
+```
+
+Now, in your Ingresses you can just define the Tinyauth middleware and use your ACLs as you would
+in Docker. For example:
+
+```yaml title="example-ingress.yaml"
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    annotations:
+        tinyauth.apps.myapp.config.domain: myapp.example.com
+        tinyauth.apps.myapp.path.allow: /foo
+        traefik.ingress.kubernetes.io/router.entrypoints: web
+        traefik.ingress.kubernetes.io/router.middlewares: tinyauth-tinyauth@kubernetescrd
+    name: myapp-ingress
+spec:
+    rules:
+        - host: myapp.example.com
+          http:
+            paths:
+                - pathType: Prefix
+                  path: /
+                  backend:
+                    service:
+                        name: myapp-svc-cip
+                        port:
+                            number: 80
+```
+
+:::note
+Traefik middlewares work in the form of `namespace-middlware@kubernetescrd`.
+:::
+
+After deploying the ingress and trying to access the app at the configured domain, you should be redirected
+to Tinyauth for authentication.
+
+:::caution
+Tinyauth only supports a single domain per ACL so, if you have multiple rules, you will need multiple
+ACLs.
+:::
