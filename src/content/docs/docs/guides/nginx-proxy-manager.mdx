@@ -98,6 +98,10 @@ location /tinyauth {
   # Pass request to Tinyauth, do not use the Tinyauth domain here, use the internal Docker network name and port or the IP and port of the Tinyauth instance
   proxy_pass http://tinyauth:3000/api/auth/nginx;
 
+ # Don't forward the request body to the auth subrequest
+  proxy_pass_request_body off;
+  proxy_set_header Content-Length "";
+
   # Pass the request headers
   proxy_set_header x-forwarded-for $remote_addr;
   proxy_set_header x-real-ip $remote_addr;
