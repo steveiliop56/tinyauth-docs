@@ -1,0 +1,194 @@
+---
+title: "Référence sur le CLI Tinyauth."
+description: "Référence sur le CLI Tinyauth."
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+Tinyauth propose un CLI simple pour configurer l'application et gérer les utilisateurs.
+
+## Commandes
+
+Toutes les commandes peuvent être exécutées depuis le binaire autonome de Tinyauth :
+
+```sh
+./tinyauth [options]
+```
+
+Alternativement, lors de l'exécution de l'application via Docker :
+
+```sh
+docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v5 [options]
+```
+
+:::note
+  Lors de l'utilisation de Docker Compose, la commande `docker compose run tinyauth [options]` peut également être utilisée.
+:::
+
+### Commande principale
+
+La commande principale démarre l'API et l'interface Web, en attente de connexions entrantes. Toutes les options sont configurables via des drapeaux CLI ou des variables d'environnement. Une liste complète des options de configuration est disponible sur la page [configuration](/docs/reference/configuration).
+
+### Vérification d'état
+
+La commande de vérification d'état vérifie si Tinyauth fonctionne correctement :
+
+<Tabs>
+  <TabItem label="Docker">
+    ```sh
+    docker compose exec tinyauth healthcheck
+    ```
+  </TabItem>
+  <TabItem label="Binary">
+      ```sh
+      ./tinyauth healthcheck
+      ```
+  </TabItem>
+</Tabs>
+
+Par défaut, il utilisera `http://127.0.0.1:3000` pour vérifier le point de terminaison d'état. L'URL changera automatiquement si vous définissez les variables d'environnement `TINYAUTH_SERVER_PORT` et `TINYAUTH_SERVER_ADDRESS`. Vous pouvez également spécifier une URL personnalisée avec :
+
+<Tabs>
+  <TabItem label="Docker">
+    ```sh
+    docker compose exec tinyauth healthcheck http://tinyauth.example.com
+    ```
+  </TabItem>
+  <TabItem label="Binary">
+      ```sh
+      ./tinyauth healthcheck http://tinyauth.example.com
+      ```
+  </TabItem>
+</Tabs>
+
+:::note
+Il est conseillé de ne pas utiliser la commande de vérification d'état avec l'URL publique de Tinyauth, car cela peut entraîner des problèmes de connexion. Il est recommandé d'utiliser la commande de vérification d'état avec l'URL interne de Tinyauth (par ex., `http://127.0.0.1:3000`).
+:::
+
+### Commande de création d'utilisateur
+
+La commande de création simplifie la création d'utilisateurs. Pour créer un utilisateur en mode interactif :
+
+<Tabs>
+  <TabItem label="Docker">
+    ```sh
+    docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v5 user create --interactive
+    ```
+  </TabItem>
+  <TabItem label="Binary">
+      ```sh
+      ./tinyauth user create --interactive
+      ```
+  </TabItem>
+</Tabs>
+
+Cela lance une interface utilisateur en mode texte (TUI) pour saisir un nom d'utilisateur et un mot de passe, générant le format `username:hash` requis par Tinyauth. Elle peut également formater l'utilisateur pour Docker Compose ou les variables d'environnement. Pour la création non interactive :
+
+<Tabs>
+  <TabItem label="Docker">
+    ```sh
+    docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v5 user create --username user@example.com --password password
+    ```
+  </TabItem>
+  <TabItem label="Binary">
+      ```sh
+      ./tinyauth user create --username user@example.com --password password
+      ```
+  </TabItem>
+</Tabs>
+
+| Option | Description | Valeur par défaut | Obligatoire |
+| ------ | ----------- | ----------------- | ----------- |
+| `--username` | Nom d'utilisateur pour créer l'utilisateur. | `` | yes |
+| `--password` | Mot de passe pour créer l'utilisateur. | `` | yes |
+| `--docker` | Formater la sortie pour Docker Compose ou les variables d'environnement. | `false` | no |
+| `--interactive` | Utiliser une interface utilisateur en mode texte (TUI) pour créer l'utilisateur. | `false` | no |
+
+### Vérification d'utilisateur
+
+La commande de vérification vérifie si un nom d'utilisateur et un mot de passe correspondent au format `username:hash`. Pour la vérification interactive :
+
+<Tabs>
+  <TabItem label="Docker">
+    ```sh
+    docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v5 user verify --interactive
+    ```
+  </TabItem>
+  <TabItem label="Binary">
+      ```sh
+      ./tinyauth user verify --interactive
+      ```
+  </TabItem>
+</Tabs>
+
+Une interface utilisateur en mode texte (TUI) invite à saisir le `username:hash:secret`, le nom d'utilisateur, le mot de passe et un code TOTP optionnel, vérifiant les informations d'identification. Pour la vérification non interactive :
+
+<Tabs>
+  <TabItem label="Docker">
+    ```sh
+    docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v5 user verify --user 'user@example.com:$2a$10$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u' --username user@example.com --password password
+    ```
+  </TabItem>
+  <TabItem label="Binary">
+      ```sh
+      ./tinyauth user verify --user 'user@example.com:$2a$10$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u' --username user@example.com --password password
+      ```
+  </TabItem>
+</Tabs>
+
+:::note
+Utilisez des guillemets (`'`) dans les shells Bash pour garantir que le hachage est passé correctement.
+:::
+
+| Option | Description | Valeur par défaut | Obligatoire |
+| ------ | ----------- | ----------------- | ----------- |
+| `--user` | La combinaison `username:hash` à vérifier. | `` | yes |
+| `--username` | Nom d'utilisateur pour la vérification. | `` | yes |
+| `--password` | Mot de passe pour la vérification. | `` | yes |
+| `--interactive` | Utiliser une interface utilisateur en mode texte (TUI) pour la vérification. | `false` | no |
+| `--totp` | Code TOTP optionnel pour la vérification. | `` | no |
+
+### Génération de TOTP
+
+Tinyauth peut générer automatiquement des codes TOTP pour vous ; la combinaison est `username:hash:secret`. Vous pouvez générer un utilisateur TOTP avec :
+
+<Tabs>
+  <TabItem label="Docker">
+    ```sh
+    docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v5 totp generate --interactive
+    ```
+  </TabItem>
+  <TabItem label="Binary">
+      ```sh
+      ./tinyauth totp generate --interactive
+      ```
+  </TabItem>
+</Tabs>
+
+Cela invite à saisir le `username:hash` actuel et génère un `username:hash:secret` ainsi qu'un code QR pour l'ajouter à une application d'authentification. Pour la génération non interactive :
+
+<Tabs>
+  <TabItem label="Docker">
+    ```sh
+    docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v5 totp generate --user 'user@example.com:$2a$10$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u'
+    ```
+  </TabItem>
+  <TabItem label="Binary">
+      ```sh
+      ./tinyauth totp generate --user 'user@example.com:$2a$10$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u'
+      ```
+  </TabItem>
+</Tabs>
+
+:::note
+Utilisez des guillemets (`'`) dans les shells Bash pour garantir que le hachage est passé correctement.
+:::
+
+:::note
+En raison de la façon dont la bibliothèque de codes QR fonctionne dans Tinyauth, le code QR peut être **énorme** et ne pas tenir sur un écran standard. Si cela se produit, vous pouvez essayer de redimensionner votre fenêtre de terminal ou d'utiliser un émulateur de terminal différent.
+:::
+
+| Option | Description | Valeur par défaut | Obligatoire |
+| ------ | ----------- | ----------------- | ----------- |
+| `--user` | La combinaison actuelle `username:hash`. | `` | yes |
+| `--interactive` | Utiliser une interface utilisateur en mode texte (TUI) pour créer l'utilisateur TOTP. | `false` | no |

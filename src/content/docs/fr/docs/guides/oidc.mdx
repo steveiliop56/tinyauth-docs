@@ -1,0 +1,167 @@
+---
+title: "Serveur OIDC"
+description: "Utilisez le serveur OIDC de Tinyauth pour authentifier les applications."
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import CreateOidcClientTool from "../../../../../components/create-oidc-client-tool.astro";
+
+Dans Tinyauth v5, une étape majeure fut l'introduction du serveur OIDC, qui permet à Tinyauth non seulement d'utiliser d'autres fournisseurs d'identité mais aussi de fonctionner comme un fournisseur d'identité lui-même. Cela signifie que Tinyauth peut servir de passerelle d'authentification centrale pour plusieurs applications, offrant une expérience de connexion unique aux utilisateurs.
+
+## Qu'est-ce qu'OpenID Connect?
+
+From [https://openid.net](https://openid.net/developers/discover-openid-and-openid-connect/):
+
+> OpenID est une façon simple et sécurisée pour les personnes de réutiliser un compte existant et le profil utilisateur d'un fournisseur d'identité, par exemple Apple, Google ou Microsoft, afin de se connecter à toute application ou site Web compatible OpenID sans créer une nouvelle inscription ni mot de passe. Vous choisissez le fournisseur, tel que Google, puis entrez votre adresse Gmail et votre mot de passe pour vous connecter.
+
+## Limites
+
+Tinyauth implémente les parties Core et Discovery du protocole OpenID Connect.
+
+![OpenID Connect Protocol Suite](https://openid.net/wp-content/uploads/2023/06/OpenIDConnect-Map-December2023.png)
+
+Avant d'utiliser Tinyauth comme serveur OIDC, veuillez vous assurer que l'implémentation répond à vos exigences.
+
+Types de réponse pris en charge :
+
+- `code`
+
+Types d'octroi d'autorisation pris en charge :
+
+- `authorization_code`
+- `refresh_token`
+
+Scopes pris en charge :
+
+- `openid`
+- `profile`
+- `email`
+- `groups`
+
+Claims pris en charge :
+
+- `sub`
+- `name`
+- `email`
+- `preferred_username`
+- `groups`
+- `updated_at`
+- `email_verified`
+
+Méthodes d'authentification du point de terminaison de jeton prises en charge :
+
+- `client_secret_basic`
+- `client_secret_post`
+
+En raison de la nature *presque* sans état de Tinyauth, le champ `sub` de l'utilisateur est basé sur l'ID client et le nom d'utilisateur. Cela signifie que si le nom d'utilisateur ou l'ID client change, le `sub` changera également. Cela peut entraîner des problèmes avec certains clients OIDC qui se fient à la revendication `sub` pour identifier l'utilisateur de manière cohérente.
+
+:::note
+Bien qu'aucune promesse ne puisse être faite, si vous pensez qu'une fonctionnalité requise d'OpenID Connect manque, veuillez ouvrir un problème sur [GitHub](https://github.com/steveiliop56/tinyauth/issues).
+:::
+
+## Considérations importantes
+
+L'idée principale de Tinyauth est d'être une application sans état, mais OIDC nécessite une persistance pour la session et le stockage des clés. Tout est stocké dans le répertoire `/data`, donc si vous utilisez Docker, ajoutez le volume correspondant à votre fichier `docker-compose.yml` :
+
+```yaml
+services:
+  tinyauth:
+    volumes:
+      - ./data:/data
+```
+
+Si vous utilisez le binaire, vous pouvez spécifier le répertoire de la base de données en utilisant la variable d'environnement `TINYAUTH_DATABASE_PATH` ou l'option CLI `--database.path`.
+
+Vous devez également spécifier les chemins où sont stockées les clés publiques et privées. Cela peut être fait avec `TINYAUTH_OIDC_PRIVATEKEYPATH` (`--oidc.privatekeypath`) et `TINYAUTH_OIDC_PUBLICKEYPATH` (`--oidc.publickeypath`) respectivement.
+
+Enfin, pour que le serveur OIDC fonctionne, HTTPS est **obligatoire** sur l'URL de l'application, qui deviendra l'URL d'émetteur. Vous pouvez utiliser un certificat auto-signé ou un certificat provenant d'une autorité de certification (CA) de confiance.
+
+## Création de clients OIDC
+
+Pour créer un client OIDC, utilisez la commande `oidc create`. Par exemple :
+
+<Tabs>
+  <TabItem label="Docker">
+    ```sh
+    docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v5 oidc create myapp
+    ```
+
+    Cela produira une sortie similaire à :
+
+    ```
+    Client Name: myapp
+    Client ID: client-id
+    Client Secret: ta-client-secret
+    ```
+  </TabItem>
+  <TabItem label="Binary">
+    ```sh
+    ./tinyauth oidc create myapp
+    ```
+
+    Cela produira une sortie similaire à :
+
+    ```
+    Client Name: myapp
+    Client ID: client-id
+    Client Secret: ta-client-secret
+    ```
+  </TabItem>
+  <TabItem label="Browser">
+    <CreateOidcClientTool />
+  </TabItem>
+</Tabs>
+
+Nous utiliserons ces valeurs pour le reste de ce guide, alors assurez-vous de les garder sécurisées.
+
+:::caution
+Le nom du client doit être unique et ne contenir que des caractères alphanumériques et des tirets.
+:::
+
+Vous pouvez répéter ce processus pour autant de clients que vous le souhaitez.
+
+## Configuration de Tinyauth
+
+Chaque client OIDC doit être configuré avec les variables d'environnement suivantes (en utilisant les valeurs de l'étape précédente) :
+
+```sh
+TINYAUTH_OIDC_CLIENTS_MYAPP_CLIENTID=client-id
+TINYAUTH_OIDC_CLIENTS_MYAPP_CLIENTSECRET=ta-client-secret
+TINYAUTH_OIDC_CLIENTS_MYAPP_TRUSTEDREDIRECTURIS=https://example.com/callback
+TINYAUTH_OIDC_CLIENTS_MYAPP_NAME=myapp
+```
+
+Ou avec la série suivante d'options CLI :
+
+```sh
+--oidc.clients.myapp.clientid=client-id
+--oidc.clients.myapp.clientsecret=ta-client-secret
+--oidc.clients.myapp.trustedredirecturis=https://example.com/callback
+--oidc.clients.myapp.name=myapp
+```
+
+:::note
+Si vous préférez, vous pouvez utiliser `TINYAUTH_OIDC_CLIENTS_[NAME]_CLIENTSECRETFILE` (`--oidc.clients.[name].clientsecretfile`) pour spécifier le chemin où est stocké le secret du client.
+:::
+
+## Configuration de l'application
+
+Tinyauth expose un chemin bien connu à `/.well-known/openid-configuration` que les applications peuvent utiliser pour découvrir automatiquement la configuration du serveur OIDC. Si votre application ne prend pas en charge la découverte, vous pouvez le configurer avec les points de terminaison suivants :
+
+| Nom                  | URL                                                  |
+| --------------------- | ---------------------------------------------------- |
+| Point de terminaison d'autorisation | `https://tinyauth.example.com/authorize`           |
+| Point de terminaison du jeton        | `https://tinyauth.example.com/api/oidc/token`       |
+| Point de terminaison des informations utilisateur     | `https://tinyauth.example.com/api/oidc/userinfo`    |
+
+## Utilisation
+
+Une fois tout configuré, démarrez Tinyauth et accédez à votre application. Après avoir sélectionné Tinyauth comme source d'authentification, vous devriez être redirigé vers Tinyauth, où vous pourrez vous connecter et autoriser l'application.
+
+![Tinyauth Authorize Screen](/screenshots/oidc/authorize.png)
+
+:::note
+Tinyauth conservera la requête OIDC lors de la connexion. Les utilisateurs se connectant via des fournisseurs OAuth seront automatiquement redirigés vers la page d'autorisation après une authentification réussie.
+:::
+
+Tinyauth transmettra les informations utilisateur provenant du fournisseur OIDC ou LDAP à l'application tout en agissant comme un proxy. Profitez-en !

@@ -1,0 +1,26 @@
+---
+title: "Télémétrie"
+description: "Informations sur la télémétrie dans Tinyauth."
+---
+
+Tinyauth inclut une fonction de battement qui envoie des informations de version anonymes afin d’obtenir quelques aperçus sur l’utilisation de Tinyauth. Les informations collectées comprennent :
+
+- Version de Tinyauth
+- UUID de l’instance (généré avec UUID v4 à partir de l'URL de l'application)
+- Heure de la requête
+
+:::note
+  Le UUID généré à partir de l'URL de l'application est un hachage irréversible et ne peut pas être utilisé pour identifier l’instance.
+:::
+
+Les données sont envoyées à `https://api.tinyauth.app/v1/instances/hearbeat` toutes les 12 heures. Aucune information personnelle, sensible ou identifiables n’est collectée. Le battement peut être désactivé avec :
+
+| Environnement | Indicateur CLI | Par défaut |
+| ------------------- | --------------------- | ------- |
+| `TINYAUTH_ANALYTICS_ENABLED` | `--analytics.enabled` | `false` |
+
+:::note
+  Votre adresse IP peut être stockée dans un cache en mémoire pendant une courte période afin de prévenir les abus du serveur d'API.
+:::
+
+Le code source du serveur de télémétrie est disponible sur [GitHub](https://github.com/tinyauthapp/analytics) sous licence MIT.

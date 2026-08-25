@@ -1,0 +1,62 @@
+---
+title: "Authentification à deux facteurs"
+description: "Utilisez TOTP pour ajouter une couche supplémentaire de sécurité à vos comptes."
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import GenerateTotpTool from "../../../../../components/generate-totp-tool.astro";
+
+Tinyauth prend en charge TOTP en natif, permettant l'utilisation d'applications d'authentification pour générer des codes 2FA lors de la connexion.
+
+## Génération du secret
+
+Un secret TOTP doit d'abord être généré. Cela nécessite le `username:hash` actuel. Utilisez l'interface en ligne de commande Tinyauth pour créer le nouvel utilisateur :
+
+<Tabs>
+  <TabItem label="Docker">
+    ```sh
+    docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v5 totp generate --interactive
+    ```
+
+    La commande demande l'utilisateur et génère un code QR à scanner avec une application d'authentification. Une fois ajouté, copiez le nouvel utilisateur généré (affiché après le message de log `user=`) et incluez-le dans la liste des utilisateurs Tinyauth. Redémarrez Tinyauth pour appliquer les modifications.
+
+    :::note
+    En raison du fonctionnement de la bibliothèque de codes QR dans Tinyauth, le code QR peut être **énorme** et ne pas tenir sur un écran standard. Si cela se produit, vous pouvez essayer de redimensionner votre fenêtre de terminal ou d'utiliser un émulateur de terminal différent.
+    :::
+  </TabItem>
+  <TabItem label="Binary">
+    ```sh
+    ./tinyauth totp generate --interactive
+    ```
+
+    La commande demande l'utilisateur et génère un code QR à scanner avec une application d'authentification. Une fois ajouté, copiez le nouvel utilisateur généré (affiché après le message de log `user=`) et incluez-le dans la liste des utilisateurs Tinyauth. Redémarrez Tinyauth pour appliquer les modifications.
+
+    :::note
+    En raison du fonctionnement de la bibliothèque de codes QR dans Tinyauth, le code QR peut être **énorme** et ne pas tenir sur un écran standard. Si cela se produit, vous pouvez essayer de redimensionner votre fenêtre de terminal ou d'utiliser un émulateur de terminal différent.
+    :::
+  </TabItem>
+  <TabItem label="Browser">
+    <GenerateTotpTool />
+
+    Copiez la chaîne d'utilisateur mise à jour et incluez-la dans la liste des utilisateurs Tinyauth. Redémarrez Tinyauth pour appliquer les modifications. À partir de ce moment, la connexion nécessitera un code TOTP.
+  </TabItem>
+</Tabs>
+
+## Vérification de l'utilisateur
+
+Si vous souhaitez vérifier que l'utilisateur est correctement configuré, vous pouvez utiliser la commande suivante :
+
+<Tabs>
+  <TabItem label="Docker">
+    ```sh
+    docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v5 user verify --interactive
+    ```
+  </TabItem>
+  <TabItem label="Binary">
+      ```sh
+      ./tinyauth user verify --interactive
+      ```
+  </TabItem>
+</Tabs>
+
+La commande demande le `username:hash:totp`, l'utilisateur, le mot de passe et un code TOTP provenant de l'application d'authentification. En cas de succès, un message indiquant que l'utilisateur est vérifié s'affiche.

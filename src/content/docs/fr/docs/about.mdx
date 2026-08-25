@@ -1,0 +1,22 @@
+---
+title: "À propos"
+description: "Quelques mots sur Tinyauth."
+---
+
+Avant d'installer Tinyauth, il est naturel de se demander, _Pourquoi choisir Tinyauth plutôt que Authelia, Authentik ou Keycloak?_ C'est une question valable, et la réponse réside dans sa simplicité et son focus.
+
+## Le défi de l'authentification dans les homelabs
+
+Un middleware d'authentification est souvent utilisé pour protéger les applications qui ne disposent pas de screens de connexion intégrés ou pour ajouter une couche supplémentaire de sécurité. Alors que des projets comme Authelia, Authentik et Keycloak sont des solutions performantes, ils peuvent être difficiles à configurer pour les nouveaux utilisateurs, gourmands en ressources (car conçus pour un usage d'entreprise), ou lourds à mettre en place et à maintenir. Tinyauth répond à ces défis.
+
+## La motivation derrière Tinyauth
+
+Tinyauth a été développé comme un défi personnel pour créer une application robuste et résoudre les problèmes courants rencontrés avec les solutions d'authentification existantes. De nombreuses alternatives ne disposaient pas de support natif pour l'authentification directe de Traefik et nécessitaient des plugins et conteneurs supplémentaires. Tinyauth a été conçu autour de la simplicité comme principe fondamental — aucun tableau de bord complexe, aucun fichier de configuration intriqué, aucune dépendance externe. Tout est configuré à l'aide de variables d'environnement simples.
+
+## Cas d'utilisation appropriés
+
+Tinyauth n'est pas destiné aux environnements de production. Son objectif principal est d'ajouter un écran de connexion aux applications dans les homelabs ou de faciliter le partage de ressources avec la famille et les amis. Pour des scénarios nécessitant une gestion avancée des utilisateurs, Authentik est recommandé.
+
+## Orientation future
+
+Tinyauth a atteint un état mature, prenant en charge des fonctionnalités essentielles telles que OAuth, TOTP, LDAP et les contrôles d'accès. Il s'intègre parfaitement aux proxies populaires comme Nginx, Traefik et Caddy. L'accent restera sur le maintien de cette simplicité tout en introduisant des mises à jour améliorant la qualité de vie. Aucun plan n'est prévu pour introduire des tableaux de bord ou des fichiers de configuration complexes, préservant ainsi l'idée fondamentale du projet.

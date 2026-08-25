@@ -1,0 +1,179 @@
+---
+title: "Mise à jour de la version v3 vers v4"
+description: "Un guide pour aider à migrer de Tinyauth v3 vers v4."
+---
+
+Tinyauth v4 introduit plusieurs changements majeurs qui nécessitent une migration manuelle. Ce guide décrit les mises à jour nécessaires pour une mise à niveau fluide.
+
+## SQLite Database
+
+À partir de la version 4, Tinyauth est une application avec état qui utilise une base de données SQLite pour stocker les sessions. Ce changement améliore la sécurité. Pour les configurations Docker, incluez le volume suivant :
+
+```yaml
+services:
+  tinyauth:
+    volumes:
+      - ./data:/data
+```
+
+Pour les installations binaires, le chemin de la base de données peut être modifié à l'aide de l'option suivante :
+
+| Environnement | Indicateur | Description | Valeur par défaut | Requis |
+| --------------- | ----------------- | -------------------------------------------------- | ------------------- | -------- |
+| `DATABASE_PATH` | `--database-path` | Le chemin où la base de données SQLite sera stockée. | `/data/tinyauth.db` | no |
+
+:::note
+  La base de données SQLite ne stocke pas les options de configuration. Toute la configuration est toujours effectuée à l'aide de variables d'environnement ou de drapeaux CLI. Si la persistance des sessions entre les redémarrages n'est pas une préoccupation, le volume de la base de données peut être omis.
+:::
+
+## OAuth
+
+Le backend OAuth a été réécrit pour prendre en charge plusieurs fournisseurs OAuth. Les options suivantes sont obsolètes :
+
+- `GITHUB_CLIENT_ID`/`--github-client-id`
+- `GITHUB_CLIENT_SECRET`/`--github-client-secret`
+- `GITHUB_CLIENT_SECRET_FILE`/`--github-client-secret-file`
+- `GOOGLE_CLIENT_ID`/`--google-client-id`
+- `GOOGLE_CLIENT_SECRET`/`--google-client-secret`
+- `GOOGLE_CLIENT_SECRET_FILE`/`--google-client-secret-file`
+- `GENERIC_CLIENT_ID`/`--generic-client-id`
+- `GENERIC_CLIENT_SECRET`/`--generic-client-secret`
+- `GENERIC_CLIENT_SECRET_FILE`/`--generic-client-secret-file`
+- `GENERIC_AUTH_URL`/`--generic-auth-url`
+- `GENERIC_TOKEN_URL`/`--generic-token-url`
+- `GENERIC_USER_URL`/`--generic-user-url`
+- `GENERIC_SCOPES`/`--generic-scopes`
+- `GENERIC_NAME`/`--generic-name`
+- `GENERIC_SKIP_SSL`/`--generic-skip-ssl`
+
+La nouvelle configuration pour les fournisseurs OAuth inclut un nom dynamique dans la clé de configuration (ID du fournisseur) qui sera utilisé pour les URL de rappel et l'identification au sein des points d'API. Les nouvelles options de configuration sont :
+
+| Environnement | Indicateur | Description | Valeur par défaut | Requis |
+| ------------------------------------------- | --------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------ | -------- |
+| `PROVIDERS_[PROVIDER]_CLIENT_ID`            | `--providers-[provider]-client-id`            | L'ID du client pour le client OAuth.                                 | ``                                         | yes      |
+| `PROVIDERS_[PROVIDER]_CLIENT_SECRET`        | `--providers-[provider]-client-secret`        | Le secret du client pour le client OAuth.                            | ``                                         | yes      |
+| `PROVIDERS_[PROVIDER]_CLIENT_SECRET_FILE`   | `--providers-[provider]-client-secret-file`   | Un chemin vers un fichier contenant le secret du client OAuth.       | ``                                         | no       |
+| `PROVIDERS_[PROVIDER]_SCOPES`               | `--providers-[provider]-scopes`               | Les scopes nécessaires pour le fournisseur OAuth.                    | ``                                         | yes      |
+| `PROVIDERS_[PROVIDER]_REDIRECT_URL` [^1]    | `--providers-[provider]-redirect-url`         | L'URL de redirection pour le fournisseur OAuth.                     | ``                                         | yes      |
+| `PROVIDERS_[PROVIDER]_AUTH_URL`             | `--providers-[provider]-auth-url`             | L'URL d'authentification pour le fournisseur OAuth.                 | ``                                         | yes      |
+| `PROVIDERS_[PROVIDER]_TOKEN_URL`            | `--providers-[provider]-token-url`            | L'URL de token pour le fournisseur OAuth.                           | ``                                         | yes      |
+| `PROVIDERS_[PROVIDER]_USER_INFO_URL` [^2]   | `--providers-[provider]-user-info-url`        | L'URL d'information utilisateur pour le fournisseur OAuth.          | ``                                         | yes      |
+| `PROVIDERS_[PROVIDER]_INSECURE_SKIP_VERIFY` | `--providers-[provider]-insecure-skip-verify` | Ignorer la vérification du certificat SSL pour le fournisseur.       | `false`                                    | no       |
+| `PROVIDERS_[PROVIDER]_NAME`                 | `--providers-[provider]-name`                 | Le nom du fournisseur OAuth (pour le bouton UI).                    | Provider ID with first letter capitalized. | no       |
+
+[^1]: Ceci est requis pour le moment. Bien que certains fournisseurs gèrent cela automatiquement, il est suggéré de le définir quand même.
+
+[^2]: Veuillez noter l'ajout de `_INFO_` dans le nom de cette option.
+
+Par exemple, pour configurer Google OAuth :
+
+```
+PROVIDERS_GOOGLE_CLIENT_ID=my-client-id
+PROVIDERS_GOOGLE_CLIENT_SECRET=my-client-secret
+```
+
+Ou avec les drapeaux CLI :
+
+```
+--providers-google-client-id=my-client-id --providers-google-client-secret=my-client-secret
+```
+
+:::caution
+  Assurez-vous de modifier les URLs de rappel dans les paramètres de votre fournisseur OAuth pour correspondre à l'ID du fournisseur. Par exemple, si votre configuration est `PROVIDERS_GOOGLE_CLIENT_ID`, l'ID du fournisseur est `google` et l'URL de rappel est `https://tinyauth.example.com/api/oauth/callback/google`.
+:::
+
+:::note
+  L'utilisation de `google` ou `github` comme ID de fournisseur déclenche le remplissage automatique des informations requises (par exemple, l'URL de redirection, les scopes). Vous n'aurez à fournir que l'ID du client et le secret.
+:::
+
+## Labels
+
+Les étiquettes ont été restructurées. Les étiquettes obsolètes incluent :
+
+- `tinyauth.users`
+- `tinyauth.allowed`
+- `tinyauth.headers`
+- `tinyauth.domain`
+- `tinyauth.basic.password.plain`
+- `tinyauth.basic.password.file`
+- `tinyauth.basic.username`
+- `tinyauth.oauth.whitelist`
+- `tinyauth.oauth.groups`
+- `tinyauth.ip.allow`
+- `tinyauth.ip.block`
+- `tinyauth.ip.bypass`
+
+La nouvelle structure utilise des identifiants spécifiques à l'application :
+
+| Nom | Description |
+| ----------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `tinyauth.apps.[app].config.domain`                   | Le domaine où l'application protégée est exposée. Tinyauth utilisera cela pour identifier le conteneur approprié.                             |
+| `tinyauth.apps.[app].users.allow`                     | Une liste séparée par des virgules d'utilisateurs autorisés à accéder à l'application.                                                     |
+| `tinyauth.apps.[app].users.block`                     | Une liste séparée par des virgules d'utilisateurs non autorisés à accéder à l'application.                                                 |
+| `tinyauth.apps.[app].oauth.whitelist`                 | Une liste séparée par des virgules ou une expression régulière d'adresses e-mail autorisées à accéder à l'application (provenant d'OAuth). |
+| `tinyauth.apps.[app].oauth.groups`                    | Une liste séparée par des virgules de groupes OAuth requis pour qu'un utilisateur accède à l'application.                                 |
+| `tinyauth.apps.[app].ip.allow`                        | Une liste séparée par des virgules d'adresses IP ou de CIDR autorisées à accéder à l'application.                                         |
+| `tinyauth.apps.[app].ip.block`                        | Une liste séparée par des virgules d'adresses IP ou de CIDR non autorisées à accéder à l'application.                                     |
+| `tinyauth.apps.[app].ip.bypass`                       | Une liste séparée par des virgules d'adresses IP ou de CIDR pour lesquelles l'authentification ne sera pas requise afin d'accéder à l'application. |
+| `tinyauth.apps.[app].response.headers`                | Une liste séparée par des virgules d'en-têtes que Tinyauth inclura dans sa réponse (utile pour l'authentification aux applications protégées avec des jetons). |
+| `tinyauth.apps.[app].response.basicauth.username`     | Nom d'utilisateur utilisé par Tinyauth pour s'authentifier à une application cible via l'authentification basique.                         |
+| `tinyauth.apps.[app].response.basicauth.password`     | Mot de passe utilisé par Tinyauth pour s'authentifier à une application cible via l'authentification basique.                             |
+| `tinyauth.apps.[app].response.basicauth.passwordfile` | Un chemin vers un fichier contenant le mot de passe utilisé par Tinyauth pour s'authentifier à une application cible via l'authentification basique. |
+| `tinyauth.apps.[app].path.allow`                      | Une expression régulière des chemins qui ne nécessitent pas d'authentification.                                                           |
+| `tinyauth.apps.[app].path.block`                      | Une expression régulière des chemins qui nécessiteront une authentification (signifiant que tous les autres chemins sont autorisés).         |
+
+Par exemple, si votre configuration actuelle ressemble à ceci :
+
+```yaml
+services:
+  whoami:
+    labels:
+      tinyauth.users: user1,user2
+```
+
+Vous devrez également le modifier :
+
+```yaml
+services:
+  whoami:
+    labels:
+      tinyauth.apps.whoami.users.allow: user1,user2
+```
+
+:::note
+  Le mécanisme de découverte des étiquettes utilise désormais le nom de l'application dans le sous-domaine de la requête. Par exemple, `myapp.example.com` correspond à `tinyauth.apps.myapp.foo: bar`. La découverte d'étiquettes basée sur le nom du conteneur n'est plus prise en charge.
+:::
+
+:::note
+  Il est conseillé de passer à l'étiquette `tinyauth.apps.[app].config.domain` pour une meilleure découverte.
+:::
+
+## Configuration Changes
+
+Les options suivantes sont obsolètes :
+
+- `SECRET`/`--secret`
+- `SECRET_FILE`/`--secret-file`
+- `DISABLE_CONTINUE`/`--disable-continue`
+
+Options modifiées :
+
+| Actuel | Nouveau | Valeurs |
+| ----------------------------------- | ----------------------------------- | ----------------------------------------------------------- |
+| `COOKIE_SECURE` (`--cookie-secure`) | `SECURE_COOKIE` (`--secure-cookie`) | `true`, `false` |
+| `LOG_LEVEL` (`--log-level`)         | `LOG_LEVEL` (`--log-level`)         | `trace`, `debug`, `info`, `warn`, `error`, `fatal`, `panic` |
+
+## API Changes
+
+L'API a été mise à jour. Si vous utilisez l'API directement, veuillez consulter les sources du [contrôleur](https://github.com/steveiliop56/tinyauth/tree/main/internal/controller). Tous les chemins d'API ont le préfixe `/api`. Plus important encore, le chemin de vérification de santé a changé.
+
+| Chemin actuel | Nouveau chemin | Méthode |
+| ------------------ | -------------- | ------ |
+| `/api/healthcheck` | `/api/healthz` | `GET`  |
+| `/api/healthcheck` | `/api/healthz` | `HEAD` |
+
+Il existe également une nouvelle commande `tinyauth healthcheck` qui vérifiera automatiquement si le serveur est en bonne santé en utilisant votre configuration actuelle. L'image Docker inclut la vérification de santé suivante :
+
+```dockerfile
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 CMD ["tinyauth", "healthcheck"]
+```

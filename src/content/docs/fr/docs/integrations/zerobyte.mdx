@@ -1,0 +1,82 @@
+---
+title: "Zerobyte"
+description: "Utilisez le fournisseur OpenID Connect Tinyauth pour authentifier les utilisateurs avec Zerobyte."
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+[Zerobyte](https://github.com/nicotsx/zerobyte) est une solution d'automatisation de sauvegarde auto-hébergée populaire basée sur restic. Elle permet aux utilisateurs de gérer et automatiser facilement leurs tâches de sauvegarde via une interface web conviviale. En intégrant Tinyauth comme fournisseur OpenID Connect, vous pouvez renforcer la sécurité de votre instance Zerobyte en activant l'authentification unique (SSO) et centralisée.
+
+## Exigences
+
+- Une instance de Zerobyte en cours d'exécution
+- Une instance de Tinyauth
+- Une tasse de café (facultatif mais recommandé)
+
+:::caution
+Vous devrez exécuter Tinyauth avec HTTPS pour l'utiliser comme fournisseur OpenID Connect.
+:::
+
+## Configuration de Tinyauth
+
+Pour commencer, nous devons générer un identifiant client et un secret dans Tinyauth pour Zerobyte. Cela peut être fait en exécutant la commande suivante :
+
+<Tabs>
+  <TabItem label="Docker">
+    ```sh
+    docker run -i -t --rm ghcr.io/steveiliop56/tinyauth:v5 oidc create zerobyte
+    ```
+  </TabItem>
+  <TabItem label="Binary">
+    ```sh
+    ./tinyauth oidc create zerobyte
+    ```
+  </TabItem>
+</Tabs>
+
+À partir de la sortie, assurez-vous d'enregistrer l'identifiant client et le secret car nous en aurons besoin plus tard pour la configuration de Zerobyte.
+
+Ensuite, nous pouvons transmettre notre configuration à Tinyauth via des variables d'environnement :
+
+```sh
+TINYAUTH_OIDC_PRIVATEKEYPATH=/path/to/private/key.pem
+TINYAUTH_OIDC_PUBLICKEYPATH=/path/to/public/key.pem
+TINYAUTH_OIDC_CLIENTS_ZEROBYTE_CLIENTID=client-id
+TINYAUTH_OIDC_CLIENTS_ZEROBYTE_CLIENTSECRET=ta-client-secret
+TINYAUTH_OIDC_CLIENTS_ZEROBYTE_TRUSTEDREDIRECTURIS=https://your-zerobyte-instance.com/api/auth/sso/callback/tinyauth
+TINYAUTH_OIDC_CLIENTS_ZEROBYTE_NAME=Zerobyte
+```
+
+:::note
+Dans le champ des URI de redirection approuvées, nous avons utilisé le suffixe `/tinyauth` pour l'URL de rappel. Cela doit correspondre au nom du client que nous créerons dans Zerobyte à l'étape suivante. Si vous souhaitez utiliser un nom différent, assurez-vous de mettre à jour l'URL de rappel en conséquence.
+:::
+
+Redémarrez votre instance Tinyauth pour appliquer la nouvelle configuration.
+
+## Configuration de Zerobyte
+
+Ensuite, nous devons configurer Zerobyte pour utiliser Tinyauth comme fournisseur OpenID Connect. Cela peut être fait en créant un nouveau client dans le panneau d'administration de Zerobyte. Vous pouvez naviguer vers la page *Settings* puis l'onglet *Organization*. Ici, vous pouvez cliquer sur *Register New* sous la section *Single Sign-On* pour créer un nouveau client.
+
+Remplissez le formulaire avec les détails suivants :
+
+| Nom | Valeur |
+| - | - |
+| Provider ID | `tinyauth` |
+| Organization Domain | Le domaine parent de votre instance Tinyauth, par ex., `example.com` |
+| Issuer URL | L'URL d'émetteur de votre instance Tinyauth, par ex., `https://tinyauth.example.com` |
+| Discovery Endpoint | Le point de terminaison de découverte suivi de `/.well-known/openid-configuration`, par ex., `https://tinyauth.example.com/.well-known/openid-configuration` |
+| Client ID | L'identifiant client généré à l'étape précédente. |
+| Client Secret | Le secret client généré à l'étape précédente. |
+| Link matching emails to existing accounts | Lier les e-mails correspondants aux comptes existants (facultatif, mais vous voudrez probablement activer cette option si vos utilisateurs ont les mêmes adresses e-mail dans Tinyauth et Zerobyte.) |
+
+![Zerobyte Create Client Preview](/screenshots/zerobyte/create-client.png)
+
+Après avoir rempli le formulaire, cliquez sur le bouton *Register Provider* pour créer le nouveau client. Enfin, si votre adresse e‑mail Tinyauth ne correspond à aucun des utilisateurs existants de Zerobyte, vous devrez les inviter à votre instance.
+
+Vous pouvez le faire en naviguant vers la section *Invite-only access*, en entrant l'adresse e‑mail de l'utilisateur que vous souhaitez inviter, en sélectionnant le rôle approprié, puis en cliquant sur le bouton *Invite*.
+
+![Zerobyte Invite User Preview](/screenshots/zerobyte/invite-user.png)
+
+Enfin, vous pouvez tester l'intégration en vous déconnectant de votre instance Zerobyte puis en cliquant sur le bouton *Login with Tinyauth* sur la page de connexion. Vous devriez être redirigé vers la page de connexion Tinyauth, où vous pourrez entrer vos identifiants pour vous authentifier. Après une authentification réussie, vous serez redirigé vers Zerobyte et connecté à votre compte.
+
+![Zerobyte Login Preview](/screenshots/zerobyte/login.png)

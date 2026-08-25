@@ -1,0 +1,200 @@
+---
+title: "Contrôles d'accès"
+description: "Tinyauth prend en charge les contrôles d'accès basés sur des labels Docker."
+---
+
+Tinyauth prend en charge les contrôles d'accès de base avec soit des labels Docker, soit des variables d'environnement. Ces labels (ou variables d'environnement) peuvent restreindre ou autoriser l'accès aux applications.
+
+:::caution[Proxy configuration matters]
+Tinyauth s'appuie sur l'en-tête `X-Forwarded-Host` (défini par votre reverse proxy) pour déterminer quels contrôles d'accès d'application s'appliquent à une requête donnée. Si votre proxy ne remplace pas cet en-tête, ou si tinyauth est directement accessible sur le réseau sans passer par le proxy, un utilisateur pourrait envoyer une requête avec un hôte falsifié qui ne correspond à aucune application configurée. Lorsqu'aucune application ne correspond, tinyauth considère la requête comme n'ayant aucune restriction et autorise tout utilisateur authentifié.
+
+Pour éviter cela, assurez-vous que votre reverse proxy définit toujours lui-même l'en-tête `X-Forwarded-Host` et ne transmet pas les valeurs fournies par le client. Traefik et Caddy font cela par défaut. Pour nginx, utilisez `proxy_set_header X-Forwarded-Host $host;` dans votre bloc de localisation. Vous devez également vous assurer que tinyauth n'est pas directement accessible depuis le réseau — seul votre reverse proxy doit pouvoir y accéder.
+:::
+
+## Modifying the Tinyauth Container
+
+:::note
+Vous pouvez ignorer cette étape si vous utilisez des variables d'environnement.
+:::
+
+Pour activer les contrôles d'accès, ajoutez le volume suivant au conteneur Tinyauth :
+
+```yaml
+services:
+  tinyauth:
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+```
+
+Redémarrez Tinyauth après avoir défini le volume.
+
+:::note
+Pour une sécurité accrue, utilisez un proxy de socket Docker comme celui de [Tecnativa](https://github.com/Tecnativa/docker-socket-proxy). Configurez Tinyauth pour utiliser le proxy en ajoutant la variable d'environnement suivante :
+
+```yaml
+services:
+  tinyauth:
+    environment:
+      DOCKER_HOST: tcp://docker-socket-proxy:2375
+```
+
+Assurez-vous que Tinyauth peut atteindre le conteneur du proxy de socket Docker.
+
+Si vous le souhaitez, vous pouvez également restreindre l'accès de Tinyauth au socket Docker en utilisant les labels suivants :
+
+```yaml
+services:
+  tinyauth:
+    labels:
+        socket-proxy.allow.get: /v1\..*/(version|containers/.*|events.*)|/_ping
+        socket-proxy.allow.head: /_ping
+```
+
+*Merci à [@dombyte](https://github.com/dombyte) pour la suggestion.*
+:::
+
+## Structure des contrôles d'accès
+
+Les labels de contrôle d'accès suivent cette structure :
+
+```yaml
+tinyauth.apps.[app].[key]: [value]
+```
+
+De même, les variables d'environnement suivent cette structure :
+
+```sh
+TINYAUTH_APPS_[APP]_[KEY]=[VALUE]
+```
+
+Où `[app]` est le nom de l'application à protéger. Cet ID d'application doit être unique pour chaque application protégée.
+
+## Découverte des contrôles d'accès
+
+Tinyauth utilise l'identifiant d'application dans les labels (ou variables d'environnement) et le sous-domaine de la requête pour faire correspondre la configuration avec l'application. Par exemple, une requête vers `app1.example.com` déclenche Tinyauth à rechercher des conteneurs avec le label `tinyauth.apps.app1.foo: bar` ou la variable d'environnement `TINYAUTH_APPS_APP1_FOO=bar`. Pour utiliser le domaine à la place, ajoutez le label suivant :
+
+```yaml
+tinyauth.apps.myapp.config.domain: myapp.example.com
+```
+
+Ou la variable d'environnement suivante :
+
+```sh
+TINYAUTH_APPS_MYAPP_CONFIG_DOMAIN=myapp.example.com
+```
+
+Tinyauth utilisera désormais le domaine pour faire correspondre la configuration au lieu de l'identifiant d'application.
+
+:::note
+Les labels peuvent être définis soit sur le conteneur Tinyauth, soit sur l'application. Cependant, si vous utilisez plusieurs hôtes et que l'application s'exécute sur un hôte différent de celui de Tinyauth, les labels doivent être définis sur le conteneur Tinyauth.
+:::
+
+:::caution
+Les labels sont dynamiques et peuvent être mis à jour en temps réel, tandis que les variables d'environnement ne le sont pas et nécessitent un redémarrage de Tinyauth pour prendre effet.
+:::
+
+## ACL Utilisateurs
+
+*À l'avenir, le guide utilisera le format des labels mais tout ce qui est mentionné s'applique également aux variables d'environnement.*
+
+Pour restreindre l'accès à des utilisateurs spécifiques, utilisez le label `users.allow` :
+
+```yaml
+tinyauth.apps.myapp.users.allow: user1
+```
+
+Seul `user1` pourra accéder à l'application. Pour bloquer des utilisateurs spécifiques, utilisez le label `users.block` :
+
+```yaml
+tinyauth.apps.myapp.users.block: user2
+```
+
+:::note
+Les labels `users.allow` et `users.block` peuvent accepter une liste d'utilisateurs séparés par des virgules ou une chaîne de caractères regex (encadrée par `/`).
+:::
+
+:::note
+Ces labels s'appliquent également aux utilisateurs LDAP.
+:::
+
+## Liste blanche OAuth
+
+Pour restreindre l'accès à des utilisateurs OAuth spécifiques, utilisez le label `oauth.whitelist` :
+
+```yaml
+tinyauth.apps.myapp.oauth.whitelist: user1@example.com
+```
+
+Seul `user1@example.com` pourra accéder à l'application.
+
+:::note
+Le label `oauth.whitelist` peut accepter une liste d'utilisateurs séparés par des virgules ou une chaîne de caractères regex (encadrée par `/`).
+:::
+
+## ACL Chemins
+
+Pour ignorer l'authentification pour des chemins spécifiques, utilisez le label `path.allow` :
+
+```yaml
+tinyauth.apps.myapp.path.allow: ^\/api
+```
+
+Pour bloquer l'accès à des chemins spécifiques, utilisez le label `path.block` :
+
+```yaml
+tinyauth.apps.myapp.path.block: ^\/admin
+```
+
+:::caution
+Les labels de chemin utilisent des chaînes regex. Par exemple, `^\\/api` correspond aux chemins commençant par `/api`, tandis que `^\\/ping$` correspond exactement au chemin `/ping`.
+:::
+
+## Contrôles d'accès basés sur l'IP
+
+Pour autoriser l'accès basé sur les adresses IP ou les CIDR, utilisez le label `ip.allow` :
+
+```yaml
+tinyauth.apps.myapp.ip.allow: 10.10.5.5,10.10.10.0/24
+```
+
+Pour bloquer des IP spécifiques ou des sous-réseaux, utilisez le label `ip.block` :
+
+```yaml
+tinyauth.apps.myapp.ip.block: 192.168.1.1,192.168.0.0/16
+```
+
+## Contournement de l'authentification pour les IP
+
+Pour désactiver l'authentification pour des IP ou sous-réseaux spécifiques, utilisez le label `ip.bypass` :
+
+```yaml
+tinyauth.apps.myapp.ip.bypass: 10.10.5.5,10.10.10.0/24
+```
+
+## Contrôles d'accès utilisant les groupes OIDC
+
+Certains serveurs OIDC, comme Pocket ID, prennent en charge les groupes d'utilisateurs dans la réponse OIDC. Pour utiliser les groupes, assurez-vous que le champ `groups` est inclus dans la configuration du fournisseur OAuth. Ensuite, ajoutez le label `oauth.groups` :
+
+```yaml
+tinyauth.apps.myapp.oauth.groups: admin
+```
+
+Seuls les utilisateurs du groupe `admin` seront autorisés à accéder à l'application.
+
+:::caution
+Le label `oauth.groups` n'est pris en charge que pour les fournisseurs OAuth personnalisés, pas pour Google ou GitHub.
+:::
+
+## Contrôles d'accès utilisant les groupes LDAP
+
+Tinyauth prend également en charge la récupération des groupes de l'utilisateur depuis le serveur LDAP et leur utilisation pour le contrôle d'accès. Pour utiliser les groupes LDAP, ajoutez le label `ldap.groups` :
+
+```yaml
+tinyauth.apps.myapp.ldap.groups: admin
+```
+
+Seuls les utilisateurs du groupe `admin` seront autorisés à accéder à l'application.
+
+:::note
+Pour des raisons de performance, les groupes LDAP ne sont pas récupérés à chaque requête. Au lieu de cela, ils sont récupérés périodiquement et mis en cache. Par défaut, le cache est rafraîchi toutes les 15 minutes. Si vous avez besoin de rafraîchir le cache plus fréquemment, vous pouvez modifier la variable d'environnement `TINYAUTH_LDAP_GROUPCACHETTL` (accepte un intervalle en secondes).
+:::

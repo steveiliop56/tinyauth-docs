@@ -1,0 +1,86 @@
+---
+title: "Serveur LDAP"
+description: "Utilisez un serveur LDAP centralisé pour la gestion des utilisateurs dans Tinyauth."
+---
+
+LDAP, while often associated with businesses, can be highly effective for centralizing user management in a homelab environment. Tinyauth supports LDAP as a user source, making it easier to manage users across applications.
+
+## Exigences
+
+Un serveur LDAP est requis pour poursuivre. [LLDAP](https://github.com/lldap/lldap) est recommandé pour son design léger et sa facilité de configuration. Ce guide utilise LLDAP, mais tout serveur LDAP est compatible.
+
+## Création d'utilisateurs
+
+Tinyauth nécessite au moins deux utilisateurs : un utilisateur observateur avec accès en lecture seule à la base de données (utilisé par Tinyauth pour rechercher les DN des utilisateurs) et un utilisateur normal pour se connecter à Tinyauth et aux applications.
+
+### Création de l'utilisateur observateur
+
+1. Accédez à l'onglet **Users** dans LLDAP et cliquez sur **Create a user**.
+2. Fournissez un nom d'utilisateur, un mot de passe et une adresse e-mail, puis cliquez sur **Submit**.
+
+![LLDAP Create a User](/screenshots/lldap/new-user.png)
+
+3. Après avoir créé l'utilisateur, sélectionnez-le dans la liste et faites défiler jusqu'à la section des appartenances aux groupes. Ajoutez l'utilisateur au groupe `lldap_strict_readonly` en cliquant sur **Add to Group**.
+
+![LLDAP Groups](/screenshots/lldap/user-groups.png)
+
+### Création d'utilisateurs supplémentaires
+
+Répétez le processus pour créer des utilisateurs supplémentaires. Les utilisateurs normaux n'ont pas besoin de appartenir à un groupe.
+
+## Configuration de Tinyauth
+
+Pour connecter Tinyauth au serveur LDAP, ajoutez les variables d'environnement suivantes au conteneur Docker de Tinyauth :
+
+```yaml
+services:
+  tinyauth:
+    environment:
+      - TINYAUTH_LDAP_ADDRESS=ldap://my-lldap-server:3890
+      - TINYAUTH_LDAP_BINDDN=uid=your-observer-user,ou=people,dc=example,dc=com
+      - TINYAUTH_LDAP_BINDPASSWORD=your-observer-user-password
+      - TINYAUTH_LDAP_BASEDN=dc=example,dc=com
+      - TINYAUTH_LDAP_SEARCHFILTER=(uid=%s)
+      - TINYAUTH_LDAP_INSECURE=true
+```
+
+:::note
+  Le filtre de recherche peut être personnalisé selon les besoins. Le filtre de base `(uid=%s)` recherche les utilisateurs en fonction de leur UID, avec `%s` remplacé par le nom d'utilisateur du compte tentant de se connecter.
+:::
+
+:::note
+  Remplacez le bind DN et le base DN par des valeurs spécifiques à la configuration du serveur LDAP.
+:::
+
+Après avoir redémarré, il devrait être possible de se connecter à Tinyauth avec le deuxième utilisateur créé dans LLDAP. Des utilisateurs supplémentaires peuvent être créés et utilisés pour la connexion selon les besoins.
+
+:::note
+  Les utilisateurs LDAP sont traités de la même manière que les utilisateurs provenant de fichiers ou de variables d'environnement. Il n'y a aucune indication dans l'interface utilisateur qu'un utilisateur est connecté via LDAP. Tous les contrôles d'accès s'appliquent également aux utilisateurs LDAP et aux utilisateurs standard.
+:::
+
+## Utilisation des groupes LDAP pour le contrôle d'accès
+
+Tinyauth prend en charge l'extraction des informations de groupe depuis le fournisseur LDAP. Cela vous permet de configurer les groupes d'application directement à partir du serveur LDAP. Les groupes sont extraits en utilisant le filtre `(&(objectclass=groupOfUniqueNames)(uniquemember=%s))` où `%s` est remplacé par le nom d'utilisateur du compte tentant de se connecter. Ce filtre devrait fonctionner avec la plupart des serveurs LDAP.
+
+:::warning
+  Les groupes LDAP ne sont pas actualisés à chaque requête pour des raisons de performance. Au lieu de cela, ils sont mis en cache pendant une courte période afin de minimiser le nombre de requêtes vers le serveur LDAP. La durée du cache peut être configurée via la variable d'environnement `TINYAUTH_LDAP_GROUPCACHETTL`. La durée par défaut est de 900 secondes (15 minutes).
+:::
+
+Après avoir créé un groupe dans LLDAP :
+
+![LLDAP Create Group](/screenshots/lldap/new-group.png)
+
+Vous pouvez ensuite attribuer des utilisateurs au groupe :
+
+![LLDAP Assign User to Group](/screenshots/lldap/user-assign-group.png)
+
+Enfin, utilisez le [LDAP Group ACL](/docs/guides/access-controls/#access-controls-using-ldap-groups) pour autoriser uniquement les utilisateurs du groupe `admins` dans votre application :
+
+```yaml
+services:
+  foo:
+    labels:
+      tinyauth.apps.foo.ldap.groups: admins
+```
+
+Si un utilisateur LDAP n'est pas membre du groupe `admins`, il ne se verra pas accorder l'accès à l'application et sera redirigé vers une page non autorisée.

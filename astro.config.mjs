@@ -7,7 +7,11 @@ import umami from "@yeskunall/astro-umami";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://tinyauth.app",
+  site: "https://docs.local/",
+  base: '/',
+
+  // Ne fonctionne pas entre 2 disques
+  //  outDir: '/home/fred/dev/web/docs/dist/www/docs/tinyauth',
   server: (command) => {
     if (command.command === "preview") {
       return {
@@ -32,6 +36,11 @@ export default defineConfig({
         "./src/styles/tools.css",
       ],
       title: "Tinyauth",
+      defaultLocale: 'root',
+      locales: {
+        root: { label: 'English', lang: 'en' },
+        fr: { label: 'Français', lang: 'fr' },
+      },
       credits: true,
       logo: {
         src: "./public/tinyauth.png",
@@ -213,11 +222,6 @@ export default defineConfig({
           },
         },
       ],
-    }),
-    umami({
-      hostUrl: "https://analytics.doesmycode.work",
-      endpointUrl: "https://analytics.doesmycode.work",
-      id: "ed560a2b-b321-4745-b2f8-d7de846aeb7f",
     }),
   ],
 });

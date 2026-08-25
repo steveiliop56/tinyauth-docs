@@ -1,0 +1,40 @@
+---
+title: "Étiquettes"
+description: "Référence sur les étiquettes utilisées par Tinyauth."
+---
+
+Tinyauth utilise des étiquettes pour gérer le contrôle d'accès aux ressources protégées. Les étiquettes sont des paires clé-valeur pouvant être attribuées à des utilisateurs et des ressources, permettant un contrôle d'accès flexible et granulaire. La liste complète des étiquettes est disponible ci-dessous.
+
+## Discovery
+
+Tinyauth utilise l'ID de l'application dans les étiquettes et le sous-domaine de la requête pour faire correspondre les étiquettes avec l'application. Par exemple, une requête vers `app1.example.com` déclenche Tinyauth à rechercher des conteneurs avec l'étiquette `tinyauth.apps.app1.foo: bar`. Pour utiliser le domaine à la place, ajoutez l'étiquette suivante :
+
+```yaml
+tinyauth.apps.myapp.config.domain: myapp.example.com
+```
+
+Tinyauth utilisera désormais le domaine pour faire correspondre les étiquettes au lieu de l'ID de l'application.
+
+:::note
+  Les étiquettes peuvent être définies soit sur le conteneur Tinyauth, soit sur l'application. Cependant, si vous utilisez plusieurs hôtes et que l'application s'exécute sur un hôte différent de celui de Tinyauth, les étiquettes doivent être définies sur le conteneur Tinyauth.
+:::
+
+## Full List
+
+| Nom                                                  | Description                                                                                                                             |
+| ----------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `tinyauth.apps.[app].config.domain`                   | Le domaine où l'application protégée est exposée. Tinyauth utilisera ceci pour identifier le conteneur correct.                             |
+| `tinyauth.apps.[app].users.allow`                     | Une liste séparée par des virgules d'utilisateurs autorisés à accéder à l'application.                                                     |
+| `tinyauth.apps.[app].users.block`                     | Une liste séparée par des virgules d'utilisateurs non autorisés à accéder à l'application.                                                 |
+| `tinyauth.apps.[app].oauth.whitelist`                 | Une liste séparée par des virgules ou une expression régulière d'adresses e‑mail autorisées à accéder à l'application (provenant d'OAuth). |
+| `tinyauth.apps.[app].oauth.groups`                    | Une liste séparée par des virgules de groupes OAuth requis pour qu'un utilisateur accède à l'application.                                |
+| `tinyauth.apps.[app].ip.allow`                        | Une liste séparée par des virgules d'adresses IP ou de CIDR autorisées à accéder à l'application.                                         |
+| `tinyauth.apps.[app].ip.block`                        | Une liste séparée par des virgules d'adresses IP ou de CIDR non autorisées à accéder à l'application.                                     |
+| `tinyauth.apps.[app].ip.bypass`                       | Une liste séparée par des virgules d'adresses IP ou de CIDR pour lesquelles l'authentification ne sera pas requise afin d'accéder à l'application. |
+| `tinyauth.apps.[app].response.headers`                | Une liste séparée par des virgules d'en-têtes que Tinyauth inclura dans sa réponse (utile pour l'authentification aux applications protégées avec des jetons). |
+| `tinyauth.apps.[app].response.basicauth.username`     | Nom d'utilisateur utilisé par Tinyauth pour s'authentifier à une application cible via l'authentification basique.                       |
+| `tinyauth.apps.[app].response.basicauth.password`     | Mot de passe utilisé par Tinyauth pour s'authentifier à une application cible via l'authentification basique.                           |
+| `tinyauth.apps.[app].response.basicauth.passwordfile` | Un chemin vers un fichier contenant le mot de passe utilisé par Tinyauth pour s'authentifier à une application cible via l'authentification basique. |
+| `tinyauth.apps.[app].path.allow`                      | Une expression régulière d'itinéraires qui ne nécessitent pas d'authentification.                                                      |
+| `tinyauth.apps.[app].path.block`                      | Une expression régulière d'itinéraires qui nécessiteront une authentification (les autres itinéraires étant autorisés).                 |
+| `tinyauth.apps.[app].ldap.groups`                    | Une liste séparée par des virgules de groupes LDAP requis pour qu'un utilisateur accède à l'application.                                |

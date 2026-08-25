@@ -1,0 +1,75 @@
+---
+title: "Contribuer"
+description: "Vous souhaitez contribuer à Tinyauth ? Voici les étapes pour commencer."
+---
+
+Contribuer à Tinyauth est simple. Suivez les étapes ci-dessous pour configurer un serveur de développement.
+
+:::note
+Si vous utilisez des modèles de langage étendus pour contribuer au projet, veuillez vous assurer d'avoir lu et compris la [Politique IA](AI_POLICY.md).
+:::
+
+## Requirements
+
+- pnpm
+- Golang v1.24.0 ou plus récent
+- Git
+- Docker
+- Make
+
+## Cloning the Repository
+
+Commencez par cloner le dépôt :
+
+```sh
+git clone https://github.com/tinyauthapp/tinyauth
+cd tinyauth
+```
+
+## Installing Dependencies
+
+Bien que le développement se fasse dans Docker, il est recommandé d'installer les dépendances localement pour éviter des erreurs d'importation. Installez les dépendances Go :
+
+```sh
+go mod tidy
+```
+
+Les dépendances front-end peuvent être installées comme suit :
+
+```sh
+cd frontend/
+pnpm ci
+```
+
+## Create the `.env` file
+
+La configuration nécessite un fichier d'environnement. Copiez le fichier `.env.example` vers `.env` et ajustez les variables d'environnement selon vos besoins.
+
+## Development Workflow
+
+Le flux de travail de développement est conçu pour fonctionner entièrement dans Docker, garantissant la compatibilité avec Traefik et éliminant le besoin de compilations locales. Une configuration recommandée consiste à pointer un sous-domaine vers votre machine locale :
+
+```
+*.dev.example.com -> 127.0.0.1
+dev.example.com -> 127.0.0.1
+```
+
+:::note
+Un domaine provenant de [sslip.io](https://sslip.io) peut être utilisé si un domaine personnalisé n'est pas disponible. Par exemple, définissez le domaine Tinyauth sur `tinyauth.127.0.0.1.sslip.io` et le domaine whoami sur `whoami.127.0.0.1.sslip.io`.
+:::
+
+Assurez-vous que les domaines sont correctement configurés dans le fichier Docker Compose de développement, puis démarrez l'environnement de développement :
+
+```sh
+make dev
+```
+
+Si vous avez besoin de compiler le binaire localement, vous pouvez exécuter :
+
+```sh
+make binary
+```
+
+:::note
+Il est recommandé de copier le fichier d'exemple `docker-compose.dev.yml` vers `docker-compose.test.yml` afin d'éviter les commits accidentels d'informations sensibles. La recette make utilisera automatiquement `docker-compose.test.yml` ainsi que `docker-compose.test.prod.yml` (pour la recette `make prod`) s'il existe.
+:::

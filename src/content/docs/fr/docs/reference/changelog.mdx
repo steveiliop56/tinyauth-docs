@@ -1,0 +1,626 @@
+---
+title: "Changelog"
+description: "Vue d'ensemble des changements et mises à jour dans les versions de Tinyauth."
+---
+
+## v5.0.7
+
+### Améliorations
+
+- Le serveur OpenID Connect prend désormais en charge PKCE
+- L'endpoint d'information utilisateur OpenID Connect prend désormais en charge les requêtes POST @scottmckendry
+- L'endpoint d'information utilisateur OpenID Connect accepte désormais le jeton d'accès dans le corps de la requête POST @scottmckendry
+- Le flux OAuth prend désormais en charge les paramètres OpenID Connect et stocke les états CSRF côté serveur pour prévenir la falsification
+- Ajout du header `X-Tinyauth-Location` pour les instances Nginx afin de rediriger automatiquement vers les pages de connexion et d'accès non autorisé
+- Prise en charge des objets de requête OpenID Connect sans signature @scottmckendry
+- Améliorations d'accessibilité
+
+### Corrections
+
+- Utiliser les redirections 307 pour le proxy Envoy
+- Corriger le remplissage automatique du champ TOTP qui ne fonctionnait pas dans certains gestionnaires de mots de passe @scottmckendr
+
+### Technique
+
+- Mise à jour des dépendances
+- Mise à jour des traductions
+- Utiliser notre propre fork de la bibliothèque [paerser](https://github.com/tinyauthapp/paerser) pour une meilleure flexibilité dans l'analyse des configurations
+- Échec précoce de l'application lorsque l'URL de l'app est manquante
+
+## v5.0.6
+
+### Corrections
+
+- Corriger le fonctionnement incorrect de la détection du navigateur pour certains proxys
+
+### Technique
+
+- Mise à jour des dépendances
+
+## v5.0.5
+
+:::caution
+Cette version contient une correction de sécurité, veuillez mettre à jour dès que possible.
+:::
+
+:::note
+Pour les utilisateurs d'Envoy/Istio, vous devrez peut-être inclure `user-agent` dans votre configuration `includeRequestHeadersInCheck` pour que la détection du navigateur fonctionne.
+:::
+
+### Améliorations
+
+- OAuth prend désormais en charge plusieurs tentatives de connexion simultanées
+- Amélioration de la détection du navigateur basée sur l'en-tête `User-Agent`
+- Support amélioré des proxys avec de nouveaux modules spécifiques aux proxys
+- Limitation automatique du débit pour toute l'instance en cas de multiples tentatives de connexion
+- Autoriser les domaines au niveau racine comme URL d'app à des fins de test
+- Tenter d'extraire le contexte uniquement sur les routes qui en ont besoin
+
+### Corrections
+
+- Correction du contrôleur proxy ne récupérant pas les informations de requête depuis les déploiements Nginx
+
+### Technique
+
+- Mise à jour des dépendances
+- Mise à jour des traductions
+- Correction du mauvais tag utilisé pour les métadonnées dans le flux de travail de publication @jacekkow
+- Refactorisation des tests du contrôleur pour un test beaucoup plus complet, robuste et extensible
+
+## v5.0.4
+
+### Améliorations
+
+- Prise en charge de l'en-tête `X-Original-URI`
+
+### Corrections
+
+- `X-Forwarded-URI` ne doit pas être requis
+
+### Technique
+
+- Mise à jour des dépendances
+
+## v5.0.3
+
+:::caution
+Cette version contient des corrections de sécurité, veuillez mettre à jour dès que possible.
+:::
+
+### Corrections
+
+- Ne pas poursuivre l'authentification sur les en-têtes `X-Forwarded-*` vides.
+- S'assurer que l'utilisateur est connecté et n'est pas dans le flux 2FA à l'endpoint d'autorisation
+- Vérifier que l'identifiant client correspond à l'entrée de code avant d'émettre un jeton
+
+### Technique
+
+- Mise à jour des dépendances
+- Mise à jour des traductions
+
+## v5.0.2
+
+### Améliorations
+
+- Prise en charge des clés publiques PKIX [@DarkDare](https://github.com/DarkDare)
+
+### Corrections
+
+- Ajout de `kid` dans l'en-tête JWT du jeton d'identité
+- Rendre le champ état non obligatoire dans la requête d'autorisation
+- Accepter le port et l'adresse individuellement dans la commande `healthcheck` [@luizfelipefb](https://github.com/luizfelipefb)
+
+### Technique
+
+- Mise à jour des dépendances
+
+## v5.0.1
+
+### Corrections
+
+- S'assurer que `kid` est présent dans la réponse JWKS
+- Gérer le nom de client vide sur la page d'autorisation
+- Utiliser la bonne variable d'environnement et l'indicateur pour le chargement de configuration
+- Vérifier que le nonce est reconnu dans la réponse du jeton d'identité
+- S'assurer que `email_verified` est présent comme revendication dans le jeton d'identité et la réponse des informations utilisateur
+- S'assurer que les en-têtes de contrôle du cache sont définis sur l'endpoint de jeton
+
+### Technique
+
+- Mise à jour des dépendances
+- Mise à jour des traductions
+
+## v5.0.0
+
+:::caution
+Il s'agit d'une version majeure, veuillez consulter la [documentation](/docs/breaking-updates/4-to-5) pour les instructions de migration.
+:::
+
+### Nouvelles fonctionnalités
+
+- Prise en charge expérimentale du fichier de configuration
+- Ajout du support pour le proxy Envoy [@pushpinderbal](https://github.com/pushpinderbal)
+- Rafraîchir le cookie de session tant que la session est active
+- Transférer la revendication `sub` des fournisseurs OAuth dans l'en-tête `Remote-Sub`
+- Prise en charge des ACL via variables d'environnement / indicateurs CLI / fichier de configuration
+- Ajout du support d'authentification mTLS / certificat client dans LDAP [@plaes](https://github.com/plaes)
+- Ajout du support des filtres IP globaux
+- Journalisation configurable au niveau du composant [@pushpinderbal](https://github.com/pushpinderbal)
+- ACL de groupe LDAP
+- Soumission automatique du code TOTP lorsqu'il est saisi
+- Serveur OIDC
+
+### Améliorations
+
+- Créer automatiquement le répertoire de base de données s'il n'existe pas [@modrin](https://github.com/modrin)
+- Utiliser un format de configuration unique pour les variables d'environnement, indicateurs CLI et fichier de configuration
+- Améliorer la performance du front-end en minimisant les appels use-effect et la taille des morceaux [@nicotsx](https://github.com/nicotsx)
+
+### Corrections
+
+- Correction de la détection de langue stockant un code incorrect dans le stockage local
+- Ajout d'une limitation du débit dans l'endpoint d'authentification directe pour prévenir les attaques par force brute utilisant l'authentification basique [@offw0rld](https://github.com/offw0rld)
+- Masquer le fournisseur d'utilisateur lorsqu'aucun utilisateur n'est configuré [@pushpinderbal](https://github.com/pushpinderbal)
+- Définir le mode Gin dans le code plutôt que via des variables d'environnement
+- S'assurer que la vérification de redirection sécurisée prend en compte les points
+
+### Technique
+
+- Mise à jour des dépendances
+- Mise à jour des traductions
+- Correction de [CVE-2025-55182](https://github.com/advisories/GHSA-fv66-9v8q-g76r "CVE-2025-55182") dans React [@d3vv3](https://github.com/d3vv3)
+- Diviser le démarrage de l'app en tâches plus petites pour une meilleure lisibilité et maintenabilité
+- Utiliser le nom de module correct – Tinyauth est désormais listé dans [pkg.go.dev](https://pkg.go.dev/github.com/steveiliop56/tinyauth)
+- Remplacer GORM par SQL vanilla et SQLC pour une taille plus petite et un code plus maintenable
+- Ajouter un `Makefile` pour simplifier le développement
+- Simplifier la logique d'analyse des utilisateurs car nous pouvons déléguer les choses à paerser
+
+## v4.1.0
+
+### Nouvelles fonctionnalités
+
+- Mode clair
+- Prise en charge de l'écoute sur des sockets UNIX
+- Journaliser les nouvelles sessions dans `TRACE`
+- Prise en charge de la journalisation en JSON
+- Ajouter une option pour désactiver les avertissements UI
+
+### Améliorations
+
+- Générer un vérificateur OAuth à chaque tentative de connexion
+- Ajout d'une routine de nettoyage des sessions expirées
+- Journaliser l'URI de redirection non sécurisée dans le contrôleur OAuth
+
+### Corrections
+
+- S'assurer que les fournisseurs OAuth ont le préfixe `PROVIDERS_`
+- Autoriser tous les sous-domaines à être considérés sûrs pour les redirections
+
+### Technique
+
+- Utiliser les génériques Gorm pour toutes les opérations de base de données
+- Essayer de nettoyer la logique des décodeurs
+- Accélérer le flux de travail de développement air en ne pas installer delve à chaque rechargement
+- Mise à jour des dépendances
+- Mise à jour des traductions
+
+## v4.0.1
+
+:::caution
+Cette version contient une correction de sécurité concernant la découverte d'étiquettes, veuillez mettre à jour dès que possible.
+:::
+
+### Améliorations
+
+- Déplacer la vérification de connexion Docker au démarrage afin que la découverte d'étiquettes puisse échouer en cas de plantage du proxy socket
+- Utiliser le module de récupération GIN pour traduire les panic en erreurs 500
+- Trier les fournisseurs OAuth par longueur de nom
+- Autoriser les redirections vers le domaine du cookie racine
+- Utiliser une journalisation plus verbeuse pour le niveau de log `trace`
+
+### Corrections
+
+- S'assurer que le répertoire de données existe sur les images Docker
+- Supprimer les espaces de fin avant de vérifier le nom d'utilisateur et le nom OAuth
+- Ne pas utiliser le nom du conteneur pour la découverte d'étiquettes
+
+### Technique
+
+- Utiliser les variantes meta Docker pour les images
+- Mise à jour des dépendances
+
+## v4.0.0
+
+:::caution
+Il s'agit d'une version majeure, veuillez suivre le guide de migration dans la [documentation](/docs/breaking-updates/3-to-4).
+:::
+
+### Nouvelles fonctionnalités
+
+- Base de données SQLite pour stocker les sessions
+- Avertissement dans l'UI lorsque le domaine actuel ne correspond pas à celui configuré
+- Option de configuration des proxys de confiance (`TRUSTED_PROXIES`/`--trusted-proxies`)
+- Serveur de fichiers vous permettant de servir des ressources statiques comme l'image d'arrière-plan (`RESOURCES_DIR`/`--resources-dir`)
+- Substitution Dash pour le slash dans les étiquettes IP permettant l'utilisation du CIDR dans Kubernetes
+- S'assurer que l'URL de l'app n'est pas dans la liste des suffixes publics afin d'éviter les problèmes de cookies
+- Plusieurs fournisseurs OAuth
+- Diagramme [Helm](https://helm.tinyauth.app) pour les déploiements Kubernetes
+- Commande de vérification d'état
+
+### Améliorations
+
+- Les étiquettes d'app ont été refondues pour permettre une configuration ACL plus propre
+- Flux d'auto-redirection OAuth amélioré pour une redirection plus fluide
+- L'écran de continuation a été refactorisé en un gestionnaire de redirection supprimant le besoin de cliquer sur des boutons supplémentaires
+- Mise au point automatique du formulaire TOTP
+- Définir le titre de la page à l'aide de la variable d'environnement `APP_TITLE`
+- Ajouter un cache dans le front-end pour des temps de chargement plus rapides
+
+### Corrections
+
+- Désactiver l'indexation dans l'écran de connexion afin qu'il n'apparaisse pas dans les moteurs de recherche
+- Ne pas autoriser l'authentification si Tinyauth ne parvient pas à obtenir les étiquettes
+
+### Technique
+
+- Une grande partie du code a été réécrite pour viser un code plus propre, lisible et maintenable
+- Structure de fichiers refondue pour une meilleure expérience de développement
+- Mise à jour des dépendances
+- Mise à jour des traductions
+
+## v3.6.2
+
+### Améliorations
+
+- Essayer de se reconnecter au serveur LDAP si le battement échoue
+- Gérer le type chaîne pour la revendication `groups` dans le fournisseur OAuth générique
+- Transférer l'en-tête d'authentification basique aux applications protégées
+- Internationaliser les erreurs de saisie requise et invalide
+- Ajouter des informations de complétion automatique aux formulaires d'authentification
+- Déplacer les requêtes de vérification d'état et favicon vers les journaux de débogage
+
+### Corrections
+
+- Ne pas faire échouer l'app si LDAP ne démarre pas mais d'autres sources d'utilisateurs sont configurées
+
+### Technique
+
+- Mise à jour des dépendances
+- Mise à jour des traductions
+
+## v3.6.1
+
+### Améliorations
+
+- Utiliser le battement pour empêcher le serveur LDAP de se déconnecter
+
+### Corrections
+
+- Corriger le message de mot de passe non traduit
+
+### Technique
+
+- Mise à jour des traductions
+- Mise à jour des dépendances
+- Nettoyer les commentaires dans la base de code
+
+## v3.6.0
+
+### Nouvelles fonctionnalités
+
+- Prise en charge de l'authentification Tinyauth complètement désactivée pour des IP ou CIDR spécifiques à l'aide de l'étiquette `tinyauth.ip.bypass`
+
+### Corrections
+
+- Correction de la découverte d'étiquettes
+
+### Technique
+
+- Mise à jour des traductions
+
+## v3.5.0
+
+### Nouvelles fonctionnalités
+
+- Ajouter une étiquette pour sélectionner l'app en fonction de son domaine, éliminant le besoin de garder le même nom de conteneur que le domaine de l'app
+- Prise en charge de la connexion à une application protégée via authentification basique
+- Prise en charge de l'autorisation/bloquage d'adresses IP et/ou CIDR
+- Prise en charge de l'utilisation d'un serveur LDAP comme source d'utilisateurs
+
+### Améliorations
+
+- Passer à Traefik paerser _(pas une faute de frappe)_ pour le parsing des étiquettes au lieu d'une solution personnalisée
+- Chiffrer le cookie de session
+
+### Corrections
+
+- Corriger l'espacement de l'état d'erreur dans le formulaire de connexion
+
+### Technique
+
+- Mise à jour des dépendances
+- Mise à jour des traductions
+- Exécuter le flux de travail nocturne chaque jour
+
+## v3.4.1
+
+### Technique
+
+- S'assurer que CGO est désactivé lors de la construction des binaires tinyauth
+- Mise à jour des dépendances
+- Mise à jour des traductions
+
+## v3.4.0
+
+### Nouvelles fonctionnalités
+
+- Afficher le hachage de commit et la date de construction aux côtés de la version dans la commande version
+- Option d'ignorer la vérification du certificat SSL dans le fournisseur générique
+
+### Améliorations
+
+- Re-construire l'UI à partir de zéro en utilisant Shadcn, Tailwind, React Query et React Hook Form
+- Négocier la version de l'API avec le hôte Docker au lieu d'échouer
+- Supprimer l'en-tête `WWW-Authenticate` pour éviter les fenêtres contextuelles d'authentification basique dans le navigateur
+- Stocker la version, la date de construction et le hachage du commit dans des constantes au lieu de fichiers
+- Générer des noms de cookies uniques basés sur l'URL de l'app pour éviter les conflits avec d'autres instances
+- Utiliser uniquement les redirections 302 pour éviter le cache du navigateur
+
+### Technique
+
+- Mise à jour des dépendances
+- Déprécier le CDN de traductions
+- Mise à jour des traductions
+- Créer un flux de travail nocturne de publication
+- Supprimer la vérification d'état du Dockerfile car elle causait des erreurs avec un port personnalisé
+
+## v3.3.1
+
+### Améliorations
+
+- Journaliser lorsqu'on utilise l'e-mail principal GitHub ou le premier disponible
+
+### Corrections
+
+- Utiliser l'e-mail au lieu du nom d'utilisateur dans la liste blanche OAuth
+
+## v3.3.0
+
+### Nouvelles fonctionnalités
+
+- Ajout d'un écran de connexion avertissant lorsque l'URI de redirection ne correspond pas au domaine configuré
+- Prise en charge des expressions régulières pour la liste blanche OAuth et utilisateur
+- Nouvel écran d'oubli du mot de passe avec la possibilité de changer le texte via Markdown
+- Mapper les informations des revendications OIDC aux en-têtes
+- Prise en charge de l'auto-redirection vers votre fournisseur OAuth préféré
+
+### Améliorations
+
+- Ajouter Dependabot pour les mises à jour des dépendances @gurukulkarni
+- Ajout d'un cookie CSRF pour la protection contre le falsage de requête intersite
+- Journaliser les erreurs réelles avec le message d'information
+
+### Corrections
+
+- Désactiver l'authentification basique pour les utilisateurs TOTP
+- Déplacer l'URI de redirection vers un cookie séparé
+
+### Technique
+
+- S'assurer que le répertoire dist existe pendant le développement
+- Mise à jour des dépendances
+
+## v3.2.1
+
+### Corrections
+
+- Ignorer les espaces et les nouvelles lignes dans les fichiers secrets
+- Supprimer le fournisseur OAuth Tailscale pour des raisons de sécurité
+
+## v3.2.0
+
+### Nouvelles fonctionnalités
+
+- Internationalisation via [Crowdin](https://crowdin.com/project/tinyauth) et le CDN Tinyauth
+- Vérification d'état dans le Dockerfile pour garantir que l'app fonctionne correctement
+- Possibilité de dire à tinyauth d'ajouter des en-têtes supplémentaires à la réponse d'authentification (nécessaire pour le futur support du fournisseur OIDC)
+- Protection contre les attaques par force brute / limitation de débit par @DragonStuff
+- Mode clair
+- Les binaires amd64 et arm64 sont désormais disponibles au téléchargement si vous préférez le matériel brut plutôt que Docker
+
+### Améliorations
+
+- Diviser l'API en serveur et gestionnaires pour une meilleure lisibilité du code
+- Refactorisation de la gestion des erreurs afin de ne pas initialiser de nouvelles variables à chaque erreur
+- Tous les services utilisent désormais une seule structure de configuration pour toutes les options de configuration, améliorant ainsi la lisibilité et l'extensibilité du code
+- Suppression de la dépendance aux sessions GIN car l'app utilise directement les sessions Gorilla
+- L'URI de redirection est désormais stockée dans le cookie de session `tinyauth`
+
+### Technique
+
+- Diviser l'API en serveur et gestionnaires pour une meilleure lisibilité du code
+- Refactorisation de la gestion des erreurs afin de ne pas initialiser de nouvelles variables à chaque erreur
+- Tous les services utilisent désormais une seule structure de configuration pour toutes les options de configuration, améliorant ainsi la lisibilité et l'extensibilité du code
+- Suppression de la dépendance aux sessions GIN car l'app utilise directement les sessions Gorilla
+- L'URI de redirection est désormais stockée dans le cookie de session `tinyauth`
+
+## v3.1.0
+
+### Nouvelles fonctionnalités
+
+- Prise en charge de TOTP
+- Possibilité de désactiver l'authentification sur des chemins d'app spécifiques via regex
+- Possibilité de changer le nom de l'écran de connexion
+- Possibilité de changer le nom du bouton du fournisseur OAuth générique
+- Tinyauth définit désormais l'en-tête `Remote-User` afin que vous puissiez l'utiliser pour vous connecter à d'autres applications
+
+### Améliorations
+
+- Amélioration du gestionnaire Docker pour la vérification des étiquettes
+- Amélioration des flux de travail de publication pour des temps de construction plus rapides
+- Page de connexion réécrite pour une meilleure modularité
+- Fournir des réponses JSON si le client ne accepte pas HTML
+
+### Corrections
+
+- Corriger la liste blanche OAuth qui n'autorise aucun utilisateur dans les applications lorsque `null`
+
+## v3.0.1
+
+### Corrections
+
+- Corriger le fait que l'URI de redirection ne soit pas correctement transmise à l'écran de continuation
+
+## v3.0.0
+
+### Guide de migration
+
+Pour migrer vers `v3.0.0`, vous devez modifier vos chemins d'authentification.
+
+Si vous utilisez Traefik pour votre proxy inverse, modifiez l'URL d'authentification directe en `http://tinyauth:3000/api/auth/traefik`
+
+Si vous utilisez Caddy pour votre proxy inverse, modifiez l'URL d'authentification en `http://tinyauth:3000/api/auth/caddy`
+
+La variable d'environnement `COOKIE_EXPIRY` a également été renommée en `SESSION_EXPIRY` (`--session-expiry`).
+
+### Nouvelles fonctionnalités
+
+- Prise en charge de Nginx / Nginx Proxy Manager
+- Authentification aux applications via authentification basique HTTP
+
+### Améliorations
+
+- Gérer les valeurs `null` provenant des paramètres de requête plus efficacement dans le front-end.
+- Le contenu du cookie expire également en fonction de la variable d'environnement `SESSION_EXPIRY`, augmentant ainsi la sécurité.
+
+### Corrections
+
+- Corriger le fait que `OAUTH_WHITELIST` n'autorise aucun utilisateur par défaut.
+- Analyser correctement l'URI de redirection pour prendre en charge les anciens navigateurs.
+
+### Technique
+
+- Ajouter plusieurs commentaires dans la base de code pour la rendre plus compréhensible.
+- Ajouter des tests pour l'API et les utilitaires.
+
+## v2.1.1
+
+### Corrections
+
+- Vérifier si le démon Docker est disponible avant d'essayer de vérifier les étiquettes de conteneur
+- Rediriger vers l'URL de l'app pour la page d'erreur interne du serveur
+
+## v2.1.0
+
+### Nouvelles fonctionnalités
+
+- Fournisseur OAuth Tailscale
+- Contrôles d'accès pour les applications protégées
+
+### Corrections
+
+- Supprimer le port du domaine du cookie
+- Corriger la configuration OAuth générique qui n'est pas correctement analysée
+- Corriger l'affichage des fournisseurs OAuth
+
+## v2.0.2
+
+### Améliorations
+
+- Gérer correctement la redirection inter-protocole avec un écran de vérification
+- L'écran de continuation possède un bouton "retour à l'accueil" lorsqu'aucune URI de redirection n'est fournie
+- Le journal ne va plus afficher d'informations sensibles sauf l'adresse e-mail
+
+### Corrections
+
+- Diviser correctement le domaine pour tenir compte d'un port personnalisé
+- Corriger l'impression du journal d'information de débogage sans niveau de log défini
+
+## v2.0.1
+
+### Corrections
+
+- Ne pas ajouter de virgule lorsque la variable d'environnement est vide.
+- Supprimer les espaces des utilisateurs dans le fichier utilisateur.
+
+## v2.0.0
+
+### Guide de migration
+
+Pour migrer, vous pouvez simplement changer la variable d'environnement `WHITELIST` en `OAUTH_WHITELIST` et tout fonctionnera correctement. Vous pouvez également revenir à des e-mails comme noms d'utilisateur si vous préférez le nom d'utilisateur/mot de passe mais tinyauth ne vous empêchera pas d'utiliser un e-mail comme nom d'utilisateur.
+
+### Nouvelles fonctionnalités
+
+- Nouvelle variable d'environnement `SECRETS_FILE` (`--secrets-file`) permettant d'utiliser un fichier pour stocker le secret de l'app.
+- Nouvelle variable d'environnement `GITHUB_CLIENT_SECRET_FILE` (`--github-client-secret-file`) permettant d'utiliser un fichier pour stocker le secret.
+- Nouvelle variable d'environnement `GOOGLE_CLIENT_SECRET_FILE` (`--google-client-secret-file`) permettant d'utiliser un fichier pour stocker le secret.
+- Nouvelle variable d'environnement `GENERIC_CLIENT_SECRERT_FILE` (`--generic-client-secret-file`) permettant d'utiliser un fichier pour stocker le secret.
+- Nouvelle variable d'environnement `LOG_LEVEL` (`--log-level`) permettant d'utiliser le niveau de journalisation debug pour une journalisation détaillée.
+
+### Améliorations
+
+- Le jeton OAuth n'est utilisé que pour obtenir l'adresse e-mail utilisateur et il n'est pas stocké sur le client.
+- L'écran de connexion vous permet d'utiliser des valeurs non-e-mail.
+- La logique du cookie a été réécrite pour utiliser correctement le magasin de cookies.
+- Des journaux de débogage ont été ajoutés partout dans l'app pour faciliter le débogage.
+- Les utilisateurs ne sont pas une exigence lors de l'utilisation d'OAuth.
+- L'analyse des utilisateurs a été réécrite.
+
+### Corrections
+
+- Corriger le fait que la variable d'environnement `WHITELIST` ne corresponde pas au drapeau `--oauth-whitelist`.
+
+## v1.0.0
+
+### Guide de migration
+
+Le seul changement que vous devez effectuer est de convertir votre nom d'utilisateur en adresse e-mail, cela s'applique à la fois aux variables `USERS` et `USERS_FILE`. Voici un exemple :  
+`user:$$2a$$10$$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u` devient `user@example.com:$$2a$$10$$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u`  
+Après ce simple changement, modifiez simplement la version tinyauth en `v1.0.0` et elle devrait démarrer normalement.
+
+### Nouvelles fonctionnalités
+
+- Prise en charge de Google, GitHub et des fournisseurs OAuth génériques pour l'authentification.
+- Option de désactiver l'écran de continuation lors de la connexion et rediriger immédiatement vers l'app.
+- Option de définir une expiration personnalisée pour le cookie de session.
+- Option de mettre en liste blanche des adresses e-mail spécifiques pour OAuth.
+
+### Améliorations
+
+- Toutes les erreurs d'API sont désormais enregistrées et l'utilisateur voit une page d'erreur interne du serveur au lieu de la réponse brute.
+
+### Corrections
+
+- Corriger la date d'expiration du cookie définie en mode session.
+- Diviser correctement l'URL de l'app.
+
+## v0.3.0
+
+### Nouvelles fonctionnalités
+
+- Commande de création d'utilisateur
+- Commande de vérification d'utilisateur
+- Option d'envoyer le cookie uniquement via HTTPS
+
+### Améliorations
+
+- Utiliser un modèle d'injection de dépendances pour rendre le code plus lisible
+
+### Corrections
+
+- Diviser correctement `APP_URL` afin que le cookie ne soit pas défini pour le domaine racine si des sous-domaines sont utilisés
+
+## v0.2.0
+
+### Nouvelles fonctionnalités
+
+- Autoriser la configuration d'utilisateurs via un fichier (identique à `.htpasswd`).
+
+### Améliorations
+
+- La variable d'environnement `ROOT_URL` n'est plus nécessaire car tinyauth obtient le domaine racine depuis `APP_URL`.
+- L'utilisateur est affiché en tant que code dans l'écran de déconnexion.
+
+### Corrections
+
+- Corriger l'affichage du bouton de continuation sur l'écran de continuation lorsqu'aucune URI de redirection n'est définie.
