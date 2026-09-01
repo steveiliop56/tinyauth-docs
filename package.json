@@ -15,13 +15,13 @@
     "@types/qrcode": "^1.5.6",
     "@yeskunall/astro-umami": "^0.0.8",
     "astro": "6.1.8",
-    "astro-mermaid": "^2.0.1",
+    "astro-mermaid": "^2.1.0",
     "bcryptjs": "^3.0.3",
-    "countup.js": "^2.10.0",
-    "mermaid": "^11.14.0",
+    "countup.js": "^2.10.1",
+    "mermaid": "^11.17.2",
     "otpauth": "^9.5.0",
     "qrcode": "^1.5.4",
-    "sharp": "^0.34.2",
+    "sharp": "^0.35.4",
     "starlight-theme-rapide": "^0.5.2"
   },
   "engines": {
