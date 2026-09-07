@@ -11,7 +11,7 @@ This guide is temporary. The configuration below follows our open [SWAG pull req
 
 ## Prerequisites
 
-- Tinyauth v5.0.7 or newer.
+- Tinyauth v5.2.0 or newer.
 - A working SWAG installation.
 - SWAG and Tinyauth attached to the same user-defined Docker network.
 - A Tinyauth container named `tinyauth`. If it has a different name, update `$upstream_tinyauth` below.
@@ -98,6 +98,8 @@ location /tinyauth {
     include /config/nginx/resolver.conf;
     set $upstream_tinyauth tinyauth;
     proxy_pass http://$upstream_tinyauth:3000/api/auth/nginx;
+    proxy_pass_request_body off;
+    proxy_set_header Content-Length "";
 }
 ```
 
