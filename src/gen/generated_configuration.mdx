@@ -94,8 +94,8 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
         | `TINYAUTH_APPS_[NAME]_RESPONSE_BASICAUTH_USERNAME` | Basic auth username. | `` |
         | `TINYAUTH_APPS_[NAME]_RESPONSE_BASICAUTH_PASSWORD` | Basic auth password. | `` |
         | `TINYAUTH_APPS_[NAME]_RESPONSE_BASICAUTH_PASSWORDFILE` | Path to the file containing the basic auth password. | `` |
-        | `TINYAUTH_APPS_[NAME]_PATH_ALLOW` | Comma-separated list of allowed paths. | `` |
-        | `TINYAUTH_APPS_[NAME]_PATH_BLOCK` | Comma-separated list of blocked paths. | `` |
+        | `TINYAUTH_APPS_[NAME]_PATH_ALLOW` | Disable authentication for only paths that match the regex string. | `` |
+        | `TINYAUTH_APPS_[NAME]_PATH_BLOCK` | Enable authentication for only paths that match the regex string. | `` |
         | `TINYAUTH_APPS_[NAME]_LDAP_GROUPS` | Comma-separated list of required LDAP groups. | `` |
 
         ### oauth
@@ -117,6 +117,10 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
         | `TINYAUTH_OAUTH_PROVIDERS_[NAME]_USERINFOURL` | OAuth userinfo URL. | `` |
         | `TINYAUTH_OAUTH_PROVIDERS_[NAME]_INSECURE` | Allow insecure OAuth connections. | `false` |
         | `TINYAUTH_OAUTH_PROVIDERS_[NAME]_NAME` | Provider name in UI. | `` |
+        | `TINYAUTH_OAUTH_PROVIDERS_[NAME]_CLAIMS_USERNAME` | Username claim. | `` |
+        | `TINYAUTH_OAUTH_PROVIDERS_[NAME]_CLAIMS_EMAIL` | Email claim. | `` |
+        | `TINYAUTH_OAUTH_PROVIDERS_[NAME]_CLAIMS_NAME` | Name claim. | `` |
+        | `TINYAUTH_OAUTH_PROVIDERS_[NAME]_CLAIMS_GROUPS` | Groups claim. | `` |
 
         ### oidc
 
@@ -136,7 +140,7 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
         | - | - | - |
         | `TINYAUTH_UI_TITLE` | The title of the UI. | `Tinyauth` |
         | `TINYAUTH_UI_FORGOTPASSWORDMESSAGE` | Message displayed on the forgot password page. | `You can change your password by changing the configuration.` |
-        | `TINYAUTH_UI_BACKGROUNDIMAGE` | Path to the background image. | `/background.jpg` |
+        | `TINYAUTH_UI_BACKGROUNDIMAGE` | Path to the background image. | `/background.webp` |
         | `TINYAUTH_UI_WARNINGSENABLED` | Enable UI warnings. | `true` |
 
         ### ldap
@@ -153,6 +157,13 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
         | `TINYAUTH_LDAP_AUTHCERT` | Certificate for mTLS authentication. | `` |
         | `TINYAUTH_LDAP_AUTHKEY` | Certificate key for mTLS authentication. | `` |
         | `TINYAUTH_LDAP_GROUPCACHETTL` | Cache duration for LDAP group membership in seconds. | `900` |
+
+        ### experimental
+
+        | Option | Description | Default |
+        | - | - | - |
+        | `TINYAUTH_EXPERIMENTAL_OAUTHBRIDGEENABLED` | Enable the OAuth bridge, uses a new way to format OAuth user information. | `false` |
+        | `TINYAUTH_EXPERIMENTAL_DISABLEAUTHMODULEFALLBACK` | Disable the fallback to forward_auth modules when auth_request or ext_authz fail. | `false` |
 
         ### tailscale
 
@@ -268,8 +279,8 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
         | `--apps.[name].response.basicauth.username` | Basic auth username. | `` |
         | `--apps.[name].response.basicauth.password` | Basic auth password. | `` |
         | `--apps.[name].response.basicauth.passwordfile` | Path to the file containing the basic auth password. | `` |
-        | `--apps.[name].path.allow` | Comma-separated list of allowed paths. | `` |
-        | `--apps.[name].path.block` | Comma-separated list of blocked paths. | `` |
+        | `--apps.[name].path.allow` | Disable authentication for only paths that match the regex string. | `` |
+        | `--apps.[name].path.block` | Enable authentication for only paths that match the regex string. | `` |
         | `--apps.[name].ldap.groups` | Comma-separated list of required LDAP groups. | `` |
 
         ### oauth
@@ -291,6 +302,10 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
         | `--oauth.providers.[name].userinfourl` | OAuth userinfo URL. | `` |
         | `--oauth.providers.[name].insecure` | Allow insecure OAuth connections. | `false` |
         | `--oauth.providers.[name].name` | Provider name in UI. | `` |
+        | `--oauth.providers.[name].claims.username` | Username claim. | `` |
+        | `--oauth.providers.[name].claims.email` | Email claim. | `` |
+        | `--oauth.providers.[name].claims.name` | Name claim. | `` |
+        | `--oauth.providers.[name].claims.groups` | Groups claim. | `` |
 
         ### oidc
 
@@ -310,7 +325,7 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
         | - | - | - |
         | `--ui.title` | The title of the UI. | `Tinyauth` |
         | `--ui.forgotpasswordmessage` | Message displayed on the forgot password page. | `You can change your password by changing the configuration.` |
-        | `--ui.backgroundimage` | Path to the background image. | `/background.jpg` |
+        | `--ui.backgroundimage` | Path to the background image. | `/background.webp` |
         | `--ui.warningsenabled` | Enable UI warnings. | `true` |
 
         ### ldap
@@ -327,6 +342,13 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
         | `--ldap.authcert` | Certificate for mTLS authentication. | `` |
         | `--ldap.authkey` | Certificate key for mTLS authentication. | `` |
         | `--ldap.groupcachettl` | Cache duration for LDAP group membership in seconds. | `900` |
+
+        ### experimental
+
+        | Option | Description | Default |
+        | - | - | - |
+        | `--experimental.oauthbridgeenabled` | Enable the OAuth bridge, uses a new way to format OAuth user information. | `false` |
+        | `--experimental.disableauthmodulefallback` | Disable the fallback to forward_auth modules when auth_request or ext_authz fail. | `false` |
 
         ### tailscale
 
@@ -441,8 +463,8 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
         | `apps.[name].response.basicauth.username` | Basic auth username. | `` |
         | `apps.[name].response.basicauth.password` | Basic auth password. | `` |
         | `apps.[name].response.basicauth.passwordFile` | Path to the file containing the basic auth password. | `` |
-        | `apps.[name].path.allow` | Comma-separated list of allowed paths. | `` |
-        | `apps.[name].path.block` | Comma-separated list of blocked paths. | `` |
+        | `apps.[name].path.allow` | Disable authentication for only paths that match the regex string. | `` |
+        | `apps.[name].path.block` | Enable authentication for only paths that match the regex string. | `` |
         | `apps.[name].ldap.groups` | Comma-separated list of required LDAP groups. | `` |
 
         ### oauth
@@ -464,6 +486,10 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
         | `oauth.providers.[name].userinfoUrl` | OAuth userinfo URL. | `` |
         | `oauth.providers.[name].insecure` | Allow insecure OAuth connections. | `false` |
         | `oauth.providers.[name].name` | Provider name in UI. | `` |
+        | `oauth.providers.[name].claims.username` | Username claim. | `` |
+        | `oauth.providers.[name].claims.email` | Email claim. | `` |
+        | `oauth.providers.[name].claims.name` | Name claim. | `` |
+        | `oauth.providers.[name].claims.groups` | Groups claim. | `` |
 
         ### oidc
 
@@ -483,7 +509,7 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
         | - | - | - |
         | `ui.title` | The title of the UI. | `Tinyauth` |
         | `ui.forgotPasswordMessage` | Message displayed on the forgot password page. | `You can change your password by changing the configuration.` |
-        | `ui.backgroundImage` | Path to the background image. | `/background.jpg` |
+        | `ui.backgroundImage` | Path to the background image. | `/background.webp` |
         | `ui.warningsEnabled` | Enable UI warnings. | `true` |
 
         ### ldap
@@ -500,6 +526,13 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
         | `ldap.authCert` | Certificate for mTLS authentication. | `` |
         | `ldap.authKey` | Certificate key for mTLS authentication. | `` |
         | `ldap.groupCacheTTL` | Cache duration for LDAP group membership in seconds. | `900` |
+
+        ### experimental
+
+        | Option | Description | Default |
+        | - | - | - |
+        | `experimental.oauthBridgeEnabled` | Enable the OAuth bridge, uses a new way to format OAuth user information. | `false` |
+        | `experimental.disableAuthModuleFallback` | Disable the fallback to forward_auth modules when auth_request or ext_authz fail. | `false` |
 
         ### tailscale
 
