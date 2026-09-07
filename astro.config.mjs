@@ -110,6 +110,10 @@ export default defineConfig({
               slug: "docs/guides/nginx-proxy-manager",
             },
             {
+              label: "SWAG",
+              slug: "docs/guides/swag",
+            },
+            {
               label: "Runtipi",
               slug: "docs/guides/runtipi",
             },
