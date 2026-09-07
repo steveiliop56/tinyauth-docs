@@ -3,7 +3,35 @@ title: Changelog
 description: Overview of changes and updates in Tinyauth versions.
 ---
 
-### v5.1.3
+## v5.2.0
+
+> [!WARNING]
+> This release contains a security fix, please update as soon as possible.
+
+### New Features
+
+- Use display name from LDAP server when available @tsushanth (#1072)
+- Add support for custom claim mapping in OAuth (username, email, display name and groups) (#1087)
+
+### Improvements
+
+- Remember OpenID Connect consent and skip re-prompt for previously approved scopes (#989)
+- Serve optimized WebP background image for faster load times (#1110)
+- Add backoff and retries to Docker connection for compatibility with socket proxies (#1114)
+- Harden secret comparisons with constant-time checks
+
+### Fixes
+
+- Preserve proxied query parameters during login redirects (#1068)
+- Prevent duplicate auth module headers (#1089)
+- Allow underscores in domain names
+
+### Technical
+
+- Update dependencies
+- Update translations (#1058)
+
+## v5.1.3
 
 > [!WARNING]
 > This release contains a security fix, please update as soon as possible.

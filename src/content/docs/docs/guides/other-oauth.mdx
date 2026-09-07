@@ -50,6 +50,24 @@ The provider identifier (e.g., `MYPROVIDER`) must be unique and should only cont
 
 You can add multiple providers by repeating the above configuration with different identifiers (e.g., `KEYCLOAK`, `AUTH0`, etc.).
 
+## Attribute mapping
+
+Tinyauth supports OAuth attribute mapping. Attribute mapping is useful in situations where the IdP doesn't return standard OpenID Connect claims such as `name`, `email`, `preferred_username` etc.
+
+Mapping is supported for the username, email, name and groups claims but **not** for the `sub` claim. Tinyauth *for now* doesn't require the `sub` claim, but it's strongly recommended that your IdP returns it in the userinfo response.
+
+To use attribute mapping just add the following environment variables (or CLI flags/YAML config) to the Tinyauth container:
+
+```yaml
+services:
+  tinyauth:
+    environment:
+      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_CLAIMS_USERNAME=some-username-claim
+      - TINYAUTH_OAUTH_PROVIDERS_MYPROVIDER_CLAIMS_NAME=some-name-claim
+```
+
+After restarting, Tinyauth will look for the `some-username-claim` and `some-name-claim` for the username and name claims in the userinfo response instead of the standard `preferred_username` and `name` ones.
+
 ## Tips and warnings
 
 :::note
