@@ -79,14 +79,7 @@ extensionProviders:
     service: "tinyauth.tinyauth.svc.cluster.local"
     port: "3000"
     pathPrefix: "/api/auth/envoy?path="
-    includeRequestHeadersInCheck: ["cookie", "x-forwarded-for", "x-forwarded-proto", "x-forwarded-host", "accept", "user-agent"]
-    includeAdditionalHeadersInCheck:
-      "x-forwarded-for": "%DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT%"
-      "x-real-ip": "%DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT%"
-      "x-forwarded-proto": "%REQ(:SCHEME)%"
-      "x-forwarded-host": "%REQ(:AUTHORITY)%"
-      "x-forwarded-uri": "%REQ(:PATH)%"
-      "x-forwarded-method": "%REQ(:METHOD)%"
+    includeRequestHeadersInCheck: ["cookie", "x-forwarded-for", "x-forwarded-proto", "user-agent"]
     headersToDownstreamOnAllow: ["set-cookie"]
     headersToDownstreamOnDeny: ["content-type", "set-cookie"]
 ```
@@ -111,14 +104,7 @@ meshConfig:
       service: "tinyauth.tinyauth.svc.cluster.local"
       port: "3000"
       pathPrefix: "/api/auth/envoy?path="
-      includeRequestHeadersInCheck: ["cookie", "x-forwarded-for", "x-forwarded-proto", "x-forwarded-host", "accept", "user-agent"]
-      includeAdditionalHeadersInCheck:
-        "x-forwarded-for": "%DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT%"
-        "x-real-ip": "%DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT%"
-        "x-forwarded-proto": "%REQ(:SCHEME)%"
-        "x-forwarded-host": "%REQ(:AUTHORITY)%"
-        "x-forwarded-uri": "%REQ(:PATH)%"
-        "x-forwarded-method": "%REQ(:METHOD)%"
+      includeRequestHeadersInCheck: ["cookie", "x-forwarded-for", "x-forwarded-proto", "user-agent"]
       headersToDownstreamOnAllow: ["set-cookie"]
       headersToDownstreamOnDeny: ["content-type", "set-cookie"]
 ```
