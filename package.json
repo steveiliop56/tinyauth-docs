@@ -14,7 +14,7 @@
     "@astrojs/starlight": "0.38.3",
     "@types/qrcode": "^1.5.6",
     "@yeskunall/astro-umami": "^0.0.8",
-    "astro": "6.1.8",
+    "astro": "7.2.8",
     "astro-mermaid": "^2.1.0",
     "bcryptjs": "^3.0.3",
     "countup.js": "^2.10.1",
