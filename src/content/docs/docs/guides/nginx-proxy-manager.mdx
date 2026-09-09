@@ -100,13 +100,13 @@ location /tinyauth {
 
  # Don't forward the request body to the auth subrequest
   proxy_pass_request_body off;
-  proxy_set_header Content-Length "";
+  proxy_set_header content-length "";
 
   # Pass the request headers
-  proxy_set_header x-forwarded-for $remote_addr;
-  proxy_set_header x-real-ip $remote_addr;
   proxy_set_header x-original-url $scheme://$http_host$request_uri;
   proxy_set_header x-original-method $request_method;
+  proxy_set_header x-forwarded-for $remote_addr;
+  proxy_set_header x-real-ip $remote_addr;
 }
 ```
 
