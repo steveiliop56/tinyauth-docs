@@ -5,78 +5,48 @@ description: Use Tinyauth with the LinuxServer.io SWAG reverse proxy.
 
 [SWAG](https://docs.linuxserver.io/general/swag/) is an Nginx-based reverse proxy maintained by LinuxServer.io. Its proxy configuration samples include support for Tinyauth.
 
-:::caution[Temporary guide]
-This guide is temporary. The configuration below follows our open [SWAG pull request](https://github.com/linuxserver/docker-swag/pull/621), which adds support for Tinyauth's `X-Tinyauth-Location` header. We are waiting for LinuxServer.io to merge and release the pull request. Until then, the required configuration must be added manually.
-:::
-
 ## Prerequisites
 
 - Tinyauth v5.2.0 or newer.
 - A working SWAG installation.
 - SWAG and Tinyauth attached to the same user-defined Docker network.
-- A Tinyauth container named `tinyauth`. If it has a different name, update `$upstream_tinyauth` below.
 - A proxy configuration for Tinyauth enabled by renaming `/config/nginx/proxy-confs/tinyauth.subdomain.conf.sample` to `/config/nginx/proxy-confs/tinyauth.subdomain.conf`.
 
-## Configure Tinyauth Authentication
+## Tinyauth SWAG Configuration
 
-### Create the Tinyauth Proxy Configuration
+### Server Configuration
 
-:::caution[Required for Tinyauth v5.2.0 and newer]
-Tinyauth v5.2.0 and newer does not allow a request to contain both `X-Forwarded-Host` and `X-Forwarded-Uri` headers alongside `X-Original-URL`. SWAG's standard `/config/nginx/proxy.conf` sets all three headers, so a separate proxy configuration that clears the conflicting headers is required for Tinyauth authentication requests.
-:::
+Ensure your `/config/nginx/tinyauth-server.conf` file looks like this:
 
-Create `/config/nginx/tinyauth-proxy.conf` with the following contents:
+```nginx title="/config/nginx/tinyauth-server.conf"
+location /tinyauth {
+    internal;
 
-```nginx title="/config/nginx/tinyauth-proxy.conf"
-# Timeout if the upstream server is unavailable.
-proxy_next_upstream error timeout invalid_header http_500 http_502 http_503;
+    include /config/nginx/resolver.conf;
+    # Replace this if your Tinyauth container has a different name
+    set $upstream_tinyauth tinyauth;
+    proxy_pass http://$upstream_tinyauth:3000/api/auth/nginx;
 
-# Proxy connection settings.
-proxy_buffers 32 4k;
-proxy_connect_timeout 240;
-proxy_headers_hash_bucket_size 128;
-proxy_headers_hash_max_size 1024;
-proxy_http_version 1.1;
-proxy_read_timeout 240;
-proxy_redirect http:// $scheme://;
-proxy_send_timeout 240;
+    # Don't send the body to the auth server
+    proxy_pass_request_body off;
+    proxy_set_header Content-Length "";
 
-# Proxy cache and cookie settings.
-proxy_cache_bypass $cookie_session;
-proxy_no_cache $cookie_session;
-
-# Proxy header settings.
-proxy_set_header Connection $connection_upgrade;
-proxy_set_header Early-Data $ssl_early_data;
-proxy_set_header Host $host;
-proxy_set_header Proxy "";
-proxy_set_header Upgrade $http_upgrade;
-proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-proxy_set_header X-Forwarded-Host "";
-proxy_set_header X-Forwarded-Uri "";
-proxy_set_header X-Forwarded-Method $request_method;
-proxy_set_header X-Forwarded-Port $server_port;
-proxy_set_header X-Forwarded-Proto $scheme;
-proxy_set_header X-Forwarded-Server $host;
-proxy_set_header X-Forwarded-Ssl on;
-proxy_set_header X-Original-Method $request_method;
-proxy_set_header X-Original-URL $scheme://$http_host$request_uri;
-proxy_set_header X-Real-IP $remote_addr;
+    # Headers needed for authentication
+    proxy_set_header X-Original-URL $scheme://$http_host$request_uri;
+    proxy_set_header X-Original-Method $request_method;
+    proxy_set_header X-Real-IP $remote_addr;
+}
 ```
 
-Do not replace SWAG's standard `/config/nginx/proxy.conf` with this file. The custom file is only used by the Tinyauth authentication location.
+### Authentication Location
 
-### Configure the Authentication Locations
-
-Replace the contents of `/config/nginx/tinyauth-location.conf` with:
+Ensure your `/config/nginx/tinyauth-location.conf` file looks like this:
 
 ```nginx title="/config/nginx/tinyauth-location.conf"
-# Send a subrequest to Tinyauth to verify the request.
 auth_request /tinyauth;
-auth_request_set $tinyauth_location $upstream_http_x_tinyauth_location;
-error_page 401 403 =302 $tinyauth_location;
+auth_request_set $redirection_url $upstream_http_x_tinyauth_location;
+error_page 401 403 =302 $redirection_url;
 
-# Copy user information from the auth response to the protected app.
 auth_request_set $email $upstream_http_remote_email;
 auth_request_set $groups $upstream_http_remote_groups;
 auth_request_set $name $upstream_http_remote_name;
@@ -86,21 +56,6 @@ proxy_set_header Remote-Email $email;
 proxy_set_header Remote-Groups $groups;
 proxy_set_header Remote-Name $name;
 proxy_set_header Remote-User $user;
-```
-
-Replace the contents of `/config/nginx/tinyauth-server.conf` with:
-
-```nginx title="/config/nginx/tinyauth-server.conf"
-location /tinyauth {
-    internal;
-
-    include /config/nginx/tinyauth-proxy.conf;
-    include /config/nginx/resolver.conf;
-    set $upstream_tinyauth tinyauth;
-    proxy_pass http://$upstream_tinyauth:3000/api/auth/nginx;
-    proxy_pass_request_body off;
-    proxy_set_header Content-Length "";
-}
 ```
 
 This allows Tinyauth to choose the correct login, unauthorized, or error page and return it through the `X-Tinyauth-Location` response header.

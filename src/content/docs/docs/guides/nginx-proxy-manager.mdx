@@ -76,7 +76,7 @@ SSL can be configured as needed.
 
 Add the following configuration in the Advanced tab to enable Tinyauth authentication:
 
-```sh
+```nginx
 # Root location
 location / {
   # Pass the request to the app
@@ -105,9 +105,8 @@ location /tinyauth {
   # Pass the request headers
   proxy_set_header x-forwarded-for $remote_addr;
   proxy_set_header x-real-ip $remote_addr;
-  proxy_set_header x-forwarded-proto $scheme;
-  proxy_set_header x-forwarded-host $http_host;
-  proxy_set_header x-forwarded-uri $request_uri;
+  proxy_set_header x-original-url $scheme://$http_host$request_uri;
+  proxy_set_header x-original-method $request_method;
 }
 ```
 
